@@ -1,0 +1,115 @@
+/**
+ * CTC Smart-Hands Admin Styles
+ *
+ * @package CTC_Smart_Hands
+ * @since 1.0.0
+ */
+
+/* Card styling */
+.ctc-smart-hands .card {
+    background: #fff;
+    border: 1px solid #ccd0d4;
+    border-radius: 4px;
+    padding: 20px;
+    margin-top: 20px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+}
+
+.ctc-smart-hands .card h2,
+.ctc-smart-hands .card h3 {
+    margin-top: 0;
+    padding-top: 0;
+}
+
+/* Status badges */
+.ctc-status-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.ctc-status-badge.status-new {
+    background: #3b82f6;
+    color: #fff;
+}
+
+.ctc-status-badge.status-confirmed {
+    background: #10b981;
+    color: #fff;
+}
+
+.ctc-status-badge.status-onsite {
+    background: #f59e0b;
+    color: #fff;
+}
+
+.ctc-status-badge.status-completed {
+    background: #14b8a6;
+    color: #fff;
+}
+
+.ctc-status-badge.status-invoiced {
+    background: #8b5cf6;
+    color: #fff;
+}
+
+.ctc-status-badge.status-closed {
+    background: #6b7280;
+    color: #fff;
+}
+
+/* Code blocks */
+.ctc-smart-hands pre {
+    background: #f3f4f6;
+    border: 1px solid #e5e7eb;
+    border-radius: 4px;
+    padding: 16px;
+    overflow-x: auto;
+}
+
+.ctc-smart-hands code {
+    background: #f3f4f6;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 13px;
+}
+
+.ctc-smart-hands pre code {
+    background: transparent;
+    padding: 0;
+}
+
+/* Table enhancements */
+.ctc-smart-hands .widefat th {
+    font-weight: 600;
+}
+
+.ctc-smart-hands .widefat.striped > tbody > :nth-child(odd),
+.ctc-smart-hands .widefat.striped > tbody > :nth-child(odd) > th {
+    background-color: #f9fafb;
+}
+
+/* Form improvements */
+.ctc-smart-hands .form-table th {
+    width: 250px;
+}
+
+.ctc-smart-hands textarea.large-text {
+    font-family: 'Courier New', Courier, monospace;
+}
+
+/* Notices */
+.ctc-smart-hands .notice {
+    margin: 20px 0;
+}
+
+/* Responsive */
+@media screen and (max-width: 782px) {
+    .ctc-smart-hands .form-table th {
+        width: auto;
+    }
+}
