@@ -79,6 +79,8 @@ final class CTC_Smart_Hands {
         require_once CTC_PLUGIN_DIR . 'includes/class-database.php';
         require_once CTC_PLUGIN_DIR . 'includes/class-settings.php';
         require_once CTC_PLUGIN_DIR . 'includes/class-helpers.php';
+        require_once CTC_PLUGIN_DIR . 'includes/class-auth.php';
+        require_once CTC_PLUGIN_DIR . 'includes/class-rest-api.php';
     }
 
     /**
@@ -161,8 +163,8 @@ final class CTC_Smart_Hands {
         // Load text domain for translations
         load_plugin_textdomain('ctc-smart-hands', false, dirname(CTC_PLUGIN_BASENAME) . '/languages');
 
-        // Initialize REST API (will be added in Phase 3)
-        // CTC\SmartHands\REST_API::init();
+        // Initialize REST API
+        CTC\SmartHands\REST_API::init();
 
         // Initialize notifications (will be added in Phase 4)
         // CTC\SmartHands\Notify::init();
