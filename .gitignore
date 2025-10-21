@@ -1,0 +1,146 @@
+# CTC Smart-Hands Project - Git Ignore
+# Created: October 21, 2025
+
+# ============================================
+# WordPress Core Files (DO NOT COMMIT)
+# ============================================
+app/public/wp-admin/
+app/public/wp-includes/
+app/public/*.php
+app/public/.htaccess
+app/public/license.txt
+app/public/readme.html
+app/public/xmlrpc.php
+
+# WordPress Config
+app/public/wp-config.php
+
+# Default WordPress Themes
+app/public/wp-content/themes/twenty*/
+
+# Default WordPress Plugins
+app/public/wp-content/plugins/akismet/
+app/public/wp-content/plugins/hello.php
+
+# WordPress Uploads (consider committing or using cloud storage)
+app/public/wp-content/uploads/
+
+# WordPress Cache
+app/public/wp-content/cache/
+app/public/wp-content/advanced-cache.php
+
+# ============================================
+# BUT KEEP OUR CUSTOM PLUGIN
+# ============================================
+!app/public/wp-content/plugins/ctc-smart-hands/
+
+# ============================================
+# Local by Flywheel Files
+# ============================================
+conf/
+logs/
+app/sql/
+
+# ============================================
+# Next.js Frontend
+# ============================================
+frontend/node_modules/
+frontend/.next/
+frontend/.pnpm-store/
+frontend/out/
+frontend/build/
+frontend/dist/
+
+# Next.js Cache
+frontend/.next/cache/
+
+# ============================================
+# Environment Variables
+# ============================================
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+frontend/.env*
+
+# ============================================
+# Package Manager Files
+# ============================================
+# pnpm
+pnpm-lock.yaml
+.pnpm-debug.log*
+.pnpm-store/
+
+# npm (if accidentally used)
+package-lock.json
+npm-debug.log*
+
+# yarn (if accidentally used)
+yarn.lock
+yarn-error.log*
+
+# ============================================
+# IDE and Editor Files
+# ============================================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+*.sublime-project
+*.sublime-workspace
+
+# ============================================
+# OS Files
+# ============================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# ============================================
+# Testing and Coverage
+# ============================================
+coverage/
+.nyc_output/
+playwright-report/
+test-results/
+*.lcov
+
+# ============================================
+# Build Artifacts
+# ============================================
+*.log
+*.pid
+*.seed
+*.pid.lock
+lib-cov
+
+# ============================================
+# Temporary Files
+# ============================================
+tmp/
+temp/
+*.tmp
+*.bak
+*.backup
+
+# ============================================
+# Sensitive Data
+# ============================================
+*.pem
+*.key
+*.cert
+secrets/
+credentials/
+
+# ============================================
+# Documentation Build Files
+# ============================================
+docs/build/
+docs/_build/
