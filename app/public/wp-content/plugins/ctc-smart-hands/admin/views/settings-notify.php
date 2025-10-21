@@ -61,4 +61,15 @@ if (!defined('ABSPATH')) exit;
             <button type="submit" class="button button-primary"><?php esc_html_e('Save Settings', 'ctc-smart-hands'); ?></button>
         </p>
     </form>
+
+    <div class="card" style="margin-top: 20px;">
+        <h2><?php esc_html_e('Test Notifications', 'ctc-smart-hands'); ?></h2>
+        <p><?php esc_html_e('Send a test email to verify your SMTP settings are working correctly.', 'ctc-smart-hands'); ?></p>
+        <form method="post" action="">
+            <?php wp_nonce_field('ctc_test_notification', 'ctc_test_nonce'); ?>
+            <button type="submit" name="ctc_test_notification" class="button button-secondary">
+                <?php esc_html_e('Send Test Email', 'ctc-smart-hands'); ?>
+            </button>
+        </form>
+    </div>
 </div>

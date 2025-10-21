@@ -298,11 +298,8 @@ class REST_API {
         // Get created booking
         $booking = Database::get_booking($booking_id);
 
-        // Send notifications (will be implemented in Phase 4)
-        // For now, we'll add a placeholder
-        // Notify::send_owner_email($booking);
-        // Notify::send_owner_sms($booking);
-        // Notify::send_dispatcher_email($booking);
+        // Trigger notification action (handled by Notify class)
+        do_action('ctc_booking_created', $booking);
 
         // Log booking creation
         Database::add_booking_note(
@@ -464,19 +461,19 @@ class REST_API {
             );
         }
 
-        // Send notification (will be implemented in Phase 4)
-        // For now, just log it
+        // Send notification
+        $sent = false;
         $note_text = '';
-        if ($type === 'eta') {
+
+        if ($type === 'eta' && $eta) {
+            $sent = Notify::send_eta($booking, $eta);
             $note_text = sprintf('ETA notification sent: %s', $eta);
-            // Notify::send_eta($booking, $eta);
-        } elseif ($type === 'custom') {
+        } elseif ($type === 'custom' && $message) {
+            $sent = Notify::send_custom($booking, $message);
             $note_text = sprintf('Custom notification sent: %s', $message);
-            // Notify::send_custom($booking, $message);
         }
 
-        // Log notification
-        Database::add_booking_note($id, $note_text, 'email', null);
+        // Note is logged inside Notify methods
 
         Helpers::log('Notification sent', [
             'booking_id' => $id,

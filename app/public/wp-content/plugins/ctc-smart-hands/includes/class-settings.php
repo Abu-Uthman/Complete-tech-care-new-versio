@@ -217,6 +217,16 @@ class Settings {
             echo '<div class="notice notice-success"><p>' . esc_html__('Notification settings saved!', 'ctc-smart-hands') . '</p></div>';
         }
 
+        // Handle test notification
+        if (isset($_POST['ctc_test_notification']) && wp_verify_nonce($_POST['ctc_test_nonce'], 'ctc_test_notification')) {
+            $sent = \CTC\SmartHands\Notify::send_test_notification();
+            if ($sent) {
+                echo '<div class="notice notice-success"><p>' . esc_html__('Test email sent! Check your inbox.', 'ctc-smart-hands') . '</p></div>';
+            } else {
+                echo '<div class="notice notice-error"><p>' . esc_html__('Failed to send test email. Check your SMTP settings.', 'ctc-smart-hands') . '</p></div>';
+            }
+        }
+
         $notify = get_option(self::OPTION_NOTIFY);
 
         require_once CTC_PLUGIN_DIR . 'admin/views/settings-notify.php';
