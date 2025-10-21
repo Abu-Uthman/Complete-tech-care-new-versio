@@ -149,6 +149,16 @@ class Settings {
             [self::class, 'render_downloads_page']
         );
 
+        // Booking Detail (hidden from menu)
+        add_submenu_page(
+            null, // Hidden from menu
+            __('Booking Detail', 'ctc-smart-hands'),
+            __('Booking Detail', 'ctc-smart-hands'),
+            'manage_options',
+            'ctc-booking-detail',
+            [self::class, 'render_booking_detail_page']
+        );
+
         // Export
         add_submenu_page(
             'ctc-smart-hands',
@@ -161,13 +171,39 @@ class Settings {
     }
 
     /**
-     * Render bookings list page (will be implemented in Phase 5)
+     * Render bookings list page
      */
     public static function render_bookings_page(): void {
-        echo '<div class="wrap">';
-        echo '<h1>' . esc_html__('CTC Smart-Hands Bookings', 'ctc-smart-hands') . '</h1>';
-        echo '<p>' . esc_html__('Bookings list will be implemented in Phase 5.', 'ctc-smart-hands') . '</p>';
-        echo '</div>';
+        // Load the bookings list table
+        require_once CTC_PLUGIN_DIR . 'admin/class-bookings-list.php';
+
+        $bookings_list = new \CTC\SmartHands\Admin\Bookings_List();
+        $bookings_list->prepare_items();
+
+        // Show success message if bookings were deleted
+        if (isset($_GET['deleted'])) {
+            echo '<div class="notice notice-success is-dismissible"><p>';
+            printf(
+                _n('%d booking deleted.', '%d bookings deleted.', $_GET['deleted'], 'ctc-smart-hands'),
+                $_GET['deleted']
+            );
+            echo '</p></div>';
+        }
+
+        ?>
+        <div class="wrap ctc-smart-hands">
+            <h1 class="wp-heading-inline"><?php _e('Bookings', 'ctc-smart-hands'); ?></h1>
+            <hr class="wp-header-end">
+
+            <form method="get">
+                <input type="hidden" name="page" value="<?php echo $_REQUEST['page']; ?>">
+                <?php
+                $bookings_list->search_box(__('Search Bookings', 'ctc-smart-hands'), 'booking');
+                $bookings_list->display();
+                ?>
+            </form>
+        </div>
+        <?php
     }
 
     /**
@@ -271,13 +307,17 @@ class Settings {
     }
 
     /**
-     * Render export page (will be implemented in Phase 5)
+     * Render booking detail page
+     */
+    public static function render_booking_detail_page(): void {
+        require_once CTC_PLUGIN_DIR . 'admin/views/booking-detail.php';
+    }
+
+    /**
+     * Render export page
      */
     public static function render_export_page(): void {
-        echo '<div class="wrap">';
-        echo '<h1>' . esc_html__('Export Bookings', 'ctc-smart-hands') . '</h1>';
-        echo '<p>' . esc_html__('Export functionality will be implemented in Phase 5.', 'ctc-smart-hands') . '</p>';
-        echo '</div>';
+        require_once CTC_PLUGIN_DIR . 'admin/views/export.php';
     }
 
     /**
