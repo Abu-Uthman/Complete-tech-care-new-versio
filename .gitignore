@@ -42,17 +42,17 @@ logs/
 app/sql/
 
 # ============================================
-# Next.js Frontend
+# Next.js Frontend (web/)
 # ============================================
-frontend/node_modules/
-frontend/.next/
-frontend/.pnpm-store/
-frontend/out/
-frontend/build/
-frontend/dist/
+web/node_modules/
+web/.next/
+web/.pnpm-store/
+web/out/
+web/build/
+web/dist/
 
 # Next.js Cache
-frontend/.next/cache/
+web/.next/cache/
 
 # ============================================
 # Environment Variables
@@ -62,7 +62,7 @@ frontend/.next/cache/
 .env.development.local
 .env.test.local
 .env.production.local
-frontend/.env*
+web/.env.local
 
 # ============================================
 # Package Manager Files
