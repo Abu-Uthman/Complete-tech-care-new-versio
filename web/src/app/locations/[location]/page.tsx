@@ -157,15 +157,15 @@ export async function generateMetadata({
   }
 
   return {
-    title: `${data.name} IT Smart-Hands Support | CTC - 4-Hour Response`,
-    description: data.description,
+    title: `${data.name} Smart-Hands Contractor | CTC - IT Field Services`,
+    description: `Professional smart-hands contractor serving ${data.name} and ${data.region}. 4-hour response for MSPs and IT companies. Fully insured, certified field technician for regional Victoria.`,
     keywords: [
-      `${data.name} IT support`,
-      `${data.name} smart hands`,
-      `${data.region} IT services`,
-      "regional victoria IT",
-      "4-hour response",
-      ...data.postcodes.map(pc => `${pc} IT support`),
+      `${data.name} IT contractor`,
+      `${data.name} smart hands contractor`,
+      `${data.region} field technician`,
+      "MSP contractor regional victoria",
+      "IT field services contractor",
+      ...data.postcodes.map(pc => `${pc} IT contractor`),
     ],
   };
 }
@@ -210,7 +210,7 @@ export default async function LocationPage({
               <span className="text-sm font-medium text-primary">{data.region}</span>
             </div>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-primary mb-6 leading-tight">
-              Professional IT Support in {data.name}
+              Smart-Hands Contractor in {data.name} | IT Field Services
             </h1>
             <p className="text-lg md:text-xl text-text-secondary mb-8">
               {data.longDescription}
@@ -218,12 +218,12 @@ export default async function LocationPage({
             <div className="flex flex-col sm:flex-row gap-4">
               <Link href="/book">
                 <Button size="lg" className="h-12 px-8 text-base font-semibold">
-                  Book Service in {data.name}
+                  Request Contractor Quote
                 </Button>
               </Link>
               <Link href="/rates">
                 <Button size="lg" variant="outline" className="h-12 px-8 text-base font-semibold">
-                  View Pricing
+                  View Rate Models
                 </Button>
               </Link>
             </div>
@@ -261,8 +261,8 @@ export default async function LocationPage({
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
                 </svg>
               </div>
-              <h3 className="font-bold text-primary mb-2">Transparent Pricing</h3>
-              <p className="text-sm text-text-secondary">$150/hour + $200 travel cap - no surprises</p>
+              <h3 className="font-bold text-primary mb-2">Flexible Rates</h3>
+              <p className="text-sm text-text-secondary">Competitive contractor rates tailored to your needs</p>
             </Card>
           </div>
         </div>
@@ -288,6 +288,70 @@ export default async function LocationPage({
               ))}
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* For MSPs & IT Companies */}
+      <section className="container mx-auto px-4 py-16">
+        <div className="max-w-4xl mx-auto">
+          <Card className="p-8 bg-primary/5 border-2 border-primary">
+            <div className="text-center mb-6">
+              <h2 className="text-2xl font-bold text-primary mb-3">
+                Supporting MSPs & IT Companies in {data.name}
+              </h2>
+              <p className="text-text-secondary">
+                Trusted contractor for regional overflow work and on-site support
+              </p>
+            </div>
+            <div className="grid md:grid-cols-2 gap-6">
+              <div>
+                <h3 className="font-semibold text-primary mb-3 text-sm">Why MSPs Choose Us</h3>
+                <ul className="space-y-2 text-sm text-text-secondary">
+                  <li className="flex items-start gap-2">
+                    <svg className="w-4 h-4 text-secondary mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                    </svg>
+                    <span>4-hour response when your team can't reach {data.name}</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <svg className="w-4 h-4 text-secondary mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                    </svg>
+                    <span>Predictable contractor rates, no travel surprises</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <svg className="w-4 h-4 text-secondary mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                    </svg>
+                    <span>Your branding, your client relationship maintained</span>
+                  </li>
+                </ul>
+              </div>
+              <div>
+                <h3 className="font-semibold text-primary mb-3 text-sm">Professional Standards</h3>
+                <ul className="space-y-2 text-sm text-text-secondary">
+                  <li className="flex items-start gap-2">
+                    <svg className="w-4 h-4 text-secondary mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                    </svg>
+                    <span>$20M Public Liability Insurance</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <svg className="w-4 h-4 text-secondary mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                    </svg>
+                    <span>Coles & Woolworths inducted for retail work</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <svg className="w-4 h-4 text-secondary mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                    </svg>
+                    <span>PO/SOW/SLA fluent operations</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </Card>
         </div>
       </section>
 

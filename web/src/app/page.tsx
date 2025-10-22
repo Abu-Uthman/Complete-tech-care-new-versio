@@ -10,23 +10,23 @@ export default function Home() {
         <div className="container mx-auto px-4 py-20 md:py-32">
           <div className="max-w-4xl mx-auto text-center">
             <div className="inline-block mb-4 px-4 py-2 bg-bg-tertiary rounded-full">
-              <span className="text-sm font-medium text-secondary">4-Hour Regional Response</span>
+              <span className="text-sm font-medium text-secondary">Smart-Hands Contractor | Regional Victoria</span>
             </div>
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-primary mb-6 leading-tight">
-              Professional Smart-Hands for Regional Victoria
+              Your Trusted Regional IT Contractor
             </h1>
             <p className="text-xl md:text-2xl text-text-secondary mb-10 max-w-3xl mx-auto leading-relaxed">
-              Complete Tech Care provides rapid on-site support for MSPs and retail vendors across Bendigo, Ballarat, Shepparton, Wodonga, and Latrobe.
+              4-hour response guarantee for MSPs and IT service providers across Bendigo, Ballarat, Shepparton, Wodonga, and Latrobe Valley. Professional contractor services when your Melbourne team can't be everywhere.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/book">
+              <Link href="/for-msps">
                 <Button size="lg" className="h-12 px-8 text-base font-semibold">
-                  Book Service Now
+                  For MSPs & IT Companies
                 </Button>
               </Link>
               <Link href="/coverage">
                 <Button size="lg" variant="outline" className="h-12 px-8 text-base font-semibold border-primary text-primary hover:bg-primary hover:text-white">
-                  View Coverage & Rates
+                  View Service Areas
                 </Button>
               </Link>
             </div>
@@ -61,10 +61,10 @@ export default function Home() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-primary mb-4">
-              Professional On-Site Support
+              Professional Contractor Services
             </h2>
             <p className="text-lg text-text-secondary max-w-2xl mx-auto">
-              From break/fix to rollouts, we handle the hands-on work so your team can focus on what matters.
+              Reliable smart-hands contractor for regional Victoria. Your boots on the ground when your Melbourne team can't be there.
             </p>
           </div>
 
@@ -178,20 +178,20 @@ export default function Home() {
         <div className="max-w-4xl mx-auto">
           <Card className="p-10 md:p-12 bg-primary text-white text-center border-0">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Ready to Get Started?
+              Need Regional Coverage?
             </h2>
             <p className="text-lg mb-8 text-white/90">
-              Book your smart-hands service today or speak with our team about your specific requirements.
+              Get our contractor information pack including capabilities overview, insurance certificates, and flexible rate sheet options.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/book">
+              <Link href="/for-msps">
                 <Button size="lg" variant="secondary" className="h-12 px-8 text-base font-semibold">
-                  Request Service
+                  Request Contractor Info
                 </Button>
               </Link>
               <Link href="/rates">
                 <Button size="lg" variant="outline" className="h-12 px-8 text-base font-semibold bg-white text-primary hover:bg-white/90 border-0">
-                  View Pricing
+                  View Rate Models
                 </Button>
               </Link>
             </div>

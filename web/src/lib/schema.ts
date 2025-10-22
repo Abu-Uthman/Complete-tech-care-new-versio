@@ -5,12 +5,10 @@
  * Generates JSON-LD schema markup for SEO optimization
  */
 
-import type { Organization, LocalBusiness, Service, Offer } from 'schema-dts';
-
 /**
  * Base organization schema for CTC Smart-Hands
  */
-export function getOrganizationSchema(): Organization {
+export function getOrganizationSchema() {
   return {
     '@type': 'Organization',
     '@id': 'https://ctc-smarthands.com.au/#organization',
@@ -21,7 +19,6 @@ export function getOrganizationSchema(): Organization {
     description: 'Professional smart-hands IT support services across regional Victoria and Melbourne. 4-hour response guarantee for MSPs, retail vendors, and local businesses.',
     email: 'support@ctc-smarthands.com.au',
     telephone: '+61400000000',
-    priceRange: '$$',
     address: {
       '@type': 'PostalAddress',
       addressLocality: 'Melbourne',
@@ -69,13 +66,12 @@ export function getOrganizationSchema(): Organization {
 /**
  * Local business schema with service area
  */
-export function getLocalBusinessSchema(): LocalBusiness {
+export function getLocalBusinessSchema() {
   return {
     '@type': 'LocalBusiness',
     '@id': 'https://ctc-smarthands.com.au/#localbusiness',
     name: 'Complete Tech Care - Smart-Hands Services',
     image: 'https://ctc-smarthands.com.au/logo.png',
-    '@id': 'https://ctc-smarthands.com.au',
     url: 'https://ctc-smarthands.com.au',
     telephone: '+61400000000',
     email: 'support@ctc-smarthands.com.au',
@@ -112,7 +108,7 @@ export function getLocalBusinessSchema(): LocalBusiness {
 /**
  * Service schema for smart-hands IT support
  */
-export function getServiceSchema(): Service {
+export function getServiceSchema() {
   return {
     '@type': 'Service',
     '@id': 'https://ctc-smarthands.com.au/#service',
@@ -189,7 +185,7 @@ export function getLocationSchema(location: {
   description: string;
   latitude?: number;
   longitude?: number;
-}): LocalBusiness {
+}) {
   return {
     '@type': 'LocalBusiness',
     '@id': `https://ctc-smarthands.com.au/locations/${location.name.toLowerCase()}#localbusiness`,
@@ -229,7 +225,7 @@ export function getLocationSchema(location: {
 /**
  * Pricing/Offer schema for transparency
  */
-export function getPricingSchema(): Offer {
+export function getPricingSchema() {
   return {
     '@type': 'Offer',
     '@id': 'https://ctc-smarthands.com.au/rates#offer',
@@ -287,7 +283,8 @@ export function getServiceAreaSchema() {
 /**
  * Helper to generate JSON-LD script tag
  */
-export function generateSchemaScript(schema: object): string {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function generateSchemaScript(schema: any): string {
   return JSON.stringify({
     '@context': 'https://schema.org',
     ...schema,

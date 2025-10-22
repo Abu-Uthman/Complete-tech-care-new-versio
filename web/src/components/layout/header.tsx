@@ -47,6 +47,12 @@ export function Header() {
               Home
             </Link>
             <Link
+              href="/for-msps"
+              className="text-sm font-medium text-text-primary hover:text-secondary transition-colors"
+            >
+              For MSPs
+            </Link>
+            <Link
               href="/coverage"
               className="text-sm font-medium text-text-primary hover:text-secondary transition-colors"
             >
@@ -58,15 +64,9 @@ export function Header() {
             >
               Rates
             </Link>
-            <Link
-              href="/about"
-              className="text-sm font-medium text-text-primary hover:text-secondary transition-colors"
-            >
-              About
-            </Link>
             <Link href="/book">
               <Button size="sm" className="h-9">
-                Book Service
+                Request Info
               </Button>
             </Link>
           </div>
@@ -122,6 +122,13 @@ export function Header() {
                 Home
               </Link>
               <Link
+                href="/for-msps"
+                className="text-sm font-medium text-text-primary hover:text-secondary transition-colors px-2 py-2"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                For MSPs
+              </Link>
+              <Link
                 href="/coverage"
                 className="text-sm font-medium text-text-primary hover:text-secondary transition-colors px-2 py-2"
                 onClick={() => setMobileMenuOpen(false)}
@@ -136,19 +143,12 @@ export function Header() {
                 Rates
               </Link>
               <Link
-                href="/about"
-                className="text-sm font-medium text-text-primary hover:text-secondary transition-colors px-2 py-2"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                About
-              </Link>
-              <Link
                 href="/book"
                 className="pt-2"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <Button size="sm" className="w-full">
-                  Book Service
+                  Request Info
                 </Button>
               </Link>
             </div>
