@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
+import { getOrganizationSchema, getLocalBusinessSchema, generateSchemaScript } from "@/lib/schema";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -28,8 +29,22 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const organizationSchema = getOrganizationSchema();
+  const localBusinessSchema = getLocalBusinessSchema();
+
   return (
     <html lang="en">
+      <head>
+        {/* Global Schema.org JSON-LD markup */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: generateSchemaScript(organizationSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: generateSchemaScript(localBusinessSchema) }}
+        />
+      </head>
       <body className={`${inter.variable} antialiased`}>
         <Header />
         {children}

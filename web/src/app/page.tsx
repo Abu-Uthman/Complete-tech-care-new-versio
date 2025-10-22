@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -18,12 +19,16 @@ export default function Home() {
               Complete Tech Care provides rapid on-site support for MSPs and retail vendors across Bendigo, Ballarat, Shepparton, Wodonga, and Latrobe.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="h-12 px-8 text-base font-semibold">
-                Book Service Now
-              </Button>
-              <Button size="lg" variant="outline" className="h-12 px-8 text-base font-semibold border-primary text-primary hover:bg-primary hover:text-white">
-                View Coverage & Rates
-              </Button>
+              <Link href="/book">
+                <Button size="lg" className="h-12 px-8 text-base font-semibold">
+                  Book Service Now
+                </Button>
+              </Link>
+              <Link href="/coverage">
+                <Button size="lg" variant="outline" className="h-12 px-8 text-base font-semibold border-primary text-primary hover:bg-primary hover:text-white">
+                  View Coverage & Rates
+                </Button>
+              </Link>
             </div>
 
             {/* Trust Badges */}
@@ -179,12 +184,16 @@ export default function Home() {
               Book your smart-hands service today or speak with our team about your specific requirements.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" variant="secondary" className="h-12 px-8 text-base font-semibold">
-                Request Service
-              </Button>
-              <Button size="lg" variant="outline" className="h-12 px-8 text-base font-semibold bg-white text-primary hover:bg-white/90 border-0">
-                View Pricing
-              </Button>
+              <Link href="/book">
+                <Button size="lg" variant="secondary" className="h-12 px-8 text-base font-semibold">
+                  Request Service
+                </Button>
+              </Link>
+              <Link href="/rates">
+                <Button size="lg" variant="outline" className="h-12 px-8 text-base font-semibold bg-white text-primary hover:bg-white/90 border-0">
+                  View Pricing
+                </Button>
+              </Link>
             </div>
           </Card>
         </div>
