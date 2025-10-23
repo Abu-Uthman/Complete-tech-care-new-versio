@@ -79,7 +79,7 @@ class Notify {
         if ($sent) {
             // Log successful send
             Database::add_booking_note(
-                $booking->id,
+                (int)$booking->id,
                 sprintf('Owner email sent to: %s', $notify_settings['owner_email']),
                 'email',
                 null
@@ -144,7 +144,7 @@ class Notify {
 
         if ($sent) {
             Database::add_booking_note(
-                $booking->id,
+                (int)$booking->id,
                 sprintf('Owner SMS sent to: %s', $notify_settings['owner_phone']),
                 'sms',
                 null
@@ -199,7 +199,7 @@ class Notify {
 
         if ($sent) {
             Database::add_booking_note(
-                $booking->id,
+                (int)$booking->id,
                 sprintf('Dispatcher confirmation sent to: %s', $booking->email),
                 'email',
                 null
@@ -257,7 +257,7 @@ class Notify {
 
         if ($sent) {
             Database::add_booking_note(
-                $booking->id,
+                (int)$booking->id,
                 sprintf('ETA notification sent: %s', $eta),
                 'email',
                 null
@@ -295,7 +295,7 @@ class Notify {
 
         if ($sent) {
             Database::add_booking_note(
-                $booking->id,
+                (int)$booking->id,
                 sprintf('Custom notification sent: %s', substr($custom_message, 0, 50)),
                 'email',
                 null

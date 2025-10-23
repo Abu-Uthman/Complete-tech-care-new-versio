@@ -3,13 +3,14 @@
  * CTC Smart-Hands Project
  */
 
-// Booking status enum
+// Booking status enum (matching WordPress database)
 export type BookingStatus =
-  | 'pending'
+  | 'new'
   | 'confirmed'
-  | 'in_progress'
+  | 'onsite'
   | 'completed'
-  | 'cancelled';
+  | 'invoiced'
+  | 'closed';
 
 // Service type enum
 export type ServiceType =
@@ -114,10 +115,10 @@ export interface ApiResponse<T> {
 }
 
 /**
- * Paginated response
+ * Paginated response (matching WordPress API response)
  */
 export interface PaginatedResponse<T> {
-  items: T[];
+  bookings: T[];
   total: number;
   page: number;
   per_page: number;

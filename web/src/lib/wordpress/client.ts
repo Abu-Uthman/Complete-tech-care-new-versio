@@ -64,6 +64,15 @@ export class WordPressClient {
     const keyData = encoder.encode(this.config.apiSecret);
     const messageData = encoder.encode(message);
 
+    // DEBUG: Log HMAC generation details
+    console.log('[WordPress Client] HMAC Generation:', {
+      timestamp,
+      bodyLength: body.length,
+      bodyPreview: body.substring(0, 100),
+      messagePreview: message.substring(0, 100) + '...',
+      secretPreview: this.config.apiSecret.substring(0, 10) + '...',
+    });
+
     // Import key for HMAC
     const key = await crypto.subtle.importKey(
       'raw',
@@ -77,9 +86,17 @@ export class WordPressClient {
     const signature = await crypto.subtle.sign('HMAC', key, messageData);
 
     // Convert to hex string
-    return Array.from(new Uint8Array(signature))
+    const signatureHex = Array.from(new Uint8Array(signature))
       .map((b) => b.toString(16).padStart(2, '0'))
       .join('');
+
+    // DEBUG: Log generated signature
+    console.log('[WordPress Client] Generated Signature:', {
+      signatureFull: signatureHex,
+      signatureLength: signatureHex.length,
+    });
+
+    return signatureHex;
   }
 
   /**
@@ -108,7 +125,21 @@ export class WordPressClient {
       const body = options.body ? String(options.body) : '';
       const headers = await this.generateHeaders(body);
 
-      const response = await fetch(`${this.config.apiBase}${endpoint}`, {
+      const url = `${this.config.apiBase}${endpoint}`;
+
+      // DEBUG: Log request details
+      console.log('[WordPress Client] Making Request:', {
+        method: options.method || 'GET',
+        url,
+        headers: {
+          'X-CTC-Key': headers['X-CTC-Key'].substring(0, 15) + '...',
+          'X-CTC-Timestamp': headers['X-CTC-Timestamp'],
+          'X-CTC-Signature': headers['X-CTC-Signature'].substring(0, 20) + '...',
+        },
+        bodyLength: body.length,
+      });
+
+      const response = await fetch(url, {
         ...options,
         headers: {
           ...headers,
@@ -118,7 +149,19 @@ export class WordPressClient {
 
       const data = await response.json();
 
+      // DEBUG: Log response details
+      console.log('[WordPress Client] Response:', {
+        status: response.status,
+        ok: response.ok,
+        dataPreview: JSON.stringify(data).substring(0, 200),
+      });
+
       if (!response.ok) {
+        console.error('[WordPress Client] Request Failed:', {
+          status: response.status,
+          error: data,
+        });
+
         return {
           success: false,
           error: {
@@ -133,6 +176,8 @@ export class WordPressClient {
         data: data,
       };
     } catch (error) {
+      console.error('[WordPress Client] Network Error:', error);
+
       return {
         success: false,
         error: {

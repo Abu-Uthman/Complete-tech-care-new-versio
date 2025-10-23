@@ -21,13 +21,13 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { bookingFormSchema, type BookingFormData } from '@/lib/validations/schemas';
-import { wordpressClient } from '@/lib/wordpress/client';
 
 type FormState = 'idle' | 'submitting' | 'success' | 'error';
 
 export function BookingForm() {
   const [formState, setFormState] = useState<FormState>('idle');
   const [errorMessage, setErrorMessage] = useState('');
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
 
   const form = useForm<BookingFormData>({
     resolver: zodResolver(bookingFormSchema),
@@ -44,20 +44,44 @@ export function BookingForm() {
     },
   });
 
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    // Limit to 5 files, max 10MB each
+    const validFiles = files.filter(
+      (file) => file.size <= 10 * 1024 * 1024 && file.type.startsWith('image/')
+    ).slice(0, 5);
+    setSelectedFiles(validFiles);
+  };
+
+  const removeFile = (index: number) => {
+    setSelectedFiles((prev) => prev.filter((_, i) => i !== index));
+  };
+
   const onSubmit = async (data: BookingFormData) => {
     setFormState('submitting');
     setErrorMessage('');
 
     try {
-      const response = await wordpressClient.createBooking(data);
+      // TODO: In future phase, upload files to WordPress media library first
+      // For now, submit booking without file attachments
+      const response = await fetch('/api/book', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
 
-      if (response.success) {
+      const result = await response.json();
+
+      if (response.ok && result.success) {
         setFormState('success');
         form.reset();
+        setSelectedFiles([]);
       } else {
         setFormState('error');
         setErrorMessage(
-          response.error?.message || 'Failed to submit booking. Please try again.'
+          result.error || 'Failed to submit booking. Please try again.'
         );
       }
     } catch (error) {
@@ -84,13 +108,12 @@ export function BookingForm() {
             />
           </svg>
         </div>
-        <h2 className="text-3xl font-bold text-primary mb-4">Booking Submitted!</h2>
+        <h2 className="text-3xl font-bold text-primary mb-4">Service Request Received!</h2>
         <p className="text-lg text-text-secondary mb-6">
-          Thank you for your service request. We'll contact you within 4 hours to confirm
-          the details and schedule your on-site visit.
+          Thank you for contacting Complete Tech Care. We've received your service request and will respond within 4 hours.
         </p>
         <p className="text-sm text-text-tertiary mb-8">
-          You should receive a confirmation email shortly at the address you provided.
+          Our team will review your request and contact you to discuss the next steps. For urgent matters, please call us directly.
         </p>
         <Button
           size="lg"
@@ -98,7 +121,7 @@ export function BookingForm() {
           onClick={() => setFormState('idle')}
           className="border-primary text-primary hover:bg-primary hover:text-white"
         >
-          Submit Another Booking
+          Submit Another Request
         </Button>
       </Card>
     );
@@ -107,9 +130,9 @@ export function BookingForm() {
   return (
     <Card className="p-8 md:p-12">
       <div className="mb-8">
-        <h2 className="text-3xl font-bold text-primary mb-3">Request Smart-Hands Service</h2>
+        <h2 className="text-3xl font-bold text-primary mb-3">Request Service</h2>
         <p className="text-text-secondary">
-          Fill out the form below and we'll respond within 4 hours to confirm your booking.
+          Need technical support in regional Victoria? Fill out this form and our team will respond within 4 hours to discuss your requirements and next steps.
         </p>
       </div>
 
@@ -240,19 +263,19 @@ export function BookingForm() {
                 name="service_type"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Service Type *</FormLabel>
+                    <FormLabel>What type of support do you need? *</FormLabel>
                     <FormControl>
                       <select
                         {...field}
                         disabled={formState === 'submitting'}
                         className="w-full h-10 px-3 py-2 text-sm bg-background border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-accent"
                       >
-                        <option value="break_fix">Break/Fix Support</option>
-                        <option value="rollout">Equipment Rollout</option>
-                        <option value="pos_support">POS/SCO Support</option>
-                        <option value="site_audit">Site Audit</option>
-                        <option value="parts_logistics">Parts Logistics</option>
-                        <option value="other">Other</option>
+                        <option value="break_fix">Equipment Break/Fix</option>
+                        <option value="rollout">Equipment Installation/Rollout</option>
+                        <option value="pos_support">POS/Retail Systems Support</option>
+                        <option value="site_audit">Site Survey/Audit</option>
+                        <option value="parts_logistics">Parts Delivery/Logistics</option>
+                        <option value="other">Other/General Support</option>
                       </select>
                     </FormControl>
                     <FormMessage />
@@ -265,7 +288,7 @@ export function BookingForm() {
                 name="location"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Location *</FormLabel>
+                    <FormLabel>Service Location *</FormLabel>
                     <FormControl>
                       <select
                         {...field}
@@ -289,7 +312,7 @@ export function BookingForm() {
                 name="site_address"
                 render={({ field }) => (
                   <FormItem className="md:col-span-2">
-                    <FormLabel>Site Address *</FormLabel>
+                    <FormLabel>Full Site Address *</FormLabel>
                     <FormControl>
                       <Input
                         placeholder="123 Main Street, Bendigo VIC 3550"
@@ -307,10 +330,10 @@ export function BookingForm() {
                 name="description"
                 render={({ field }) => (
                   <FormItem className="md:col-span-2">
-                    <FormLabel>Service Description *</FormLabel>
+                    <FormLabel>Describe the issue or service required *</FormLabel>
                     <FormControl>
                       <textarea
-                        placeholder="Please describe the issue or service required in detail..."
+                        placeholder="Please provide as much detail as possible about the issue or service you need..."
                         {...field}
                         disabled={formState === 'submitting'}
                         rows={4}
@@ -321,6 +344,80 @@ export function BookingForm() {
                   </FormItem>
                 )}
               />
+
+              {/* Photo Upload */}
+              <div className="md:col-span-2">
+                <Label htmlFor="photos" className="mb-2 block">
+                  Add Photos (Optional)
+                </Label>
+                <p className="text-sm text-text-secondary mb-3">
+                  Upload photos of the issue or equipment (max 5 photos, 10MB each)
+                </p>
+                <input
+                  type="file"
+                  id="photos"
+                  accept="image/*"
+                  multiple
+                  onChange={handleFileSelect}
+                  disabled={formState === 'submitting'}
+                  className="w-full px-3 py-2 text-sm bg-background border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-accent file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-white hover:file:bg-primary/90"
+                />
+                {selectedFiles.length > 0 && (
+                  <div className="mt-3 space-y-2">
+                    {selectedFiles.map((file, index) => (
+                      <div
+                        key={index}
+                        className="flex items-center justify-between p-2 bg-bg-secondary rounded-md"
+                      >
+                        <div className="flex items-center gap-2">
+                          <svg
+                            className="w-5 h-5 text-accent"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                            />
+                          </svg>
+                          <span className="text-sm text-text-primary truncate max-w-xs">
+                            {file.name}
+                          </span>
+                          <span className="text-xs text-text-secondary">
+                            ({(file.size / 1024).toFixed(0)}KB)
+                          </span>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => removeFile(index)}
+                          className="text-error hover:text-error/80"
+                          aria-label="Remove file"
+                        >
+                          <svg
+                            className="w-5 h-5"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M6 18L18 6M6 6l12 12"
+                            />
+                          </svg>
+                        </button>
+                      </div>
+                    ))}
+                    <p className="text-xs text-text-tertiary">
+                      Note: Photo upload will be available after initial submission. Our team will contact you to collect photos if needed.
+                    </p>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
 

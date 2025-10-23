@@ -36,6 +36,15 @@ class Auth {
         $timestamp = $request->get_header('X-CTC-Timestamp');
         $signature = $request->get_header('X-CTC-Signature');
 
+        // DEBUG: Log all received headers
+        Helpers::log('HMAC Verification Started', [
+            'method' => $request->get_method(),
+            'route' => $request->get_route(),
+            'api_key_received' => $api_key ? substr($api_key, 0, 15) . '...' : 'MISSING',
+            'timestamp_received' => $timestamp ?? 'MISSING',
+            'signature_received' => $signature ? substr($signature, 0, 20) . '...' : 'MISSING',
+        ]);
+
         // Check if all required headers are present
         if (empty($api_key) || empty($timestamp) || empty($signature)) {
             Helpers::log('HMAC auth failed: Missing headers', [
@@ -91,8 +100,23 @@ class Auth {
         // Get request body
         $body = $request->get_body();
 
+        // DEBUG: Log body details
+        Helpers::log('HMAC Body Details', [
+            'body_length' => strlen($body),
+            'body_preview' => substr($body, 0, 100),
+            'timestamp_used' => $timestamp,
+        ]);
+
         // Calculate expected signature
         $expected_signature = self::calculate_signature($timestamp, $body, $general['api_secret']);
+
+        // DEBUG: Log signature comparison
+        Helpers::log('HMAC Signature Comparison', [
+            'expected_full' => $expected_signature,
+            'provided_full' => $signature,
+            'match' => hash_equals($expected_signature, $signature),
+            'message_used' => $timestamp . substr($body, 0, 50) . '...',
+        ]);
 
         // Verify signature matches
         if (!hash_equals($expected_signature, $signature)) {
@@ -186,7 +210,7 @@ class Auth {
      */
     public static function add_cors_headers(): void {
         // Allow requests from localhost (development)
-        header('Access-Control-Allow-Origin: http://localhost:3000');
+        header('Access-Control-Allow-Origin: http://localhost:3003');
         header('Access-Control-Allow-Methods: GET, POST, PATCH, DELETE, OPTIONS');
         header('Access-Control-Allow-Headers: X-CTC-Key, X-CTC-Timestamp, X-CTC-Signature, Content-Type');
         header('Access-Control-Allow-Credentials: true');

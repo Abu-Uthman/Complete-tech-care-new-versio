@@ -192,27 +192,53 @@ class Helpers {
 
     /**
      * Sanitize booking data for database insertion
+     * Supports both full MSP schema and simplified lead-gen schema
      * @param array $data Raw booking data
      * @return array Sanitized booking data
      */
     public static function sanitize_booking_data(array $data): array {
+        // Map lead-gen fields to MSP schema
+        $email = $data['email'] ?? $data['contact_email'] ?? '';
+        $phone = $data['phone'] ?? $data['contact_phone'] ?? '';
+        $address = $data['address'] ?? $data['site_address'] ?? '';
+        $notes = $data['notes'] ?? $data['description'] ?? '';
+        $work_type = $data['work_type'] ?? $data['service_type'] ?? 'General Inquiry';
+
+        // Generate defaults for lead-gen forms
+        $is_leadgen = !isset($data['po_number']) || empty($data['po_number']);
+        $location = $data['location'] ?? '';
+
         return [
             'company' => sanitize_text_field($data['company'] ?? ''),
             'contact_name' => sanitize_text_field($data['contact_name'] ?? ''),
-            'email' => sanitize_email($data['email'] ?? ''),
-            'phone' => sanitize_text_field($data['phone'] ?? ''),
-            'po_number' => sanitize_text_field($data['po_number'] ?? ''),
+            'email' => sanitize_email($email),
+            'phone' => sanitize_text_field($phone),
+
+            // Lead-gen: Use "PENDING" as placeholder, MSP: Actual PO number
+            'po_number' => sanitize_text_field($data['po_number'] ?? 'LEADGEN-' . time()),
+
+            // Lead-gen: Default to "SCHEDULED" for info requests
             'sla' => in_array($data['sla'] ?? '', ['4H', 'NBD', 'SCHEDULED']) ?
-                $data['sla'] : '4H',
+                $data['sla'] : ($is_leadgen ? 'SCHEDULED' : '4H'),
+
             'scheduled_at' => isset($data['scheduled_at']) ?
-                sanitize_text_field($data['scheduled_at']) : null,
-            'work_type' => sanitize_text_field($data['work_type'] ?? ''),
-            'site_id' => sanitize_text_field($data['site_id'] ?? ''),
-            'address' => sanitize_textarea_field($data['address'] ?? ''),
-            'access_window' => sanitize_text_field($data['access_window'] ?? ''),
-            'onsite_contact' => sanitize_text_field($data['onsite_contact'] ?? ''),
+                sanitize_text_field($data['scheduled_at']) :
+                (isset($data['scheduled_date']) ? sanitize_text_field($data['scheduled_date']) : null),
+
+            // Work type from service_type (lead-gen) or work_type (MSP)
+            'work_type' => sanitize_text_field($work_type),
+
+            // Lead-gen: Use location as site_id, MSP: Actual site ID
+            'site_id' => sanitize_text_field($data['site_id'] ?? $location),
+
+            'address' => sanitize_textarea_field($address),
+
+            // Lead-gen: Defaults for info requests
+            'access_window' => sanitize_text_field($data['access_window'] ?? 'Business Hours (8am-6pm)'),
+            'onsite_contact' => sanitize_text_field($data['onsite_contact'] ?? $data['contact_name'] ?? ''),
+
             'parts_tracking' => sanitize_text_field($data['parts_tracking'] ?? ''),
-            'notes' => sanitize_textarea_field($data['notes'] ?? ''),
+            'notes' => sanitize_textarea_field($notes),
             'links' => isset($data['links']) && is_array($data['links']) ?
                 array_map('esc_url_raw', $data['links']) : [],
         ];

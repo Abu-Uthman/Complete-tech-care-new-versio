@@ -168,11 +168,13 @@ class REST_API {
 
     /**
      * Get booking validation args
+     * Supports both full MSP schema and simplified lead-gen schema
      *
      * @return array Validation arguments
      */
     private static function get_booking_args(): array {
         return [
+            // Core fields (required)
             'company' => [
                 'type' => 'string',
                 'required' => true,
@@ -185,65 +187,96 @@ class REST_API {
                 'sanitize_callback' => 'sanitize_text_field',
                 'validate_callback' => fn($value) => !empty($value),
             ],
+
+            // Email field - support both 'email' and 'contact_email'
             'email' => [
                 'type' => 'string',
-                'required' => true,
                 'sanitize_callback' => 'sanitize_email',
-                'validate_callback' => fn($value) => is_email($value),
+                'validate_callback' => fn($value) => !empty($value) ? is_email($value) : true,
             ],
+            'contact_email' => [
+                'type' => 'string',
+                'sanitize_callback' => 'sanitize_email',
+                'validate_callback' => fn($value) => !empty($value) ? is_email($value) : true,
+            ],
+
+            // Phone field - support both 'phone' and 'contact_phone'
             'phone' => [
                 'type' => 'string',
-                'required' => true,
                 'sanitize_callback' => 'sanitize_text_field',
-                'validate_callback' => [Helpers::class, 'validate_au_phone'],
             ],
+            'contact_phone' => [
+                'type' => 'string',
+                'sanitize_callback' => 'sanitize_text_field',
+            ],
+
+            // MSP-specific fields (now optional for lead-gen)
             'po_number' => [
                 'type' => 'string',
-                'required' => true,
                 'sanitize_callback' => 'sanitize_text_field',
-                'validate_callback' => fn($value) => !empty($value),
             ],
             'sla' => [
                 'type' => 'string',
-                'required' => true,
                 'enum' => ['4H', 'NBD', 'SCHEDULED'],
             ],
             'work_type' => [
                 'type' => 'string',
-                'required' => true,
                 'sanitize_callback' => 'sanitize_text_field',
-                'validate_callback' => fn($value) => !empty($value),
             ],
             'site_id' => [
                 'type' => 'string',
-                'required' => true,
                 'sanitize_callback' => 'sanitize_text_field',
             ],
+
+            // Address fields - support both schemas
             'address' => [
                 'type' => 'string',
-                'required' => true,
                 'sanitize_callback' => 'sanitize_textarea_field',
-                'validate_callback' => fn($value) => !empty($value),
             ],
+            'site_address' => [
+                'type' => 'string',
+                'sanitize_callback' => 'sanitize_textarea_field',
+            ],
+
             'access_window' => [
                 'type' => 'string',
-                'required' => true,
                 'sanitize_callback' => 'sanitize_text_field',
             ],
             'onsite_contact' => [
                 'type' => 'string',
-                'required' => true,
                 'sanitize_callback' => 'sanitize_text_field',
             ],
             'parts_tracking' => [
                 'type' => 'string',
                 'sanitize_callback' => 'sanitize_text_field',
             ],
+
+            // Notes fields - support both 'notes' and 'description'
             'notes' => [
                 'type' => 'string',
                 'sanitize_callback' => 'sanitize_textarea_field',
             ],
+            'description' => [
+                'type' => 'string',
+                'sanitize_callback' => 'sanitize_textarea_field',
+            ],
+
+            // Scheduling fields
             'scheduled_at' => [
+                'type' => 'string',
+                'sanitize_callback' => 'sanitize_text_field',
+            ],
+            'scheduled_date' => [
+                'type' => 'string',
+                'sanitize_callback' => 'sanitize_text_field',
+            ],
+
+            // Lead-gen specific fields
+            'service_type' => [
+                'type' => 'string',
+                'sanitize_callback' => 'sanitize_text_field',
+            ],
+            'location' => [
                 'type' => 'string',
                 'sanitize_callback' => 'sanitize_text_field',
             ],
