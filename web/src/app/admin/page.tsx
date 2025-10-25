@@ -155,6 +155,7 @@ export default function AdminDashboard() {
   };
 
   const handleDeleteBooking = async (id: number) => {
+    console.log('[Admin] Deleting booking:', id);
     try {
       const response = await fetch(`/api/bookings/${id}`, {
         method: 'DELETE',
@@ -162,15 +163,17 @@ export default function AdminDashboard() {
       });
 
       const result = await response.json();
+      console.log('[Admin] Delete response:', { ok: response.ok, result });
 
       if (response.ok && result.success) {
         // Remove booking from state
         setBookings((prev) => prev.filter((booking) => booking.id !== id));
+        console.log('[Admin] Booking removed from state');
       } else {
         throw new Error(result.error || 'Failed to delete booking');
       }
     } catch (error) {
-      console.error('Delete booking error:', error);
+      console.error('[Admin] Delete booking error:', error);
       throw error;
     }
   };

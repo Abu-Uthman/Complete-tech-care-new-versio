@@ -103,13 +103,16 @@ export function BookingDetailsModal({ booking, open, onClose, onSave, onDelete }
   const handleDelete = async () => {
     if (!booking || !onDelete) return;
 
+    console.log('[BookingDetailsModal] Starting delete for booking:', booking.id);
     setIsDeleting(true);
     try {
       await onDelete(booking.id);
+      console.log('[BookingDetailsModal] Delete successful, closing dialogs');
       setShowDeleteConfirm(false);
+      setIsDeleting(false);
       onClose(); // Close modal after successful delete
     } catch (error) {
-      console.error('Failed to delete booking:', error);
+      console.error('[BookingDetailsModal] Delete failed:', error);
       alert('Failed to delete booking. Please try again.');
       setIsDeleting(false);
     }
@@ -325,7 +328,7 @@ export function BookingDetailsModal({ booking, open, onClose, onSave, onDelete }
               <Button
                 onClick={handleDelete}
                 disabled={isDeleting}
-                className="bg-error hover:bg-error/90 text-white"
+                className="bg-error hover:bg-error/90 text-white disabled:cursor-not-allowed cursor-pointer"
               >
                 {isDeleting ? 'Deleting...' : 'Delete'}
               </Button>
