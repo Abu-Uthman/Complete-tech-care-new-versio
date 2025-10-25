@@ -37,7 +37,7 @@ export async function GET(request: NextRequest) {
       // Filter bookings by email on the client side
       // In production, WordPress API should support email filtering
       const clientBookings = response.data.bookings.filter(
-        (booking) => booking.email?.toLowerCase() === email.toLowerCase()
+        (booking) => booking.contact_email?.toLowerCase() === email.toLowerCase()
       );
 
       return NextResponse.json(

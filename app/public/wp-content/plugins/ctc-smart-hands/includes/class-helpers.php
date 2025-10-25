@@ -241,7 +241,42 @@ class Helpers {
             'notes' => sanitize_textarea_field($notes),
             'links' => isset($data['links']) && is_array($data['links']) ?
                 array_map('esc_url_raw', $data['links']) : [],
+
+            // Admin-only fields for booking management
+            'assigned_tech' => isset($data['assigned_tech']) ?
+                sanitize_text_field($data['assigned_tech']) : null,
+            'internal_notes' => isset($data['internal_notes']) ?
+                sanitize_textarea_field($data['internal_notes']) : null,
+            'preferred_date' => isset($data['preferred_date']) ?
+                sanitize_text_field($data['preferred_date']) : null,
+            'preferred_time' => isset($data['preferred_time']) ?
+                sanitize_text_field($data['preferred_time']) : null,
+
+            // Status updates (allow admin to change status via API)
+            'status' => isset($data['status']) && in_array($data['status'], ['new', 'confirmed', 'onsite', 'completed', 'invoiced', 'closed']) ?
+                $data['status'] : null,
         ];
+    }
+
+    /**
+     * Format work type for display
+     * @param string $work_type Work type
+     * @return string Formatted work type
+     */
+    public static function format_work_type(string $work_type): string {
+        // Handle empty values
+        if (empty($work_type)) {
+            return 'General Support';
+        }
+
+        // Already formatted (contains spaces or slashes)
+        if (str_contains($work_type, ' ') || str_contains($work_type, '/')) {
+            return $work_type;
+        }
+
+        // Convert underscores/hyphens to spaces and title case
+        $formatted = str_replace(['_', '-'], ' ', $work_type);
+        return ucwords(strtolower($formatted));
     }
 
     /**

@@ -64,6 +64,18 @@
   --color-input: var(--border);
   --color-ring: var(--accent);
 
+  /* Popover/Dropdown backgrounds - CRITICAL for Select dropdowns */
+  --color-popover: #FFFFFF;  /* White background for dropdowns */
+  --color-popover-foreground: var(--text-primary);  /* Dark text on white */
+
+  /* Muted backgrounds for disabled/secondary elements */
+  --color-muted: var(--bg-secondary);  /* gray-50 */
+  --color-muted-foreground: var(--text-secondary);  /* gray-500 */
+
+  /* Card backgrounds */
+  --color-card: #FFFFFF;
+  --color-card-foreground: var(--text-primary);
+
   /* Use Inter variable font */
   --font-sans: var(--font-inter);
 }

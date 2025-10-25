@@ -55,6 +55,11 @@ class Database {
             onsite_contact varchar(160) NOT NULL,
             parts_tracking varchar(160) NULL DEFAULT NULL,
             notes text NULL DEFAULT NULL,
+            assigned_tech varchar(255) NULL DEFAULT NULL,
+            internal_notes text NULL DEFAULT NULL,
+            preferred_date datetime NULL DEFAULT NULL,
+            preferred_time varchar(50) NULL DEFAULT NULL,
+            attachments text NULL DEFAULT NULL,
             links_json longtext NULL DEFAULT NULL,
             evidence_received tinyint(1) NOT NULL DEFAULT 0,
             signoff_name varchar(160) NULL DEFAULT NULL,
@@ -65,7 +70,9 @@ class Database {
             KEY status (status),
             KEY created_at (created_at),
             KEY company (company),
-            KEY sla (sla)
+            KEY sla (sla),
+            KEY assigned_tech (assigned_tech),
+            KEY preferred_date (preferred_date)
         ) $charset_collate;";
 
         // SQL for booking notes table
@@ -138,6 +145,11 @@ class Database {
             'onsite_contact' => $data['onsite_contact'] ?? '',
             'parts_tracking' => $data['parts_tracking'] ?? null,
             'notes' => $data['notes'] ?? null,
+            'assigned_tech' => $data['assigned_tech'] ?? null,
+            'internal_notes' => $data['internal_notes'] ?? null,
+            'preferred_date' => $data['preferred_date'] ?? null,
+            'preferred_time' => $data['preferred_time'] ?? null,
+            'attachments' => isset($data['attachments']) ? wp_json_encode($data['attachments']) : null,
             'links_json' => isset($data['links']) ? wp_json_encode($data['links']) : null,
             'evidence_received' => $data['evidence_received'] ?? 0,
             'signoff_name' => $data['signoff_name'] ?? null,
@@ -164,6 +176,11 @@ class Database {
             '%s', // onsite_contact
             '%s', // parts_tracking
             '%s', // notes
+            '%s', // assigned_tech
+            '%s', // internal_notes
+            '%s', // preferred_date
+            '%s', // preferred_time
+            '%s', // attachments
             '%s', // links_json
             '%d', // evidence_received
             '%s', // signoff_name
@@ -231,6 +248,7 @@ class Database {
             // Decode JSON fields
             $booking->links = $booking->links_json ? json_decode($booking->links_json, true) : [];
             $booking->meta = $booking->meta_json ? json_decode($booking->meta_json, true) : [];
+            $booking->attachments = $booking->attachments ? json_decode($booking->attachments, true) : [];
 
             // Remove JSON fields from response
             unset($booking->links_json);
@@ -317,6 +335,7 @@ class Database {
         foreach ($bookings as $booking) {
             $booking->links = $booking->links_json ? json_decode($booking->links_json, true) : [];
             $booking->meta = $booking->meta_json ? json_decode($booking->meta_json, true) : [];
+            $booking->attachments = $booking->attachments ? json_decode($booking->attachments, true) : [];
             unset($booking->links_json);
             unset($booking->meta_json);
         }
@@ -342,8 +361,8 @@ class Database {
         $allowed_fields = [
             'status', 'scheduled_at', 'company', 'contact_name', 'email', 'phone',
             'po_number', 'sla', 'work_type', 'site_id', 'address', 'access_window',
-            'onsite_contact', 'parts_tracking', 'notes', 'evidence_received',
-            'signoff_name', 'signoff_time'
+            'onsite_contact', 'parts_tracking', 'notes', 'assigned_tech', 'internal_notes',
+            'preferred_date', 'preferred_time', 'evidence_received', 'signoff_name', 'signoff_time'
         ];
 
         foreach ($allowed_fields as $field) {
@@ -361,6 +380,11 @@ class Database {
 
         if (isset($data['meta'])) {
             $update_data['meta_json'] = wp_json_encode($data['meta']);
+            $formats[] = '%s';
+        }
+
+        if (isset($data['attachments'])) {
+            $update_data['attachments'] = wp_json_encode($data['attachments']);
             $formats[] = '%s';
         }
 

@@ -12,6 +12,7 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { BookingDetailsModal } from '@/components/booking-details-modal';
 
 type Booking = {
   id: number;
@@ -28,6 +29,8 @@ type Booking = {
   public_id?: string;
   po_number?: string;
   sla?: string;
+  internal_notes?: string;
+  assigned_tech?: string;
 };
 
 type AuthState = 'login' | 'authenticated';
@@ -40,6 +43,8 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
+  const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -109,6 +114,45 @@ export default function AdminDashboard() {
     setAuthState('login');
     localStorage.removeItem('admin_auth');
     setPassword('');
+  };
+
+  const handleViewDetails = (booking: Booking) => {
+    setSelectedBooking(booking);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedBooking(null);
+  };
+
+  const handleSaveBooking = async (id: number, updates: Partial<Booking>) => {
+    try {
+      // TODO: Create API endpoint for updating bookings
+      const response = await fetch(`/api/bookings/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updates),
+      });
+
+      const result = await response.json();
+
+      if (response.ok && result.success) {
+        // Update booking in state optimistically
+        setBookings((prev) =>
+          prev.map((booking) =>
+            booking.id === id ? { ...booking, ...updates } : booking
+          )
+        );
+        // Refresh the list to get latest data
+        await loadBookings();
+      } else {
+        throw new Error(result.error || 'Failed to update booking');
+      }
+    } catch (error) {
+      console.error('Save booking error:', error);
+      throw error;
+    }
   };
 
   const getStatusBadgeClass = (status: string) => {
@@ -325,7 +369,11 @@ export default function AdminDashboard() {
                       <span className="text-xs text-text-secondary">
                         Created: {formatDate(booking.created_at)}
                       </span>
-                      <Button variant="outline" size="sm">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleViewDetails(booking)}
+                      >
                         View Details
                       </Button>
                     </div>
@@ -336,6 +384,14 @@ export default function AdminDashboard() {
           </div>
         )}
       </main>
+
+      {/* Booking Details Modal */}
+      <BookingDetailsModal
+        booking={selectedBooking}
+        open={isModalOpen}
+        onClose={handleCloseModal}
+        onSave={handleSaveBooking}
+      />
     </div>
   );
 }

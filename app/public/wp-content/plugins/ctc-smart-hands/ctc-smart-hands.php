@@ -79,6 +79,7 @@ final class CTC_Smart_Hands {
         require_once CTC_PLUGIN_DIR . 'includes/class-database.php';
         require_once CTC_PLUGIN_DIR . 'includes/class-settings.php';
         require_once CTC_PLUGIN_DIR . 'includes/class-helpers.php';
+        require_once CTC_PLUGIN_DIR . 'includes/class-resend.php';
         require_once CTC_PLUGIN_DIR . 'includes/class-auth.php';
         require_once CTC_PLUGIN_DIR . 'includes/class-rest-api.php';
         require_once CTC_PLUGIN_DIR . 'includes/class-notify.php';

@@ -46,58 +46,96 @@ class Notify {
      * @return bool True if sent successfully
      */
     public static function send_owner_email(object $booking): bool {
-        $notify_settings = get_option(Settings::OPTION_NOTIFY);
+        // Use Business Email constant if available, otherwise fallback to settings
+        $owner_email = defined('BUSINESS_EMAIL') ? BUSINESS_EMAIL : '';
 
-        if (empty($notify_settings['owner_email'])) {
+        if (empty($owner_email)) {
+            $notify_settings = get_option(Settings::OPTION_NOTIFY);
+            $owner_email = $notify_settings['owner_email'] ?? '';
+        }
+
+        if (empty($owner_email)) {
             Helpers::log('Owner email not configured', ['booking_id' => $booking->id]);
             return false;
         }
 
-        // Get email template
-        $template = $notify_settings['owner_email_template'] ?? self::get_default_owner_email_template();
-
-        // Replace tokens
-        $message = Helpers::replace_template_tokens($template, $booking);
-
-        // Email headers
-        $headers = [
-            'Content-Type: text/plain; charset=UTF-8',
-            'From: CTC Smart-Hands <' . ($notify_settings['smtp_from'] ?? get_option('admin_email')) . '>',
+        // Prepare template data
+        $template_data = [
+            'public_id' => $booking->public_id,
+            'company' => $booking->company,
+            'contact_name' => $booking->contact_name,
+            'email' => $booking->email,
+            'phone' => $booking->phone,
+            'work_type' => Helpers::format_work_type($booking->work_type ?? ''),
+            'location' => ucfirst($booking->site_id ?? ''),
+            'address' => $booking->address,
+            'po_number' => $booking->po_number ?? 'N/A',
+            'sla' => $booking->sla ?? '4H',
+            'notes' => $booking->notes ?? 'No additional notes',
+            'admin_url' => admin_url('admin.php?page=ctc-smart-hands&booking=' . $booking->id),
         ];
+
+        // Render HTML template
+        $html = Resend::render_template('owner_notification', $template_data);
 
         // Subject line
         $subject = sprintf('[CTC] New Booking: %s - %s', $booking->public_id, $booking->company);
 
-        // Send email
-        $sent = wp_mail(
-            $notify_settings['owner_email'],
+        // Send via Resend
+        $result = Resend::send_email(
+            $owner_email,
             $subject,
-            $message,
-            $headers
+            $html,
+            [
+                'tags' => [
+                    ['name' => 'type', 'value' => 'owner-notification'],
+                    ['name' => 'booking_id', 'value' => $booking->public_id],
+                ],
+            ]
         );
 
-        if ($sent) {
-            // Log successful send
+        if ($result && isset($result['message_id'])) {
+            // Log successful send with Resend message ID
             Database::add_booking_note(
                 (int)$booking->id,
-                sprintf('Owner email sent to: %s', $notify_settings['owner_email']),
+                sprintf('Owner email sent via Resend (ID: %s) to: %s', $result['message_id'], $owner_email),
                 'email',
                 null
             );
 
-            Helpers::log('Owner email sent', [
+            Helpers::log('Owner email sent via Resend', [
                 'booking_id' => $booking->id,
                 'public_id' => $booking->public_id,
-                'to' => $notify_settings['owner_email'],
+                'to' => $owner_email,
+                'message_id' => $result['message_id'],
             ]);
-        } else {
-            Helpers::log('Owner email failed', [
-                'booking_id' => $booking->id,
-                'public_id' => $booking->public_id,
-            ]);
-        }
 
-        return $sent;
+            return true;
+        } else {
+            // Fallback to wp_mail if Resend fails
+            Helpers::log('Resend failed, attempting wp_mail fallback', [
+                'booking_id' => $booking->id,
+            ]);
+
+            $text_message = strip_tags(str_replace('<br>', "\n", $html));
+            $headers = [
+                'Content-Type: text/plain; charset=UTF-8',
+                'From: CTC Smart-Hands <' . get_option('admin_email') . '>',
+            ];
+
+            $sent = wp_mail($owner_email, $subject, $text_message, $headers);
+
+            if ($sent) {
+                Database::add_booking_note(
+                    (int)$booking->id,
+                    sprintf('Owner email sent via wp_mail fallback to: %s', $owner_email),
+                    'email',
+                    null
+                );
+            }
+
+            return $sent;
+        }
     }
 
     /**
@@ -167,57 +205,86 @@ class Notify {
      * @return bool True if sent successfully
      */
     public static function send_dispatcher_email(object $booking): bool {
-        $notify_settings = get_option(Settings::OPTION_NOTIFY);
-
         if (empty($booking->email)) {
             Helpers::log('Dispatcher email missing', ['booking_id' => $booking->id]);
             return false;
         }
 
-        // Get email template
-        $template = $notify_settings['dispatcher_email_template'] ?? self::get_default_dispatcher_email_template();
-
-        // Replace tokens
-        $message = Helpers::replace_template_tokens($template, $booking);
-
-        // Email headers
-        $headers = [
-            'Content-Type: text/plain; charset=UTF-8',
-            'From: CTC Smart-Hands <' . ($notify_settings['smtp_from'] ?? get_option('admin_email')) . '>',
+        // Prepare template data
+        $template_data = [
+            'public_id' => $booking->public_id,
+            'company' => $booking->company,
+            'work_type' => Helpers::format_work_type($booking->work_type ?? ''),
+            'location' => ucfirst($booking->site_id ?? ''),
+            'address' => $booking->address,
         ];
+
+        // Render HTML template
+        $html = Resend::render_template('dispatcher_confirmation', $template_data);
 
         // Subject line
         $subject = sprintf('Booking Confirmation - %s', $booking->public_id);
 
-        // Send email
-        $sent = wp_mail(
+        // Send via Resend
+        $result = Resend::send_email(
             $booking->email,
             $subject,
-            $message,
-            $headers
+            $html,
+            [
+                'tags' => [
+                    ['name' => 'type', 'value' => 'dispatcher-confirmation'],
+                    ['name' => 'booking_id', 'value' => $booking->public_id],
+                ],
+            ]
         );
 
-        if ($sent) {
+        if ($result && isset($result['message_id'])) {
+            // Log successful send with Resend message ID
             Database::add_booking_note(
                 (int)$booking->id,
-                sprintf('Dispatcher confirmation sent to: %s', $booking->email),
+                sprintf('Dispatcher confirmation sent via Resend (ID: %s) to: %s', $result['message_id'], $booking->email),
                 'email',
                 null
             );
 
-            Helpers::log('Dispatcher email sent', [
+            Helpers::log('Dispatcher email sent via Resend', [
                 'booking_id' => $booking->id,
                 'public_id' => $booking->public_id,
                 'to' => $booking->email,
+                'message_id' => $result['message_id'],
             ]);
-        } else {
-            Helpers::log('Dispatcher email failed', [
-                'booking_id' => $booking->id,
-                'to' => $booking->email,
-            ]);
-        }
 
-        return $sent;
+            return true;
+        } else {
+            // Fallback to wp_mail if Resend fails
+            Helpers::log('Resend failed for dispatcher email, attempting wp_mail fallback', [
+                'booking_id' => $booking->id,
+            ]);
+
+            $text_message = strip_tags(str_replace('<br>', "\n", $html));
+            $headers = [
+                'Content-Type: text/plain; charset=UTF-8',
+                'From: CTC Smart-Hands <' . get_option('admin_email') . '>',
+            ];
+
+            $sent = wp_mail($booking->email, $subject, $text_message, $headers);
+
+            if ($sent) {
+                Database::add_booking_note(
+                    (int)$booking->id,
+                    sprintf('Dispatcher confirmation sent via wp_mail fallback to: %s', $booking->email),
+                    'email',
+                    null
+                );
+            } else {
+                Helpers::log('Dispatcher email failed completely', [
+                    'booking_id' => $booking->id,
+                    'to' => $booking->email,
+                ]);
+            }
+
+            return $sent;
+        }
     }
 
     /**
@@ -228,43 +295,83 @@ class Notify {
      * @return bool True if sent successfully
      */
     public static function send_eta(object $booking, string $eta): bool {
-        $message = sprintf(
-            "ETA Update for %s\n\n" .
-            "Our technician will arrive at approximately: %s\n\n" .
-            "Site: %s\n" .
-            "Address: %s\n" .
-            "Contact: %s (%s)\n\n" .
-            "Complete Tech Care",
-            $booking->public_id,
-            $eta,
-            $booking->site_id,
-            $booking->address,
-            $booking->onsite_contact,
-            $booking->phone
-        );
+        if (empty($booking->email)) {
+            Helpers::log('Customer email missing for ETA notification', ['booking_id' => $booking->id]);
+            return false;
+        }
 
-        $headers = [
-            'Content-Type: text/plain; charset=UTF-8',
-            'From: CTC Smart-Hands <' . get_option('admin_email') . '>',
+        // Prepare template data
+        $template_data = [
+            'public_id' => $booking->public_id,
+            'company' => $booking->company,
+            'eta' => $eta,
+            'address' => $booking->address,
+            'contact_name' => $booking->onsite_contact ?? $booking->contact_name,
+            'phone' => $booking->phone,
         ];
 
-        $sent = wp_mail(
+        // Render HTML template
+        $html = Resend::render_template('eta_notification', $template_data);
+
+        // Subject line
+        $subject = sprintf('ETA Update - %s', $booking->public_id);
+
+        // Send via Resend
+        $result = Resend::send_email(
             $booking->email,
-            sprintf('ETA Update - %s', $booking->public_id),
-            $message,
-            $headers
+            $subject,
+            $html,
+            [
+                'tags' => [
+                    ['name' => 'type', 'value' => 'eta-notification'],
+                    ['name' => 'booking_id', 'value' => $booking->public_id],
+                ],
+            ]
         );
 
-        if ($sent) {
+        if ($result && isset($result['message_id'])) {
+            // Log successful send with Resend message ID
             Database::add_booking_note(
                 (int)$booking->id,
-                sprintf('ETA notification sent: %s', $eta),
+                sprintf('ETA notification sent via Resend (ID: %s): %s', $result['message_id'], $eta),
                 'email',
                 null
             );
-        }
 
-        return $sent;
+            Helpers::log('ETA email sent via Resend', [
+                'booking_id' => $booking->id,
+                'public_id' => $booking->public_id,
+                'to' => $booking->email,
+                'eta' => $eta,
+                'message_id' => $result['message_id'],
+            ]);
+
+            return true;
+        } else {
+            // Fallback to wp_mail if Resend fails
+            Helpers::log('Resend failed for ETA email, attempting wp_mail fallback', [
+                'booking_id' => $booking->id,
+            ]);
+
+            $text_message = strip_tags(str_replace('<br>', "\n", $html));
+            $headers = [
+                'Content-Type: text/plain; charset=UTF-8',
+                'From: CTC Smart-Hands <' . get_option('admin_email') . '>',
+            ];
+
+            $sent = wp_mail($booking->email, $subject, $text_message, $headers);
+
+            if ($sent) {
+                Database::add_booking_note(
+                    (int)$booking->id,
+                    sprintf('ETA notification sent via wp_mail fallback: %s', $eta),
+                    'email',
+                    null
+                );
+            }
+
+            return $sent;
+        }
     }
 
     /**
@@ -275,34 +382,86 @@ class Notify {
      * @return bool True if sent successfully
      */
     public static function send_custom(object $booking, string $custom_message): bool {
-        $message = sprintf(
-            "Update for booking %s\n\n%s\n\nComplete Tech Care",
-            $booking->public_id,
-            $custom_message
-        );
+        if (empty($booking->email)) {
+            Helpers::log('Customer email missing for custom notification', ['booking_id' => $booking->id]);
+            return false;
+        }
 
-        $headers = [
-            'Content-Type: text/plain; charset=UTF-8',
-            'From: CTC Smart-Hands <' . get_option('admin_email') . '>',
+        // Prepare template data
+        $template_data = [
+            'public_id' => $booking->public_id,
+            'company' => $booking->company,
+            'message' => $custom_message,
+            'contact_name' => $booking->contact_name,
         ];
 
-        $sent = wp_mail(
+        // Render HTML template
+        $html = Resend::render_template('custom_notification', $template_data);
+
+        // Subject line
+        $subject = sprintf('Update - %s', $booking->public_id);
+
+        // Send via Resend
+        $result = Resend::send_email(
             $booking->email,
-            sprintf('Update - %s', $booking->public_id),
-            $message,
-            $headers
+            $subject,
+            $html,
+            [
+                'tags' => [
+                    ['name' => 'type', 'value' => 'custom-notification'],
+                    ['name' => 'booking_id', 'value' => $booking->public_id],
+                ],
+            ]
         );
 
-        if ($sent) {
+        if ($result && isset($result['message_id'])) {
+            // Log successful send with Resend message ID
             Database::add_booking_note(
                 (int)$booking->id,
-                sprintf('Custom notification sent: %s', substr($custom_message, 0, 50)),
+                sprintf('Custom notification sent via Resend (ID: %s): %s', $result['message_id'], substr($custom_message, 0, 50)),
                 'email',
                 null
             );
-        }
 
-        return $sent;
+            Helpers::log('Custom notification sent via Resend', [
+                'booking_id' => $booking->id,
+                'public_id' => $booking->public_id,
+                'to' => $booking->email,
+                'message_preview' => substr($custom_message, 0, 50),
+                'message_id' => $result['message_id'],
+            ]);
+
+            return true;
+        } else {
+            // Fallback to wp_mail if Resend fails
+            Helpers::log('Resend failed for custom notification, attempting wp_mail fallback', [
+                'booking_id' => $booking->id,
+            ]);
+
+            $text_message = strip_tags(str_replace('<br>', "\n", $html));
+            $headers = [
+                'Content-Type: text/plain; charset=UTF-8',
+                'From: CTC Smart-Hands <' . get_option('admin_email') . '>',
+            ];
+
+            $sent = wp_mail($booking->email, $subject, $text_message, $headers);
+
+            if ($sent) {
+                Database::add_booking_note(
+                    (int)$booking->id,
+                    sprintf('Custom notification sent via wp_mail fallback: %s', substr($custom_message, 0, 50)),
+                    'email',
+                    null
+                );
+            } else {
+                Helpers::log('Custom notification failed completely', [
+                    'booking_id' => $booking->id,
+                    'to' => $booking->email,
+                ]);
+            }
+
+            return $sent;
+        }
     }
 
     /**

@@ -84,6 +84,10 @@ export interface UpdateBookingRequest {
   scheduled_date?: string;
   completed_date?: string;
   notes?: string;
+  internal_notes?: string;
+  assigned_tech?: string;
+  preferred_date?: string;
+  preferred_time?: string;
 }
 
 /**
