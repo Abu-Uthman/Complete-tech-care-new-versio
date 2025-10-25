@@ -138,6 +138,20 @@ class REST_API {
             ],
         ]);
 
+        // DELETE /bookings/{id} - Delete booking
+        register_rest_route(self::NAMESPACE, '/bookings/(?P<id>\d+)', [
+            'methods' => 'DELETE',
+            'callback' => [self::class, 'delete_booking'],
+            'permission_callback' => [Auth::class, 'authenticated_permission_callback'],
+            'args' => [
+                'id' => [
+                    'type' => 'integer',
+                    'required' => true,
+                    'sanitize_callback' => 'absint',
+                ],
+            ],
+        ]);
+
         // POST /bookings/{id}/notify - Send notification
         register_rest_route(self::NAMESPACE, '/bookings/(?P<id>\d+)/notify', [
             'methods' => 'POST',
@@ -469,6 +483,49 @@ class REST_API {
 
         return new \WP_REST_Response([
             'booking' => $updated_booking,
+        ], 200);
+    }
+
+    /**
+     * DELETE /bookings/{id} - Delete booking
+     *
+     * @param \WP_REST_Request $request Request object
+     * @return \WP_REST_Response|\WP_Error Response object or error
+     */
+    public static function delete_booking(\WP_REST_Request $request): \WP_REST_Response|\WP_Error {
+        $id = $request->get_param('id');
+
+        // Check if booking exists
+        $booking = Database::get_booking($id);
+        if (!$booking) {
+            return new \WP_Error(
+                'booking_not_found',
+                __('Booking not found', 'ctc-smart-hands'),
+                ['status' => 404]
+            );
+        }
+
+        // Log deletion before deleting
+        Helpers::log('Booking deleted', [
+            'id' => $id,
+            'public_id' => $booking->public_id,
+            'company' => $booking->company,
+        ]);
+
+        // Delete booking (CASCADE will delete notes automatically)
+        $result = Database::delete_booking($id);
+
+        if ($result === false) {
+            return new \WP_Error(
+                'booking_deletion_failed',
+                __('Failed to delete booking', 'ctc-smart-hands'),
+                ['status' => 500]
+            );
+        }
+
+        return new \WP_REST_Response([
+            'success' => true,
+            'message' => __('Booking deleted successfully', 'ctc-smart-hands'),
         ], 200);
     }
 

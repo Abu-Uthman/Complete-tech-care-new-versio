@@ -242,6 +242,15 @@ export class WordPressClient {
   }
 
   /**
+   * Delete a booking
+   */
+  async deleteBooking(id: number): Promise<ApiResponse<void>> {
+    return this.request<void>(`/bookings/${id}`, {
+      method: 'DELETE',
+    });
+  }
+
+  /**
    * Get current rates
    */
   async getRates(): Promise<ApiResponse<RatesResponse>> {

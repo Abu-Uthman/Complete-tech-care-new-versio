@@ -86,6 +86,59 @@ export async function PATCH(
 }
 
 /**
+ * DELETE /api/bookings/[id] - Delete booking
+ */
+export async function DELETE(
+  request: NextRequest,
+  context: { params: Promise<{ id: string }> }
+) {
+  try {
+    const params = await context.params;
+    const bookingId = parseInt(params.id, 10);
+
+    if (isNaN(bookingId)) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Invalid booking ID',
+        },
+        { status: 400 }
+      );
+    }
+
+    // Send to WordPress via HMAC-authenticated client
+    const response = await wordpressClient.deleteBooking(bookingId);
+
+    if (response.success) {
+      return NextResponse.json(
+        {
+          success: true,
+          message: 'Booking deleted successfully',
+        },
+        { status: 200 }
+      );
+    } else {
+      return NextResponse.json(
+        {
+          success: false,
+          error: response.error?.message || 'Failed to delete booking',
+        },
+        { status: response.error?.code === 'HTTP_401' ? 401 : 500 }
+      );
+    }
+  } catch (error) {
+    console.error('Booking delete API error:', error);
+    return NextResponse.json(
+      {
+        success: false,
+        error: 'Internal server error',
+      },
+      { status: 500 }
+    );
+  }
+}
+
+/**
  * OPTIONS - CORS preflight
  */
 export async function OPTIONS() {
@@ -95,7 +148,7 @@ export async function OPTIONS() {
       status: 200,
       headers: {
         'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'PATCH, OPTIONS',
+        'Access-Control-Allow-Methods': 'PATCH, DELETE, OPTIONS',
         'Access-Control-Allow-Headers': 'Content-Type',
       },
     }

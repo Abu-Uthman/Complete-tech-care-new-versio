@@ -128,7 +128,6 @@ export default function AdminDashboard() {
 
   const handleSaveBooking = async (id: number, updates: Partial<Booking>) => {
     try {
-      // TODO: Create API endpoint for updating bookings
       const response = await fetch(`/api/bookings/${id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
@@ -151,6 +150,27 @@ export default function AdminDashboard() {
       }
     } catch (error) {
       console.error('Save booking error:', error);
+      throw error;
+    }
+  };
+
+  const handleDeleteBooking = async (id: number) => {
+    try {
+      const response = await fetch(`/api/bookings/${id}`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+      });
+
+      const result = await response.json();
+
+      if (response.ok && result.success) {
+        // Remove booking from state
+        setBookings((prev) => prev.filter((booking) => booking.id !== id));
+      } else {
+        throw new Error(result.error || 'Failed to delete booking');
+      }
+    } catch (error) {
+      console.error('Delete booking error:', error);
       throw error;
     }
   };
@@ -391,6 +411,7 @@ export default function AdminDashboard() {
         open={isModalOpen}
         onClose={handleCloseModal}
         onSave={handleSaveBooking}
+        onDelete={handleDeleteBooking}
       />
     </div>
   );

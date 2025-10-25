@@ -43,6 +43,7 @@ type BookingDetailsModalProps = {
   open: boolean;
   onClose: () => void;
   onSave?: (id: number, updates: Partial<Booking>) => Promise<void>;
+  onDelete?: (id: number) => Promise<void>;
 };
 
 const STATUS_OPTIONS = [
@@ -54,12 +55,14 @@ const STATUS_OPTIONS = [
   { value: 'closed', label: 'Closed' },
 ];
 
-export function BookingDetailsModal({ booking, open, onClose, onSave }: BookingDetailsModalProps) {
+export function BookingDetailsModal({ booking, open, onClose, onSave, onDelete }: BookingDetailsModalProps) {
   const [isEditMode, setIsEditMode] = useState(false);
   const [editedStatus, setEditedStatus] = useState('');
   const [editedInternalNotes, setEditedInternalNotes] = useState('');
   const [editedAssignedTech, setEditedAssignedTech] = useState('');
   const [isSaving, setIsSaving] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   // Initialize edit state when booking changes
   const handleEdit = () => {
@@ -97,6 +100,21 @@ export function BookingDetailsModal({ booking, open, onClose, onSave }: BookingD
     }
   };
 
+  const handleDelete = async () => {
+    if (!booking || !onDelete) return;
+
+    setIsDeleting(true);
+    try {
+      await onDelete(booking.id);
+      setShowDeleteConfirm(false);
+      onClose(); // Close modal after successful delete
+    } catch (error) {
+      console.error('Failed to delete booking:', error);
+      alert('Failed to delete booking. Please try again.');
+      setIsDeleting(false);
+    }
+  };
+
   const formatServiceType = (type: string | undefined) => {
     if (!type) return 'N/A';
     return type
@@ -118,8 +136,9 @@ export function BookingDetailsModal({ booking, open, onClose, onSave }: BookingD
   if (!booking) return null;
 
   return (
-    <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+    <>
+      <Dialog open={open} onOpenChange={onClose}>
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-primary">
             Booking Details
@@ -246,28 +265,74 @@ export function BookingDetailsModal({ booking, open, onClose, onSave }: BookingD
         </div>
 
         {/* Action Buttons */}
-        <div className="flex items-center justify-end gap-3 mt-6 pt-4 border-t">
-          {isEditMode ? (
-            <>
-              <Button variant="outline" onClick={handleCancel} disabled={isSaving}>
+        <div className="flex items-center justify-between mt-6 pt-4 border-t">
+          <div>
+            {onDelete && !isEditMode && (
+              <Button
+                variant="outline"
+                onClick={() => setShowDeleteConfirm(true)}
+                className="text-error border-error hover:bg-error/10"
+              >
+                Delete Booking
+              </Button>
+            )}
+          </div>
+          <div className="flex items-center gap-3">
+            {isEditMode ? (
+              <>
+                <Button variant="outline" onClick={handleCancel} disabled={isSaving}>
+                  Cancel
+                </Button>
+                <Button onClick={handleSave} disabled={isSaving}>
+                  {isSaving ? 'Saving...' : 'Save Changes'}
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button variant="outline" onClick={onClose}>
+                  Close
+                </Button>
+                {onSave && (
+                  <Button onClick={handleEdit}>Edit Details</Button>
+                )}
+              </>
+            )}
+          </div>
+        </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Delete Confirmation Dialog */}
+      {showDeleteConfirm && (
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center animate-in fade-in duration-200">
+          <div
+            className="fixed inset-0 bg-black/50 animate-in fade-in duration-200"
+            onClick={() => !isDeleting && setShowDeleteConfirm(false)}
+          />
+          <div className="relative bg-white rounded-lg p-6 max-w-md w-full mx-4 shadow-xl animate-in zoom-in-95 duration-200">
+            <h3 className="text-lg font-semibold text-primary mb-2">Delete Booking?</h3>
+            <p className="text-text-secondary mb-6">
+              Are you sure you want to delete booking <strong>{booking?.public_id}</strong>? This action cannot be undone.
+            </p>
+            <div className="flex items-center justify-end gap-3">
+              <Button
+                variant="outline"
+                onClick={() => setShowDeleteConfirm(false)}
+                disabled={isDeleting}
+              >
                 Cancel
               </Button>
-              <Button onClick={handleSave} disabled={isSaving}>
-                {isSaving ? 'Saving...' : 'Save Changes'}
+              <Button
+                onClick={handleDelete}
+                disabled={isDeleting}
+                className="bg-error hover:bg-error/90 text-white"
+              >
+                {isDeleting ? 'Deleting...' : 'Delete'}
               </Button>
-            </>
-          ) : (
-            <>
-              <Button variant="outline" onClick={onClose}>
-                Close
-              </Button>
-              {onSave && (
-                <Button onClick={handleEdit}>Edit Details</Button>
-              )}
-            </>
-          )}
+            </div>
+          </div>
         </div>
-      </DialogContent>
-    </Dialog>
+      )}
+    </>
   );
 }
