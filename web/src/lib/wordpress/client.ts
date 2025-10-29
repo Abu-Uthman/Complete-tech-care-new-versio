@@ -10,6 +10,10 @@ import type {
   RatesResponse,
   ApiResponse,
   PaginatedResponse,
+  Invoice,
+  CreateInvoiceRequest,
+  UpdateInvoiceRequest,
+  PaginatedInvoiceResponse,
 } from './types';
 
 /**
@@ -267,6 +271,79 @@ export class WordPressClient {
     return this.request<{ sent: boolean }>(`/bookings/${id}/notify`, {
       method: 'POST',
       body: JSON.stringify({ message }),
+    });
+  }
+
+  // ============================================================================
+  // INVOICE METHODS
+  // ============================================================================
+
+  /**
+   * Get all invoices (paginated)
+   */
+  async getInvoices(params?: {
+    page?: number;
+    per_page?: number;
+    status?: string;
+    booking_id?: number;
+  }): Promise<ApiResponse<PaginatedInvoiceResponse>> {
+    const queryParams = new URLSearchParams();
+    if (params?.page) queryParams.set('page', params.page.toString());
+    if (params?.per_page) queryParams.set('per_page', params.per_page.toString());
+    if (params?.status) queryParams.set('status', params.status);
+    if (params?.booking_id) queryParams.set('booking_id', params.booking_id.toString());
+
+    const query = queryParams.toString();
+    const endpoint = query ? `/invoices?${query}` : '/invoices';
+
+    return this.request<PaginatedInvoiceResponse>(endpoint);
+  }
+
+  /**
+   * Get a single invoice by ID
+   */
+  async getInvoice(id: number): Promise<ApiResponse<Invoice>> {
+    return this.request<Invoice>(`/invoices/${id}`);
+  }
+
+  /**
+   * Get invoice for a specific booking
+   */
+  async getBookingInvoice(bookingId: number): Promise<ApiResponse<Invoice>> {
+    return this.request<Invoice>(`/bookings/${bookingId}/invoice`);
+  }
+
+  /**
+   * Create a new invoice
+   */
+  async createInvoice(
+    data: CreateInvoiceRequest
+  ): Promise<ApiResponse<Invoice>> {
+    return this.request<Invoice>('/invoices', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  }
+
+  /**
+   * Update an invoice
+   */
+  async updateInvoice(
+    id: number,
+    data: UpdateInvoiceRequest
+  ): Promise<ApiResponse<Invoice>> {
+    return this.request<Invoice>(`/invoices/${id}`, {
+      method: 'PATCH',
+      body: JSON.stringify(data),
+    });
+  }
+
+  /**
+   * Delete an invoice
+   */
+  async deleteInvoice(id: number): Promise<ApiResponse<void>> {
+    return this.request<void>(`/invoices/${id}`, {
+      method: 'DELETE',
     });
   }
 }

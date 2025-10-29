@@ -231,6 +231,43 @@ if (!current_user_can('ctc_manage_bookings')) {
 }
 ```
 
+**⚠️ CRITICAL: dbDelta Limitations**
+
+WordPress's `dbDelta()` function **DOES NOT support FOREIGN KEY constraints**. When using dbDelta for table creation:
+
+```php
+// ❌ WRONG - This will cause SQL errors
+$sql = "CREATE TABLE {$table_name} (
+    id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+    booking_id bigint(20) UNSIGNED NOT NULL,
+    PRIMARY KEY  (id),
+    KEY booking_id (booking_id),
+    CONSTRAINT fk_booking FOREIGN KEY (booking_id)
+        REFERENCES {$prefix}ctc_bookings (id)
+        ON DELETE CASCADE
+) $charset_collate;";
+
+// ✅ CORRECT - Remove FOREIGN KEY constraints
+$sql = "CREATE TABLE {$table_name} (
+    id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+    booking_id bigint(20) UNSIGNED NOT NULL,
+    PRIMARY KEY  (id),
+    KEY booking_id (booking_id)
+) $charset_collate;";
+```
+
+**Why this matters:**
+- dbDelta tries to parse CONSTRAINT lines as column definitions
+- This causes SQL syntax errors during plugin activation
+- Use application-level referential integrity instead
+- Add proper indexes (KEY) for foreign key columns
+
+**Testing after plugin activation:**
+- Always verify table creation using Chrome MCP
+- Create a verification page to check table structure
+- Delete test files after verification
+- Check WordPress debug.log for SQL errors
+
 ---
 
 ## Testing Standards
@@ -460,3 +497,153 @@ refactor: extract HMAC logic into utility
 
 **Last Updated:** October 21, 2025
 **Project Status:** MVP Development Phase
+
+---
+
+## Blog System Improvements (October 2025)
+
+### Professional Blog Design Updates
+
+The blog system has been enhanced with professional formatting based on industry-standard MSP/IT blog best practices:
+
+#### Content Width & Layout
+- **Widened article content** from 896px (`max-w-4xl`) to **1600px (`max-w-[1600px]`)**
+- Matches professional MSP blogs like NinjaOne (1400px+ standard)
+- Improved readability on modern wide screens
+- Significantly reduced white space on sides for professional appearance
+
+#### Typography Improvements
+- **Body text**: Increased to 17px (from 14-16px) for optimal readability
+- **Headings**: Larger, bolder hierarchy (H1: 60px, H2: 36px with border, H3: 24px)
+- **Line height**: Relaxed spacing (`leading-relaxed`) for comfortable reading
+- **Minimum 16px base** following professional blog standards
+
+#### Blog Listing Page (`/blog`)
+- **Featured images displaying**: Fixed image loading with `unoptimized={true}` for localhost images
+- **Clean card design** with professional stock photos from Unsplash
+- **Larger cards** with 32px padding (increased from 24px)
+- **Enhanced hover effects**: Smooth shadow transitions and subtle lift
+- **Better metadata display**: Calendar and user icons with improved spacing
+- **Professional CTAs**: "Read Article" with arrow icons
+- **Image dimensions**: 208px height (h-52) for consistent card appearance
+
+#### Individual Post Pages (`/blog/[slug]`)
+- **Content width**: Widened to 1600px (`max-w-[1600px]`) for professional appearance
+- **Featured hero image**: Full-width 384px height banner with gradient overlay
+- **Image optimization**: Using `unoptimized={true}` for localhost WordPress images
+- **Professional blog formatting**: Applied SEO best practices via automated script
+  - Shorter paragraphs (3-4 lines max) for improved readability
+  - Internal links to Core Webhub (corewebhub.com.au) for backlinking
+  - Core Webhub byline before conclusion for branding
+  - Tip callout boxes with emoji icons and colored borders
+  - Natural anchor text for internal linking
+- **H2 headings**: Added bottom borders for visual section separation
+- **Improved spacing**:
+  - H2: 48px top margin, 24px bottom
+  - H3: 32px top margin, 16px bottom
+  - Paragraphs: 24px bottom margin
+  - Lists: 24px vertical spacing
+- **Enhanced card styling**: Rounded corners, subtle shadows, better borders
+- **Larger CTA buttons**: Increased padding and rounded corners
+
+#### Files Modified
+- `/Users/abuuuthman/projects/ctc_project/web/src/app/blog/page.tsx`
+  - Re-added featured images with `unoptimized={true}` for localhost compatibility
+  - Fixed 400 errors on image loading from WordPress backend
+  - Enhanced card hover states with image zoom effect
+  - Improved metadata presentation
+  - Added 208px height (h-52) image containers
+
+- `/Users/abuuuthman/projects/ctc_project/web/src/app/blog/[slug]/page.tsx`
+  - Changed `max-w-6xl` to `max-w-[1600px]` (1200px → 1600px)
+  - Added `unoptimized={true}` to hero featured image
+  - Increased body text to 17px with `prose-p:text-[17px]`
+  - Added H2 bottom borders with `prose-h2:border-b`
+  - Enhanced spacing throughout all content sections
+  - Improved card styling with rounded corners and shadows
+
+### Design Philosophy
+- **No gradients**: Solid colors only per design system
+- **WCAG AA compliant**: Maintained 4.5:1 contrast ratios
+- **Professional appearance**: Matches enterprise MSP blog standards
+- **Optimized readability**: Follows 2025 web typography best practices
+
+---
+
+## Homepage UX/UI Improvements (October 2025)
+
+### Professional Business Positioning
+
+The homepage has been refined to present CTC as a professional contractor service (vendor) rather than an individual, with focus on B2B messaging for MSPs and IT service providers.
+
+#### Key Changes
+
+**Hero Section** (`/Users/abuuuthman/projects/ctc_project/web/src/app/page.tsx`):
+- **Badge**: Changed from "Smart-Hands Contractor | Regional Victoria" to "Professional On-Site Contractor | Regional Victoria"
+- **Headline**: Changed from "Your Trusted Regional IT Contractor" to "On-Site Support Where Your Team Can't Reach"
+- **Description**: Removed first-person language, emphasized professional contractor services and 4-hour response guarantee
+- **Result**: Clear value proposition for MSPs who need regional coverage
+
+**How It Works Section** (NEW):
+- Added 3-step process visualization:
+  1. **Submit Request** - Phone, email, or booking form submission
+  2. **On-Site Dispatch** - Technician follows client procedures
+  3. **Complete & Report** - Photo documentation and professional reporting
+- **Key Benefits Grid**:
+  - White-Label Service
+  - Flexible Engagement Models
+  - Fully Insured & Certified
+  - Transparent Pricing
+- **Design**: Numbered circular badges, center card highlighted with primary border
+- **Purpose**: Clarifies the collaboration workflow for potential MSP clients
+
+**Service Capabilities Section**:
+- **Renamed** from "What I Can Help With" to "Service Capabilities"
+- Removed all first-person language ("I can handle it" → "Professional contractor services")
+- Maintained existing MSP and Retail Vendor service cards
+
+**Header Navigation** (`/Users/abuuuthman/projects/ctc_project/web/src/components/layout/header.tsx`):
+- **Added phone number**: 0432 405 388 with phone icon (hidden on mobile/tablet, visible on large screens)
+- **Positioning**: Placed between "Blog" and "Request Info" button
+- **Styling**: Uses primary color with hover state to secondary
+- **Purpose**: Immediate contact option for urgent inquiries
+
+#### Files Modified
+
+1. `/Users/abuuuthman/projects/ctc_project/web/src/app/page.tsx`
+   - Hero section messaging (lines 18-26)
+   - Added "How It Works" section (lines 65-155)
+   - Renamed "Service Capabilities" section (lines 161-166)
+   - Added Accordion component import for future FAQ
+
+2. `/Users/abuuuthman/projects/ctc_project/web/src/components/layout/header.tsx`
+   - Added phone number link in desktop navigation (lines 73-81)
+   - Includes phone icon SVG and tel: link
+
+3. `/Users/abuuuthman/projects/ctc_project/web/src/components/ui/accordion.tsx`
+   - Added shadcn/ui Accordion component (installed via CLI)
+
+### Design Principles Applied
+
+- **Professional Voice**: Eliminated first-person language, uses business-to-business tone
+- **Clear Value Proposition**: Focuses on being a contractor service for MSPs/IT providers
+- **White-Label Positioning**: Emphasizes that CTC represents client brands
+- **Workflow Integration**: "How It Works" explains seamless process integration
+- **Accessibility**: Phone number in header provides immediate contact option
+- **No Gradients**: Maintained solid color design system
+- **WCAG AA Compliance**: All new sections maintain 4.5:1 contrast ratios
+
+### User Experience Goals
+
+1. **MSP Decision-Makers**: Understand instantly that CTC is a professional contractor vendor
+2. **Clear Process**: 3-step workflow shows how collaboration works
+3. **Trust Signals**: Insurance, certifications, and transparent pricing prominently displayed
+4. **Easy Contact**: Phone number in header for immediate inquiries
+5. **Scalability**: Flexible engagement models (one-off, retainer, project-based)
+
+---
+
+**Last Updated:** October 28, 2025
+**Blog Status:** Professional formatting complete with SEO optimization - 5 posts published with Core Webhub branding and internal linking
+**Homepage Status:** Professional B2B positioning with "How It Works" section and phone contact in header
+

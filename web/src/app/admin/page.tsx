@@ -13,6 +13,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { BookingDetailsModal } from '@/components/booking-details-modal';
+import type { CreateInvoiceRequest } from '@/lib/wordpress/types';
 
 type Booking = {
   id: number;
@@ -174,6 +175,31 @@ export default function AdminDashboard() {
       }
     } catch (error) {
       console.error('[Admin] Delete booking error:', error);
+      throw error;
+    }
+  };
+
+  const handleCreateInvoice = async (data: CreateInvoiceRequest) => {
+    try {
+      const response = await fetch('/api/invoices', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+
+      const result = await response.json();
+
+      if (response.ok && result.success) {
+        // Update booking status to 'invoiced' if successful
+        if (selectedBooking) {
+          await handleSaveBooking(selectedBooking.id, { status: 'invoiced' });
+        }
+        alert('Invoice created successfully!');
+      } else {
+        throw new Error(result.error || 'Failed to create invoice');
+      }
+    } catch (error) {
+      console.error('[Admin] Create invoice error:', error);
       throw error;
     }
   };
@@ -415,6 +441,7 @@ export default function AdminDashboard() {
         onClose={handleCloseModal}
         onSave={handleSaveBooking}
         onDelete={handleDeleteBooking}
+        onCreateInvoice={handleCreateInvoice}
       />
     </div>
   );

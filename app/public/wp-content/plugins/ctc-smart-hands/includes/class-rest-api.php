@@ -178,6 +178,132 @@ class REST_API {
                 ],
             ],
         ]);
+
+        // Invoice endpoints
+
+        // POST /invoices - Create invoice
+        register_rest_route(self::NAMESPACE, '/invoices', [
+            'methods' => 'POST',
+            'callback' => [self::class, 'create_invoice'],
+            'permission_callback' => [Auth::class, 'authenticated_permission_callback'],
+            'args' => [
+                'booking_id' => [
+                    'type' => 'integer',
+                    'required' => true,
+                    'sanitize_callback' => 'absint',
+                ],
+                'line_items' => [
+                    'type' => 'array',
+                    'required' => true,
+                ],
+                'due_days' => [
+                    'type' => 'integer',
+                    'default' => 7,
+                    'sanitize_callback' => 'absint',
+                ],
+                'notes' => [
+                    'type' => 'string',
+                    'sanitize_callback' => 'sanitize_textarea_field',
+                ],
+            ],
+        ]);
+
+        // GET /invoices - List invoices
+        register_rest_route(self::NAMESPACE, '/invoices', [
+            'methods' => 'GET',
+            'callback' => [self::class, 'get_invoices'],
+            'permission_callback' => [Auth::class, 'authenticated_permission_callback'],
+            'args' => [
+                'status' => [
+                    'type' => 'string',
+                    'enum' => ['draft', 'sent', 'paid', 'overdue', 'cancelled'],
+                    'sanitize_callback' => 'sanitize_text_field',
+                ],
+                'booking_id' => [
+                    'type' => 'integer',
+                    'sanitize_callback' => 'absint',
+                ],
+                'page' => [
+                    'type' => 'integer',
+                    'default' => 1,
+                    'sanitize_callback' => 'absint',
+                ],
+                'per_page' => [
+                    'type' => 'integer',
+                    'default' => 50,
+                    'sanitize_callback' => 'absint',
+                ],
+            ],
+        ]);
+
+        // GET /invoices/{id} - Get invoice
+        register_rest_route(self::NAMESPACE, '/invoices/(?P<id>\d+)', [
+            'methods' => 'GET',
+            'callback' => [self::class, 'get_invoice'],
+            'permission_callback' => [Auth::class, 'authenticated_permission_callback'],
+            'args' => [
+                'id' => [
+                    'type' => 'integer',
+                    'required' => true,
+                    'sanitize_callback' => 'absint',
+                ],
+            ],
+        ]);
+
+        // PATCH /invoices/{id} - Update invoice
+        register_rest_route(self::NAMESPACE, '/invoices/(?P<id>\d+)', [
+            'methods' => 'PATCH',
+            'callback' => [self::class, 'update_invoice'],
+            'permission_callback' => [Auth::class, 'authenticated_permission_callback'],
+            'args' => [
+                'id' => [
+                    'type' => 'integer',
+                    'required' => true,
+                    'sanitize_callback' => 'absint',
+                ],
+                'status' => [
+                    'type' => 'string',
+                    'enum' => ['draft', 'sent', 'paid', 'overdue', 'cancelled'],
+                    'sanitize_callback' => 'sanitize_text_field',
+                ],
+                'payment_method' => [
+                    'type' => 'string',
+                    'sanitize_callback' => 'sanitize_text_field',
+                ],
+                'payment_reference' => [
+                    'type' => 'string',
+                    'sanitize_callback' => 'sanitize_text_field',
+                ],
+            ],
+        ]);
+
+        // DELETE /invoices/{id} - Delete invoice
+        register_rest_route(self::NAMESPACE, '/invoices/(?P<id>\d+)', [
+            'methods' => 'DELETE',
+            'callback' => [self::class, 'delete_invoice'],
+            'permission_callback' => [Auth::class, 'authenticated_permission_callback'],
+            'args' => [
+                'id' => [
+                    'type' => 'integer',
+                    'required' => true,
+                    'sanitize_callback' => 'absint',
+                ],
+            ],
+        ]);
+
+        // GET /bookings/{id}/invoice - Get invoice for booking
+        register_rest_route(self::NAMESPACE, '/bookings/(?P<id>\d+)/invoice', [
+            'methods' => 'GET',
+            'callback' => [self::class, 'get_booking_invoice'],
+            'permission_callback' => [Auth::class, 'authenticated_permission_callback'],
+            'args' => [
+                'id' => [
+                    'type' => 'integer',
+                    'required' => true,
+                    'sanitize_callback' => 'absint',
+                ],
+            ],
+        ]);
     }
 
     /**
@@ -573,6 +699,218 @@ class REST_API {
         return new \WP_REST_Response([
             'success' => true,
             'message' => __('Notification sent successfully', 'ctc-smart-hands'),
+        ], 200);
+    }
+
+    /**
+     * Create invoice
+     * POST /invoices
+     */
+    public static function create_invoice(\WP_REST_Request $request): \WP_REST_Response|\WP_Error {
+        $booking_id = $request->get_param('booking_id');
+        $line_items = $request->get_param('line_items');
+        $due_days = $request->get_param('due_days') ?? 7;
+        $notes = $request->get_param('notes');
+
+        // Validate booking exists
+        $booking = Database::get_booking($booking_id);
+        if (!$booking) {
+            return new \WP_Error(
+                'booking_not_found',
+                __('Booking not found', 'ctc-smart-hands'),
+                ['status' => 404]
+            );
+        }
+
+        // Check if invoice already exists
+        $existing = Invoice::get_invoice_by_booking($booking_id);
+        if ($existing) {
+            return new \WP_Error(
+                'invoice_exists',
+                __('Invoice already exists for this booking', 'ctc-smart-hands'),
+                ['status' => 400]
+            );
+        }
+
+        // Create invoice
+        $invoice_id = Invoice::create_invoice($booking_id, $line_items, [
+            'due_days' => $due_days,
+            'notes' => $notes,
+        ]);
+
+        if (!$invoice_id) {
+            return new \WP_Error(
+                'invoice_creation_failed',
+                __('Failed to create invoice', 'ctc-smart-hands'),
+                ['status' => 500]
+            );
+        }
+
+        $invoice = Invoice::get_invoice($invoice_id);
+
+        return new \WP_REST_Response([
+            'success' => true,
+            'data' => $invoice,
+            'message' => __('Invoice created successfully', 'ctc-smart-hands'),
+        ], 201);
+    }
+
+    /**
+     * Get invoices
+     * GET /invoices
+     */
+    public static function get_invoices(\WP_REST_Request $request): \WP_REST_Response {
+        $args = [
+            'status' => $request->get_param('status'),
+            'booking_id' => $request->get_param('booking_id'),
+            'page' => $request->get_param('page') ?? 1,
+            'per_page' => $request->get_param('per_page') ?? 50,
+        ];
+
+        // Remove null values
+        $args = array_filter($args, fn($value) => $value !== null);
+
+        $invoices = Invoice::get_invoices($args);
+
+        return new \WP_REST_Response([
+            'success' => true,
+            'data' => ['invoices' => $invoices],
+        ], 200);
+    }
+
+    /**
+     * Get single invoice
+     * GET /invoices/{id}
+     */
+    public static function get_invoice(\WP_REST_Request $request): \WP_REST_Response|\WP_Error {
+        $id = $request->get_param('id');
+        $invoice = Invoice::get_invoice($id);
+
+        if (!$invoice) {
+            return new \WP_Error(
+                'invoice_not_found',
+                __('Invoice not found', 'ctc-smart-hands'),
+                ['status' => 404]
+            );
+        }
+
+        return new \WP_REST_Response([
+            'success' => true,
+            'data' => $invoice,
+        ], 200);
+    }
+
+    /**
+     * Update invoice
+     * PATCH /invoices/{id}
+     */
+    public static function update_invoice(\WP_REST_Request $request): \WP_REST_Response|\WP_Error {
+        $id = $request->get_param('id');
+
+        // Check if invoice exists
+        $invoice = Invoice::get_invoice($id);
+        if (!$invoice) {
+            return new \WP_Error(
+                'invoice_not_found',
+                __('Invoice not found', 'ctc-smart-hands'),
+                ['status' => 404]
+            );
+        }
+
+        $status = $request->get_param('status');
+        $payment_method = $request->get_param('payment_method');
+        $payment_reference = $request->get_param('payment_reference');
+
+        $additional_data = [];
+        if ($payment_method) {
+            $additional_data['payment_method'] = $payment_method;
+        }
+        if ($payment_reference) {
+            $additional_data['payment_reference'] = $payment_reference;
+        }
+
+        $result = Invoice::update_status($id, $status, $additional_data);
+
+        if (!$result) {
+            return new \WP_Error(
+                'invoice_update_failed',
+                __('Failed to update invoice', 'ctc-smart-hands'),
+                ['status' => 500]
+            );
+        }
+
+        $updated_invoice = Invoice::get_invoice($id);
+
+        return new \WP_REST_Response([
+            'success' => true,
+            'data' => $updated_invoice,
+            'message' => __('Invoice updated successfully', 'ctc-smart-hands'),
+        ], 200);
+    }
+
+    /**
+     * Delete invoice
+     * DELETE /invoices/{id}
+     */
+    public static function delete_invoice(\WP_REST_Request $request): \WP_REST_Response|\WP_Error {
+        $id = $request->get_param('id');
+
+        // Check if invoice exists
+        $invoice = Invoice::get_invoice($id);
+        if (!$invoice) {
+            return new \WP_Error(
+                'invoice_not_found',
+                __('Invoice not found', 'ctc-smart-hands'),
+                ['status' => 404]
+            );
+        }
+
+        $result = Invoice::delete_invoice($id);
+
+        if (!$result) {
+            return new \WP_Error(
+                'invoice_delete_failed',
+                __('Failed to delete invoice', 'ctc-smart-hands'),
+                ['status' => 500]
+            );
+        }
+
+        return new \WP_REST_Response([
+            'success' => true,
+            'message' => __('Invoice deleted successfully', 'ctc-smart-hands'),
+        ], 200);
+    }
+
+    /**
+     * Get invoice for booking
+     * GET /bookings/{id}/invoice
+     */
+    public static function get_booking_invoice(\WP_REST_Request $request): \WP_REST_Response|\WP_Error {
+        $booking_id = $request->get_param('id');
+
+        // Check if booking exists
+        $booking = Database::get_booking($booking_id);
+        if (!$booking) {
+            return new \WP_Error(
+                'booking_not_found',
+                __('Booking not found', 'ctc-smart-hands'),
+                ['status' => 404]
+            );
+        }
+
+        $invoice = Invoice::get_invoice_by_booking($booking_id);
+
+        if (!$invoice) {
+            return new \WP_REST_Response([
+                'success' => true,
+                'data' => null,
+                'message' => __('No invoice found for this booking', 'ctc-smart-hands'),
+            ], 200);
+        }
+
+        return new \WP_REST_Response([
+            'success' => true,
+            'data' => $invoice,
         ], 200);
     }
 }

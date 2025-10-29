@@ -128,3 +128,85 @@ export interface PaginatedResponse<T> {
   per_page: number;
   total_pages: number;
 }
+
+// ============================================================================
+// INVOICE TYPES
+// ============================================================================
+
+/**
+ * Invoice status enum (matching WordPress database)
+ */
+export type InvoiceStatus =
+  | 'draft'
+  | 'sent'
+  | 'paid'
+  | 'overdue'
+  | 'cancelled';
+
+/**
+ * Invoice line item
+ */
+export interface InvoiceLineItem {
+  description: string;
+  quantity: number;
+  rate: number;
+  amount: number;
+}
+
+/**
+ * Invoice record from WordPress database
+ */
+export interface Invoice {
+  id: number;
+  invoice_number: string;
+  booking_id: number;
+  issue_date: string;
+  due_date: string;
+  paid_date: string | null;
+  status: InvoiceStatus;
+  subtotal: string;
+  tax_rate: string;
+  tax_amount: string;
+  total_amount: string;
+  line_items: InvoiceLineItem[];
+  notes: string | null;
+  pdf_url: string | null;
+  sent_at: string | null;
+  payment_method: string | null;
+  payment_reference: string | null;
+  created_by: number | null;
+  updated_at: string;
+}
+
+/**
+ * Create invoice request payload
+ */
+export interface CreateInvoiceRequest {
+  booking_id: number;
+  line_items: InvoiceLineItem[];
+  due_days?: number;
+  notes?: string;
+  tax_rate?: number;
+}
+
+/**
+ * Update invoice request payload
+ */
+export interface UpdateInvoiceRequest {
+  status?: InvoiceStatus;
+  paid_date?: string;
+  payment_method?: string;
+  payment_reference?: string;
+  notes?: string;
+}
+
+/**
+ * Paginated invoice response
+ */
+export interface PaginatedInvoiceResponse {
+  invoices: Invoice[];
+  total: number;
+  page: number;
+  per_page: number;
+  total_pages: number;
+}

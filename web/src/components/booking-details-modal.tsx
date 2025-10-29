@@ -18,6 +18,8 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
+import { InvoiceCreateModal } from '@/components/invoice-create-modal';
+import type { Booking as BookingType, CreateInvoiceRequest } from '@/lib/wordpress/types';
 
 type Booking = {
   id: number;
@@ -44,6 +46,7 @@ type BookingDetailsModalProps = {
   onClose: () => void;
   onSave?: (id: number, updates: Partial<Booking>) => Promise<void>;
   onDelete?: (id: number) => Promise<void>;
+  onCreateInvoice?: (data: CreateInvoiceRequest) => Promise<void>;
 };
 
 const STATUS_OPTIONS = [
@@ -55,7 +58,7 @@ const STATUS_OPTIONS = [
   { value: 'closed', label: 'Closed' },
 ];
 
-export function BookingDetailsModal({ booking, open, onClose, onSave, onDelete }: BookingDetailsModalProps) {
+export function BookingDetailsModal({ booking, open, onClose, onSave, onDelete, onCreateInvoice }: BookingDetailsModalProps) {
   const [isEditMode, setIsEditMode] = useState(false);
   const [editedStatus, setEditedStatus] = useState('');
   const [editedInternalNotes, setEditedInternalNotes] = useState('');
@@ -63,6 +66,7 @@ export function BookingDetailsModal({ booking, open, onClose, onSave, onDelete }
   const [isSaving, setIsSaving] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [showInvoiceCreateModal, setShowInvoiceCreateModal] = useState(false);
 
   // Initialize edit state when booking changes
   const handleEdit = () => {
@@ -116,6 +120,35 @@ export function BookingDetailsModal({ booking, open, onClose, onSave, onDelete }
       alert('Failed to delete booking. Please try again.');
       setIsDeleting(false);
     }
+  };
+
+  const handleGenerateInvoice = () => {
+    setShowInvoiceCreateModal(true);
+  };
+
+  const handleInvoiceCreate = async (data: CreateInvoiceRequest) => {
+    if (onCreateInvoice) {
+      await onCreateInvoice(data);
+      setShowInvoiceCreateModal(false);
+    }
+  };
+
+  // Convert local Booking type to WordPress Booking type for InvoiceCreateModal
+  const convertToWordPressBooking = (booking: Booking): BookingType => {
+    return {
+      id: booking.id,
+      company: booking.company,
+      contact_name: booking.contact_name,
+      contact_email: booking.email,
+      contact_phone: booking.phone,
+      service_type: (booking.work_type as any) || 'other',
+      location: 'bendigo' as any, // Default location
+      site_address: booking.address,
+      description: booking.notes || '',
+      status: (booking.status as any) || 'new',
+      created_at: booking.created_at,
+      updated_at: booking.created_at,
+    };
   };
 
   const formatServiceType = (type: string | undefined) => {
@@ -295,6 +328,14 @@ export function BookingDetailsModal({ booking, open, onClose, onSave, onDelete }
                 <Button variant="outline" onClick={onClose}>
                   Close
                 </Button>
+                {booking.status === 'completed' && onCreateInvoice && (
+                  <Button
+                    onClick={handleGenerateInvoice}
+                    className="bg-success hover:bg-success/90 text-white"
+                  >
+                    Generate Invoice
+                  </Button>
+                )}
                 {onSave && (
                   <Button onClick={handleEdit}>Edit Details</Button>
                 )}
@@ -306,35 +347,43 @@ export function BookingDetailsModal({ booking, open, onClose, onSave, onDelete }
       </Dialog>
 
       {/* Delete Confirmation Dialog */}
-      {showDeleteConfirm && (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center animate-in fade-in duration-200">
-          <div
-            className="fixed inset-0 bg-black/50 animate-in fade-in duration-200"
-            onClick={() => !isDeleting && setShowDeleteConfirm(false)}
-          />
-          <div className="relative bg-white rounded-lg p-6 max-w-md w-full mx-4 shadow-xl animate-in zoom-in-95 duration-200">
-            <h3 className="text-lg font-semibold text-primary mb-2">Delete Booking?</h3>
-            <p className="text-text-secondary mb-6">
-              Are you sure you want to delete booking <strong>{booking?.public_id}</strong>? This action cannot be undone.
-            </p>
-            <div className="flex items-center justify-end gap-3">
-              <Button
-                variant="outline"
-                onClick={() => setShowDeleteConfirm(false)}
-                disabled={isDeleting}
-              >
-                Cancel
-              </Button>
-              <Button
-                onClick={handleDelete}
-                disabled={isDeleting}
-                className="bg-error hover:bg-error/90 text-white disabled:cursor-not-allowed cursor-pointer"
-              >
-                {isDeleting ? 'Deleting...' : 'Delete'}
-              </Button>
-            </div>
+      <Dialog open={showDeleteConfirm} onOpenChange={setShowDeleteConfirm}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle className="text-lg font-semibold text-error">
+              Delete Booking?
+            </DialogTitle>
+            <DialogDescription className="text-text-secondary">
+              Are you sure you want to delete booking <strong>{booking?.public_id || `#${booking?.id}`}</strong>? This action cannot be undone.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex items-center justify-end gap-3 mt-4">
+            <Button
+              variant="outline"
+              onClick={() => setShowDeleteConfirm(false)}
+              disabled={isDeleting}
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleDelete}
+              disabled={isDeleting}
+              className="bg-error hover:bg-error/90 text-white"
+            >
+              {isDeleting ? 'Deleting...' : 'Delete'}
+            </Button>
           </div>
-        </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Invoice Create Modal */}
+      {booking && (
+        <InvoiceCreateModal
+          open={showInvoiceCreateModal}
+          onClose={() => setShowInvoiceCreateModal(false)}
+          onCreate={handleInvoiceCreate}
+          booking={convertToWordPressBooking(booking)}
+        />
       )}
     </>
   );

@@ -204,7 +204,7 @@ export default function ClientPortal() {
           <div className="mt-6 pt-6 border-t border-border text-center">
             <p className="text-sm text-text-secondary">
               Need help?{' '}
-              <a href="mailto:bookings@ctc.example.com" className="text-primary hover:underline">
+              <a href="mailto:info@completetechcare.com.au" className="text-primary hover:underline">
                 Contact Support
               </a>
             </p>

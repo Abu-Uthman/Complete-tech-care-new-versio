@@ -86,10 +86,7 @@ class Database {
             PRIMARY KEY  (id),
             KEY booking_id (booking_id),
             KEY created_at (created_at),
-            KEY type (type),
-            CONSTRAINT fk_booking_note FOREIGN KEY (booking_id)
-                REFERENCES {$table_prefix}" . self::TABLE_BOOKINGS . " (id)
-                ON DELETE CASCADE
+            KEY type (type)
         ) $charset_collate;";
 
         // Include WordPress upgrade functions
@@ -98,6 +95,11 @@ class Database {
         // Create tables using dbDelta
         dbDelta($bookings_table);
         dbDelta($notes_table);
+
+        // Create invoice table (if Invoice class is loaded)
+        if (class_exists('CTC\\SmartHands\\Invoice')) {
+            \CTC\SmartHands\Invoice::create_table();
+        }
 
         // Store database version
         update_option('ctc_db_version', CTC_VERSION);

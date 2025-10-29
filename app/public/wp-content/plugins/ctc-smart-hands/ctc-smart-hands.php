@@ -81,8 +81,10 @@ final class CTC_Smart_Hands {
         require_once CTC_PLUGIN_DIR . 'includes/class-helpers.php';
         require_once CTC_PLUGIN_DIR . 'includes/class-resend.php';
         require_once CTC_PLUGIN_DIR . 'includes/class-auth.php';
+        require_once CTC_PLUGIN_DIR . 'includes/class-invoice.php';
         require_once CTC_PLUGIN_DIR . 'includes/class-rest-api.php';
         require_once CTC_PLUGIN_DIR . 'includes/class-notify.php';
+        require_once CTC_PLUGIN_DIR . 'includes/class-blog.php';
     }
 
     /**
@@ -117,7 +119,10 @@ final class CTC_Smart_Hands {
             wp_die('CTC Smart-Hands requires WordPress 6.6 or higher. Please upgrade WordPress.');
         }
 
-        // Create database tables
+        // Load dependencies before creating tables
+        $this->load_dependencies();
+
+        // Create database tables (including invoice table)
         CTC\SmartHands\Database::create_tables();
 
         // Initialize default settings
@@ -170,6 +175,12 @@ final class CTC_Smart_Hands {
 
         // Initialize notifications
         CTC\SmartHands\Notify::init();
+
+        // Initialize invoice system
+        CTC\SmartHands\Invoice::init();
+
+        // Initialize blog system
+        new CTC\SmartHands\Blog();
     }
 
     /**

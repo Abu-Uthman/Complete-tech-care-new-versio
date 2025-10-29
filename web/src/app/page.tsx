@@ -1,6 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import Link from "next/link";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 export default function Home() {
   return (
@@ -10,13 +16,13 @@ export default function Home() {
         <div className="container mx-auto px-4 py-20 md:py-32">
           <div className="max-w-4xl mx-auto text-center">
             <div className="inline-block mb-4 px-4 py-2 bg-bg-tertiary rounded-full">
-              <span className="text-sm font-medium text-secondary">Smart-Hands Contractor | Regional Victoria</span>
+              <span className="text-sm font-medium text-secondary">Professional On-Site Contractor | Regional Victoria</span>
             </div>
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-primary mb-6 leading-tight">
-              Your Trusted Regional IT Contractor
+              On-Site Support Where Your Team Can't Reach
             </h1>
             <p className="text-xl md:text-2xl text-text-secondary mb-10 max-w-3xl mx-auto leading-relaxed">
-              4-hour response guarantee for MSPs and IT service providers across Bendigo, Ballarat, Shepparton, Wodonga, and Latrobe Valley. Professional contractor services when your Melbourne team can't be everywhere.
+              Professional on-site contractor services for MSPs and IT providers across regional Victoria. When client sites in Bendigo, Ballarat, Shepparton, Wodonga, or Latrobe Valley need immediate attention, CTC delivers with a 4-hour response guarantee.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/for-msps">
@@ -56,15 +62,107 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Services Overview */}
+      {/* How It Works */}
       <section className="container mx-auto px-4 py-20">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-primary mb-4">
-              Professional Contractor Services
+              How It Works
             </h2>
             <p className="text-lg text-text-secondary max-w-2xl mx-auto">
-              Reliable smart-hands contractor for regional Victoria. Your boots on the ground when your Melbourne team can't be there.
+              Seamless integration with your existing workflows. Submit requests, receive confirmation, and get detailed reporting - all within your preferred processes.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            {/* Step 1 */}
+            <Card className="p-6 text-center">
+              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-2xl font-bold text-primary">1</span>
+              </div>
+              <h3 className="text-xl font-bold text-primary mb-3">Submit Request</h3>
+              <p className="text-sm text-text-secondary">
+                Send job details via phone, email, or booking form. Receive availability confirmation and ETA within 30 minutes.
+              </p>
+            </Card>
+
+            {/* Step 2 */}
+            <Card className="p-6 text-center border-2 border-primary">
+              <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-2xl font-bold text-white">2</span>
+              </div>
+              <h3 className="text-xl font-bold text-primary mb-3">On-Site Dispatch</h3>
+              <p className="text-sm text-text-secondary">
+                Technician arrives at client site, follows your procedures, and completes work under your guidance and direction.
+              </p>
+            </Card>
+
+            {/* Step 3 */}
+            <Card className="p-6 text-center">
+              <div className="w-16 h-16 bg-success/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-2xl font-bold text-success">3</span>
+              </div>
+              <h3 className="text-xl font-bold text-primary mb-3">Complete & Report</h3>
+              <p className="text-sm text-text-secondary">
+                Job completion with photo documentation, detailed notes, and professional reporting via your invoicing workflow.
+              </p>
+            </Card>
+          </div>
+
+          {/* Key Benefits */}
+          <div className="mt-12 grid md:grid-cols-2 gap-4">
+            <div className="flex items-start gap-3 p-4 bg-bg-secondary rounded-lg">
+              <svg className="w-6 h-6 text-success flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <div>
+                <h4 className="font-semibold text-primary mb-1">White-Label Service</h4>
+                <p className="text-sm text-text-secondary">Represent your company brand. Clients work with your team, contractor services remain transparent.</p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-3 p-4 bg-bg-secondary rounded-lg">
+              <svg className="w-6 h-6 text-success flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <div>
+                <h4 className="font-semibold text-primary mb-1">Flexible Engagement Models</h4>
+                <p className="text-sm text-text-secondary">One-off callouts, block hours, monthly retainers, or project-based pricing to match business needs.</p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-3 p-4 bg-bg-secondary rounded-lg">
+              <svg className="w-6 h-6 text-success flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <div>
+                <h4 className="font-semibold text-primary mb-1">Fully Insured & Certified</h4>
+                <p className="text-sm text-text-secondary">$20M public liability, professional indemnity, police verified. All compliance documentation available.</p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-3 p-4 bg-bg-secondary rounded-lg">
+              <svg className="w-6 h-6 text-success flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <div>
+                <h4 className="font-semibold text-primary mb-1">Transparent Pricing</h4>
+                <p className="text-sm text-text-secondary">Published hourly rates, block pricing, and travel cost caps. No hidden fees or surprise charges.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Services Overview */}
+      <section className="bg-bg-secondary border-y border-border py-20">
+        <div className="max-w-6xl mx-auto container px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-primary mb-4">
+              Service Capabilities
+            </h2>
+            <p className="text-lg text-text-secondary max-w-2xl mx-auto">
+              Comprehensive on-site support across break/fix, equipment rollouts, installations, site audits, and more. Professional contractor services for any hands-on requirement.
             </p>
           </div>
 
