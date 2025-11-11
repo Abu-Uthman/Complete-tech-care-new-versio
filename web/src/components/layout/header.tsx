@@ -2,7 +2,7 @@
 
 /**
  * Header Navigation Component
- * CTC Smart-Hands Project
+ * Complete Tech Care (CTC) Project
  */
 
 import Link from 'next/link';
@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/button';
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [servicesMenuOpen, setServicesMenuOpen] = useState(false);
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -34,7 +35,7 @@ export function Header() {
               </svg>
             </div>
             <span className="hidden sm:inline-block text-xl font-bold text-primary">
-              CTC Smart-Hands
+              Complete Tech Care
             </span>
           </Link>
 
@@ -46,18 +47,76 @@ export function Header() {
             >
               Home
             </Link>
-            <Link
-              href="/for-msps"
-              className="text-sm font-medium text-text-primary hover:text-secondary transition-colors"
+
+            {/* Services Mega Menu */}
+            <div
+              className="relative"
+              onMouseEnter={() => setServicesMenuOpen(true)}
+              onMouseLeave={() => setServicesMenuOpen(false)}
             >
-              For MSPs
-            </Link>
-            <Link
-              href="/coverage"
-              className="text-sm font-medium text-text-primary hover:text-secondary transition-colors"
-            >
-              Coverage
-            </Link>
+              <Link
+                href="/services"
+                className="text-sm font-medium text-text-primary hover:text-secondary transition-colors flex items-center gap-1"
+              >
+                Services
+                <svg className={`w-4 h-4 transition-transform ${servicesMenuOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </Link>
+
+              {/* Dropdown Menu */}
+              {servicesMenuOpen && (
+                <div className="absolute top-full left-0 mt-2 w-80 bg-background border border-border rounded-lg shadow-lg z-50">
+                  <div className="p-4">
+                    <div className="space-y-2">
+                      <Link
+                        href="/services/site-audits"
+                        className="block px-4 py-3 rounded-md hover:bg-primary/5 transition-colors group"
+                      >
+                        <div className="font-medium text-text-primary group-hover:text-primary">Site Audits & Documentation</div>
+                        <div className="text-xs text-text-secondary mt-1">Site surveys, asset audits, network assessments</div>
+                      </Link>
+                      <Link
+                        href="/services/pos-retail"
+                        className="block px-4 py-3 rounded-md hover:bg-primary/5 transition-colors group"
+                      >
+                        <div className="font-medium text-text-primary group-hover:text-primary">POS & Retail Equipment</div>
+                        <div className="text-xs text-text-secondary mt-1">Coles/Woolworths inducted, NCR certified</div>
+                      </Link>
+                      <Link
+                        href="/services/equipment-swap"
+                        className="block px-4 py-3 rounded-md hover:bg-primary/5 transition-colors group"
+                      >
+                        <div className="font-medium text-text-primary group-hover:text-primary">Equipment Swap & Installation</div>
+                        <div className="text-xs text-text-secondary mt-1">Hardware replacement and deployments</div>
+                      </Link>
+                      <Link
+                        href="/services/onsite-support"
+                        className="block px-4 py-3 rounded-md hover:bg-primary/5 transition-colors group"
+                      >
+                        <div className="font-medium text-text-primary group-hover:text-primary">On-Site Break/Fix Support</div>
+                        <div className="text-xs text-text-secondary mt-1">L1-L2 smart-hands services</div>
+                      </Link>
+                      <Link
+                        href="/services/infrastructure"
+                        className="block px-4 py-3 rounded-md hover:bg-primary/5 transition-colors group"
+                      >
+                        <div className="font-medium text-text-primary group-hover:text-primary">Network Infrastructure & Cabling</div>
+                        <div className="text-xs text-text-secondary mt-1">Structured cabling, racks, MDF/IDF setup</div>
+                      </Link>
+                      <Link
+                        href="/services/logistics"
+                        className="block px-4 py-3 rounded-md hover:bg-primary/5 transition-colors group"
+                      >
+                        <div className="font-medium text-text-primary group-hover:text-primary">IT Parts Logistics & Transport</div>
+                        <div className="text-xs text-text-secondary mt-1">Same-day delivery and equipment transport</div>
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
             <Link
               href="/rates"
               className="text-sm font-medium text-text-primary hover:text-secondary transition-colors"
@@ -136,20 +195,62 @@ export function Header() {
               >
                 Home
               </Link>
-              <Link
-                href="/for-msps"
-                className="text-sm font-medium text-text-primary hover:text-secondary transition-colors px-2 py-2"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                For MSPs
-              </Link>
-              <Link
-                href="/coverage"
-                className="text-sm font-medium text-text-primary hover:text-secondary transition-colors px-2 py-2"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Coverage
-              </Link>
+
+              {/* Services Submenu for Mobile */}
+              <div className="px-2 py-2">
+                <Link
+                  href="/services"
+                  className="text-sm font-medium text-text-primary hover:text-secondary transition-colors flex items-center gap-1"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Services
+                </Link>
+                <div className="ml-4 mt-2 space-y-2">
+                  <Link
+                    href="/services/site-audits"
+                    className="block text-xs text-text-secondary hover:text-primary transition-colors py-1"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Site Audits & Documentation
+                  </Link>
+                  <Link
+                    href="/services/pos-retail"
+                    className="block text-xs text-text-secondary hover:text-primary transition-colors py-1"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    POS & Retail Equipment
+                  </Link>
+                  <Link
+                    href="/services/equipment-swap"
+                    className="block text-xs text-text-secondary hover:text-primary transition-colors py-1"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Equipment Swap & Installation
+                  </Link>
+                  <Link
+                    href="/services/onsite-support"
+                    className="block text-xs text-text-secondary hover:text-primary transition-colors py-1"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    On-Site Break/Fix Support
+                  </Link>
+                  <Link
+                    href="/services/infrastructure"
+                    className="block text-xs text-text-secondary hover:text-primary transition-colors py-1"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Network Infrastructure & Cabling
+                  </Link>
+                  <Link
+                    href="/services/logistics"
+                    className="block text-xs text-text-secondary hover:text-primary transition-colors py-1"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    IT Parts Logistics & Transport
+                  </Link>
+                </div>
+              </div>
+
               <Link
                 href="/rates"
                 className="text-sm font-medium text-text-primary hover:text-secondary transition-colors px-2 py-2"

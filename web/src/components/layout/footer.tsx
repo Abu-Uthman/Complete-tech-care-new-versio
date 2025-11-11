@@ -1,6 +1,6 @@
 /**
  * Footer Component
- * CTC Smart-Hands Project
+ * Complete Tech Care (CTC) Project
  */
 
 import Link from 'next/link';
@@ -30,11 +30,11 @@ export function Footer() {
                   />
                 </svg>
               </div>
-              <span className="text-xl font-bold">CTC Smart-Hands</span>
+              <span className="text-xl font-bold">Complete Tech Care</span>
             </div>
             <p className="text-sm text-white/80 mb-4">
-              Professional smart-hands services for regional Victoria.
-              4-hour response guarantee.
+              Professional on-site contractor services for regional Victoria.
+              Same-day dispatch guarantee.
             </p>
             <p className="text-sm text-white/70">
               <strong>Complete Tech Care</strong>
@@ -48,28 +48,33 @@ export function Footer() {
             <h3 className="font-semibold text-lg mb-4">Services</h3>
             <ul className="space-y-2 text-sm text-white/80">
               <li>
-                <Link href="/services/msp" className="hover:text-secondary transition-colors">
-                  MSP Support
-                </Link>
-              </li>
-              <li>
-                <Link href="/services/retail" className="hover:text-secondary transition-colors">
-                  Retail Vendor Support
-                </Link>
-              </li>
-              <li>
-                <Link href="/services/break-fix" className="hover:text-secondary transition-colors">
-                  Break/Fix Services
-                </Link>
-              </li>
-              <li>
-                <Link href="/services/rollouts" className="hover:text-secondary transition-colors">
-                  Equipment Rollouts
-                </Link>
-              </li>
-              <li>
                 <Link href="/services/site-audits" className="hover:text-secondary transition-colors">
-                  Site Audits
+                  Site Audits & Documentation
+                </Link>
+              </li>
+              <li>
+                <Link href="/services/pos-retail" className="hover:text-secondary transition-colors">
+                  POS & Retail Equipment
+                </Link>
+              </li>
+              <li>
+                <Link href="/services/equipment-swap" className="hover:text-secondary transition-colors">
+                  Equipment Swap & Installation
+                </Link>
+              </li>
+              <li>
+                <Link href="/services/onsite-support" className="hover:text-secondary transition-colors">
+                  On-Site Break/Fix Support
+                </Link>
+              </li>
+              <li>
+                <Link href="/services/infrastructure" className="hover:text-secondary transition-colors">
+                  Network Infrastructure
+                </Link>
+              </li>
+              <li>
+                <Link href="/services/logistics" className="hover:text-secondary transition-colors">
+                  IT Parts Logistics
                 </Link>
               </li>
             </ul>
@@ -117,7 +122,7 @@ export function Footer() {
                     clipRule="evenodd"
                   />
                 </svg>
-                Wodonga
+                Geelong
               </li>
               <li className="flex items-center gap-2">
                 <svg className="w-4 h-4 text-secondary" fill="currentColor" viewBox="0 0 20 20">
@@ -127,7 +132,20 @@ export function Footer() {
                     clipRule="evenodd"
                   />
                 </svg>
-                Latrobe Valley
+                Warrnambool
+              </li>
+              <li className="flex items-center gap-2">
+                <svg className="w-4 h-4 text-secondary" fill="currentColor" viewBox="0 0 20 20">
+                  <path
+                    fillRule="evenodd"
+                    d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+                Mildura
+              </li>
+              <li className="text-xs text-white/60 mt-2">
+                + All Regional VIC
               </li>
             </ul>
           </div>

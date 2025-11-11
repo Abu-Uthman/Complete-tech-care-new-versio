@@ -6,45 +6,55 @@ This file provides guidance to Claude Code when working with the CTC Smart-Hands
 
 ## Project Overview: CTC Smart-Hands
 
-**Complete Tech Care (CTC)** provides rapid-response regional VIC smart-hands services for MSPs & retail vendors, plus friendly IT support for Melbourne homes & small businesses.
+**Complete Tech Care (CTC)** provides rapid-response regional VIC smart-hands services for MSPs & retail vendors.
 
 **Owner:** Abdisalam Awale (Complete Tech Care)
 **Version:** v1.0 (MVP)
-**Date:** October 2025
+**Date:** November 2025
 
 ### Core Services
 
-1. **For MSPs & Retail Vendors:** 4-hour on-site response to Bendigo, Ballarat, Shepparton, Wodonga, Latrobe. L1-L2 break/fix, rollouts, POS/SCO peripherals, parts logistics, site audits.
-2. **For SMB/Home (Melbourne):** Wi-Fi fixes, PC support, printer setup, smart devices, basic CCTV/NVR.
+1. **For MSPs & IT Providers:** Same-day dispatch to Bendigo, Ballarat, Shepparton, Echuca. L1-L2 break/fix, rollouts, POS/SCO peripherals, parts logistics, site audits.
+2. **Service Model:** B2B contractor services, white-label operations, PO/SOW/SLA fluent.
 
 ### Key Differentiators
 
-- Regional 4-hour coverage to named hubs
+- Same-day regional dispatch (help MSPs meet their client SLAs)
 - Vendor-friendly operations (PO/SOW/SLA fluent)
 - Compliance-ready (PL $20M, PI, Police Check, Coles & Woolworths inductions)
-- Predictable travel pricing with published caps
+- Transparent pricing: $110/hr + $1.00/km travel (published rates)
 
 ---
 
 ## Architecture
 
-**Headless CMS Approach:**
+**Minimal MVP Approach (Email-Only Backend):**
 
 ```
-┌─────────────────────────┐         REST API (HMAC)          ┌──────────────────────┐
-│   Next.js 15 Frontend   │  ───────────────────────────────►  │  WordPress Backend   │
-│   localhost:3000        │                                   │  (Local by Flywheel) │
-│   - Public pages        │  ◄───────────────────────────────  │  - Custom plugin     │
-│   - Booking form        │         JSON Response             │  - Bookings DB       │
-│   - Admin dashboard     │                                   │  - Notifications     │
-└─────────────────────────┘                                   └──────────────────────┘
+┌──────────────────────────────┐
+│   Next.js 15 Frontend        │
+│   localhost:3003             │
+│   - Public pages             │
+│   - Blog (5 posts)           │
+│   - Rates page               │
+│   - Booking form             │
+└──────────┬───────────────────┘
+           │
+           │ POST /api/book
+           ├─────────────────────► Resend API
+           │                       - Email to contractor
+           │                       - Confirmation to client
+           │
+           └─────────────────────► No Database
+                                   No Admin Dashboard
+                                   Pure Email Notifications
 ```
 
-**Frontend:** Next.js 15 (App Router), TypeScript (strict), Tailwind CSS, shadcn/ui
-**Backend:** WordPress 6.6+, PHP 8.2+, custom plugin `ctc-smart-hands`
-**Authentication:** HMAC SHA-256 (server-to-server)
-**Database:** MySQL (via WordPress $wpdb)
-**Notifications:** wp_mail (SMTP) + Twilio (SMS)
+**Frontend:** Next.js 15 (App Router), TypeScript (strict), Tailwind CSS v4, shadcn/ui
+**Backend:** Resend API for email notifications only
+**Validation:** Zod schemas
+**Deployment:** Vercel
+**No Database:** All inquiries handled via email workflow
 
 ---
 
@@ -54,22 +64,21 @@ This file provides guidance to Claude Code when working with the CTC Smart-Hands
 
 - **Framework:** Next.js 15 with App Router
 - **Language:** TypeScript (strict mode, no `any` types)
-- **Styling:** Tailwind CSS v3.4+
+- **Styling:** Tailwind CSS v4
 - **Components:** shadcn/ui (accessible, customizable)
 - **Fonts:** Inter (variable font for performance)
 - **Validation:** Zod schemas
-- **Testing:** Playwright for E2E
+- **Package Manager:** pnpm
 - **Deployment:** Vercel
 
-### Backend (WordPress)
+### Email Notifications (Resend)
 
-- **Version:** WordPress 6.6+
-- **PHP:** 8.2+ (type hints, strict types)
-- **Plugin:** Custom `ctc-smart-hands` (namespace `CTC\SmartHands`)
-- **Database:** Custom tables via dbDelta
-- **API:** REST API with custom namespace `ctc/v1`
-- **Security:** HMAC authentication, nonce verification
-- **Environment:** Local by Flywheel for development
+- **Service:** Resend API (`resend` npm package)
+- **Templates:** @react-email/components for HTML emails
+- **Emails Sent:**
+  1. Contractor notification (to `CONTRACTOR_EMAIL`) with full inquiry details
+  2. Client confirmation with rate info ($110/hr + $1/km), phone number (0432 405 388)
+- **No Database:** Inquiries stored in contractor email inbox
 
 ### Design System
 
@@ -121,33 +130,32 @@ text-4xl: 2.25rem (36px)
 2. **No Gradients:** Solid colors only, no background gradients
 3. **Type Safety:** Full TypeScript coverage, no `any` types
 4. **Performance:** Lighthouse scores >90 (Performance, SEO, Accessibility 100)
-5. **Security:** HMAC for API auth, input validation, rate limiting
+5. **Security:** Input validation with Zod, rate limiting on API routes
 
 ### Next.js Standards
 
 **File Structure:**
 ```
-app/
-├── (public)/           # Public routes
-│   ├── page.tsx        # Landing page
-│   └── layout.tsx
-├── admin/              # Protected routes
-│   └── page.tsx
-└── api/
-    └── book/
-        └── route.ts    # API routes
-
-components/
-├── booking-form.tsx    # Feature components
-├── rates-card.tsx
-└── ui/                 # shadcn components
-
-lib/
-├── wordpress/
-│   ├── client.ts       # API client
-│   └── types.ts        # TypeScript interfaces
-└── validations/
-    └── schemas.ts      # Zod schemas
+web/
+├── src/
+│   ├── app/
+│   │   ├── page.tsx           # Homepage
+│   │   ├── rates/page.tsx     # Pricing page
+│   │   ├── blog/              # Blog pages
+│   │   ├── book/page.tsx      # Booking form page
+│   │   └── api/
+│   │       └── book/route.ts  # Resend email API
+│   ├── components/
+│   │   ├── forms/
+│   │   │   └── booking-form.tsx
+│   │   ├── layout/
+│   │   │   ├── header.tsx
+│   │   │   └── footer.tsx
+│   │   └── ui/                # shadcn components
+│   └── lib/
+│       └── validations/
+│           └── schemas.ts     # Zod schemas
+└── package.json
 ```
 
 **Component Patterns:**
@@ -155,8 +163,7 @@ lib/
 ```typescript
 // Use Server Components by default
 export default async function Page() {
-  const data = await fetchFromWordPress();
-  return <div>{data}</div>;
+  return <div>Content</div>;
 }
 
 // Only use 'use client' when necessary (forms, interactivity)
@@ -169,104 +176,34 @@ export function BookingForm() {
 }
 ```
 
-**API Routes:**
+**API Routes (Resend Email):**
 
 ```typescript
-// Always validate input with Zod
-import { z } from 'zod';
+import { Resend } from 'resend';
+import { bookingFormSchema } from '@/lib/validations/schemas';
 
-const schema = z.object({
-  email: z.string().email(),
-  // ...
-});
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(req: Request) {
   const body = await req.json();
-  const validated = schema.parse(body); // Throws if invalid
-  // ...
+  const validated = bookingFormSchema.parse(body); // Throws if invalid
+
+  // Send contractor notification
+  await resend.emails.send({
+    from: 'CTC Smart-Hands <noreply@ctc-smarthands.com>',
+    to: process.env.CONTRACTOR_EMAIL,
+    subject: `New MSP Inquiry: ${validated.company}`,
+    html: `...professional HTML template...`
+  });
+
+  // Send client confirmation
+  await resend.emails.send({
+    to: validated.contactEmail,
+    subject: 'CTC Smart-Hands - Request Received',
+    html: `...includes pricing and contact info...`
+  });
 }
 ```
-
-### WordPress Standards
-
-**PHP Style:**
-
-```php
-<?php
-// Strict types at the top of every file
-declare(strict_types=1);
-
-namespace CTC\SmartHands;
-
-// Use type hints
-class Database {
-    public function create_booking(array $data): int {
-        // Use $wpdb with prepared statements
-        global $wpdb;
-        $wpdb->insert(
-            $wpdb->prefix . 'ctc_bookings',
-            $data,
-            ['%s', '%s', '%d'] // Format array
-        );
-        return $wpdb->insert_id;
-    }
-}
-```
-
-**Security:**
-
-```php
-// Always sanitize input
-$company = sanitize_text_field($_POST['company']);
-
-// Always escape output
-echo esc_html($booking->company);
-
-// Use nonces for forms
-wp_nonce_field('ctc_update_booking', 'ctc_nonce');
-
-// Verify capabilities
-if (!current_user_can('ctc_manage_bookings')) {
-    wp_die('Unauthorized');
-}
-```
-
-**⚠️ CRITICAL: dbDelta Limitations**
-
-WordPress's `dbDelta()` function **DOES NOT support FOREIGN KEY constraints**. When using dbDelta for table creation:
-
-```php
-// ❌ WRONG - This will cause SQL errors
-$sql = "CREATE TABLE {$table_name} (
-    id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-    booking_id bigint(20) UNSIGNED NOT NULL,
-    PRIMARY KEY  (id),
-    KEY booking_id (booking_id),
-    CONSTRAINT fk_booking FOREIGN KEY (booking_id)
-        REFERENCES {$prefix}ctc_bookings (id)
-        ON DELETE CASCADE
-) $charset_collate;";
-
-// ✅ CORRECT - Remove FOREIGN KEY constraints
-$sql = "CREATE TABLE {$table_name} (
-    id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-    booking_id bigint(20) UNSIGNED NOT NULL,
-    PRIMARY KEY  (id),
-    KEY booking_id (booking_id)
-) $charset_collate;";
-```
-
-**Why this matters:**
-- dbDelta tries to parse CONSTRAINT lines as column definitions
-- This causes SQL syntax errors during plugin activation
-- Use application-level referential integrity instead
-- Add proper indexes (KEY) for foreign key columns
-
-**Testing after plugin activation:**
-- Always verify table creation using Chrome MCP
-- Create a verification page to check table structure
-- Delete test files after verification
-- Check WordPress debug.log for SQL errors
 
 ---
 
@@ -292,65 +229,6 @@ Use Chrome DevTools MCP for visual inspection and testing at these checkpoints:
 - [ ] ARIA labels where needed (icon buttons, etc)
 - [ ] Images have descriptive alt text
 
-### Playwright E2E Tests
-
-**Required test scenarios:**
-
-1. Submit booking form → verify created in WordPress
-2. Admin login → update booking status → verify in database
-3. Send notification → verify email/SMS sent
-4. Invalid HMAC → expect 401
-5. Rate limiting → expect 429
-6. Mobile booking flow
-
----
-
-## WordPress Plugin Structure
-
-```
-wp-content/plugins/ctc-smart-hands/
-├── ctc-smart-hands.php           # Main plugin file
-├── includes/
-│   ├── class-database.php        # Table creation, queries
-│   ├── class-rest-api.php        # REST endpoints
-│   ├── class-auth.php            # HMAC verification
-│   ├── class-notify.php          # Email & SMS
-│   └── class-admin.php           # WP admin UI
-├── admin/
-│   ├── class-bookings-list.php   # WP_List_Table
-│   └── views/
-│       ├── settings-rates.php
-│       ├── settings-notify.php
-│       └── booking-detail.php
-└── assets/
-    ├── css/admin.css
-    └── js/admin.js
-```
-
----
-
-## API Reference
-
-### WordPress REST API (`/wp-json/ctc/v1`)
-
-**Authentication:** All modifying endpoints require HMAC headers:
-
-```
-X-CTC-Key: {api_key}
-X-CTC-Timestamp: {unix_timestamp}
-X-CTC-Signature: HMAC_SHA256(secret, timestamp + raw_body)
-```
-
-**Endpoints:**
-
-- `POST /bookings` - Create booking (sends notifications)
-- `GET /bookings` - List bookings (paginated, filterable)
-- `GET /bookings/{id}` - Get booking detail with notes
-- `PATCH /bookings/{id}` - Update booking fields
-- `POST /bookings/{id}/notify` - Send ETA/custom notification
-- `GET /rates` - Get current rates (public, cacheable)
-- `GET /downloads` - Get compliance document URLs (public)
-
 ---
 
 ## Environment Variables
@@ -358,32 +236,15 @@ X-CTC-Signature: HMAC_SHA256(secret, timestamp + raw_body)
 ### Next.js (`.env.local`)
 
 ```bash
-# WordPress Connection
-CTC_WP_API_BASE=http://ctcbackend.local/wp-json/ctc/v1
-CTC_API_KEY=your-api-key-here
-CTC_API_SECRET=your-secret-here
+# Resend API Configuration
+# Get your API key from: https://resend.com/api-keys
+RESEND_API_KEY=re_your_api_key_here
 
-# Admin Protection
-ADMIN_PASS_HASH=bcrypt-hash-here
+# Contractor Email (where booking notifications will be sent)
+CONTRACTOR_EMAIL=your-personal-email@example.com
 
 # Optional
-NEXT_PUBLIC_SITE_URL=https://ctc.example.com
-```
-
-### WordPress (`wp-config.php` or `.env`)
-
-```php
-// API Authentication
-define('CTC_API_KEY', 'your-api-key-here');
-define('CTC_API_SECRET', 'your-secret-here');
-
-// Twilio
-define('CTC_TWILIO_SID', 'AC...');
-define('CTC_TWILIO_TOKEN', 'your-token');
-define('CTC_TWILIO_FROM', '+61...');
-
-// Timezone
-define('CTC_TIMEZONE', 'Australia/Melbourne');
+NEXT_PUBLIC_SITE_URL=https://ctc-smarthands.vercel.app
 ```
 
 ---
@@ -392,28 +253,23 @@ define('CTC_TIMEZONE', 'Australia/Melbourne');
 
 ### Daily Workflow
 
-1. **Start WordPress:** Open Local by Flywheel, start `ctcbackend` site
-2. **Start Next.js:** `cd /Users/abuuuthman/projects/ctc_project && npm run dev`
-3. **Code → Test → Commit:**
+1. **Start Next.js:** `cd /Users/abuuuthman/projects/ctc_project/web && pnpm dev`
+2. **Code → Test → Commit:**
    - Write feature/component
    - Test with Chrome DevTools MCP
-   - Run Playwright tests
    - Commit with descriptive message
 
 ### Before Each Commit
 
 ```bash
+# Change to web directory
+cd web
+
 # Run type check
-npm run type-check
+pnpm run build
 
 # Run linting
-npm run lint
-
-# Run tests
-npm run test
-
-# Build to catch errors
-npm run build
+pnpm run lint
 ```
 
 ### Git Commit Messages
@@ -422,11 +278,10 @@ Follow conventional commits:
 
 ```
 feat: add booking form validation
-fix: correct HMAC timestamp calculation
+fix: correct email template formatting
 docs: update API endpoint documentation
-test: add E2E test for admin dashboard
 style: improve mobile responsive layout
-refactor: extract HMAC logic into utility
+refactor: extract email templates into separate files
 ```
 
 ---
@@ -450,24 +305,27 @@ refactor: extract HMAC logic into utility
 
 ## Deployment Checklist
 
-### WordPress (Production)
-
-- [ ] Upload compliance PDFs to Media Library
-- [ ] Configure SMTP credentials (wp-config.php)
-- [ ] Set Twilio production credentials
-- [ ] Generate strong API key and secret
-- [ ] Test REST API endpoints with production URLs
-- [ ] Verify CORS settings allow production Next.js domain
-
 ### Next.js (Vercel)
 
 - [ ] Connect GitHub repository
-- [ ] Set environment variables in Vercel dashboard
-- [ ] Configure custom domain DNS
-- [ ] Enable Vercel Analytics
-- [ ] Test production build locally (`npm run build && npm start`)
+- [ ] Set environment variables in Vercel dashboard:
+  - `RESEND_API_KEY`
+  - `CONTRACTOR_EMAIL`
+  - `NEXT_PUBLIC_SITE_URL`
+- [ ] Configure custom domain DNS (if applicable)
+- [ ] Enable Vercel Analytics (optional)
+- [ ] Test production build locally (`pnpm run build && pnpm start`)
 - [ ] Deploy and verify all pages load
 - [ ] Test booking submission end-to-end
+- [ ] Verify emails arrive at contractor and client addresses
+
+### Resend Configuration
+
+- [ ] Create Resend account at https://resend.com
+- [ ] Generate API key
+- [ ] Verify domain (ctc-smarthands.com) for professional email sending
+- [ ] Test email delivery in Resend dashboard
+- [ ] Monitor email logs for failed deliveries
 
 ---
 
@@ -481,13 +339,14 @@ refactor: extract HMAC logic into utility
 6. **Think about disabilities** - Design for screen readers, keyboard-only users, color blindness
 7. **Professional color usage** - No black on black, no light on light
 8. **Use Chrome DevTools MCP proactively** - Test visual design and accessibility at each checkpoint
+9. **Use pnpm** - Not npm or yarn, always use pnpm for package management
 
 ---
 
 ## Support & Resources
 
-- **WordPress Codex:** https://developer.wordpress.org/
 - **Next.js Docs:** https://nextjs.org/docs
+- **Resend Docs:** https://resend.com/docs
 - **shadcn/ui:** https://ui.shadcn.com/
 - **Tailwind CSS:** https://tailwindcss.com/docs
 - **WCAG Guidelines:** https://www.w3.org/WAI/WCAG21/quickref/
@@ -495,155 +354,235 @@ refactor: extract HMAC logic into utility
 
 ---
 
-**Last Updated:** October 21, 2025
-**Project Status:** MVP Development Phase
+## Pricing & Service Model
+
+### Contractor Rates (November 2025)
+
+**Hourly Rates:**
+- Business hours (Mon-Fri 8am-6pm): $110/hr (1.5hr minimum)
+- After-hours (Mon-Fri 6pm-11pm): $140/hr (2hr minimum)
+- Weekends (Sat-Sun): $130/hr (2hr minimum)
+- Public holidays: $165/hr (2hr minimum)
+
+**Travel Charges:**
+- $1.00 per kilometre (round trip from Melbourne)
+- First 50km one-way deducted (free Melbourne metro zone)
+- Examples:
+  - Bendigo: 300km RT = $300 travel
+  - Shepparton: 360km RT = $360 travel
+  - Echuca: 400km RT = $400 travel
+  - Ballarat: 240km RT = $240 travel
+
+**Retainer Options:**
+- From $1,800/month (includes set hours + priority dispatch)
+- Flexible engagement models (one-off, block hours, retainer, project-based)
+
+### Coverage Areas
+
+**Primary hubs (same-day dispatch available):**
+- Bendigo (150km from Melbourne)
+- Ballarat (120km)
+- Shepparton (180km)
+- Echuca (200km)
+
+**Service philosophy:**
+- Help MSPs meet their client SLAs with same-day regional dispatch
+- No false "4-hour response guarantee" - be honest about travel times (2-4 hours)
+- Confirm availability and ETA within 30 minutes of request
+- Professional white-label service representing client brands
 
 ---
 
-## Blog System Improvements (October 2025)
+## Project Status & Recent Changes
 
-### Professional Blog Design Updates
+**Last Updated:** November 8, 2025
+**Current Phase:** MVP Launch Ready
 
-The blog system has been enhanced with professional formatting based on industry-standard MSP/IT blog best practices:
+### MVP Architecture (November 2025)
 
-#### Content Width & Layout
-- **Widened article content** from 896px (`max-w-4xl`) to **1600px (`max-w-[1600px]`)**
-- Matches professional MSP blogs like NinjaOne (1400px+ standard)
-- Improved readability on modern wide screens
-- Significantly reduced white space on sides for professional appearance
+**What Changed:**
+- **Removed WordPress entirely** - No backend database, no admin dashboard, no plugin
+- **Replaced with Resend API** - Pure email notification workflow
+- **Simplified for quick launch** - Focus on getting MSP clients, not building infrastructure
 
-#### Typography Improvements
-- **Body text**: Increased to 17px (from 14-16px) for optimal readability
-- **Headings**: Larger, bolder hierarchy (H1: 60px, H2: 36px with border, H3: 24px)
-- **Line height**: Relaxed spacing (`leading-relaxed`) for comfortable reading
-- **Minimum 16px base** following professional blog standards
+**Why Email-Only:**
+- Faster time to market (launch this week vs. months of WordPress development)
+- No hosting costs for backend
+- No database management complexity
+- Inquiries go straight to contractor email inbox
+- Can add database/CRM later if volume justifies it
 
-#### Blog Listing Page (`/blog`)
-- **Featured images displaying**: Fixed image loading with `unoptimized={true}` for localhost images
-- **Clean card design** with professional stock photos from Unsplash
-- **Larger cards** with 32px padding (increased from 24px)
-- **Enhanced hover effects**: Smooth shadow transitions and subtle lift
-- **Better metadata display**: Calendar and user icons with improved spacing
-- **Professional CTAs**: "Read Article" with arrow icons
-- **Image dimensions**: 208px height (h-52) for consistent card appearance
+### Homepage & Messaging (November 2025)
 
-#### Individual Post Pages (`/blog/[slug]`)
-- **Content width**: Widened to 1600px (`max-w-[1600px]`) for professional appearance
-- **Featured hero image**: Full-width 384px height banner with gradient overlay
-- **Image optimization**: Using `unoptimized={true}` for localhost WordPress images
-- **Professional blog formatting**: Applied SEO best practices via automated script
-  - Shorter paragraphs (3-4 lines max) for improved readability
-  - Internal links to Core Webhub (corewebhub.com.au) for backlinking
-  - Core Webhub byline before conclusion for branding
-  - Tip callout boxes with emoji icons and colored borders
-  - Natural anchor text for internal linking
-- **H2 headings**: Added bottom borders for visual section separation
-- **Improved spacing**:
-  - H2: 48px top margin, 24px bottom
-  - H3: 32px top margin, 16px bottom
-  - Paragraphs: 24px bottom margin
-  - Lists: 24px vertical spacing
-- **Enhanced card styling**: Rounded corners, subtle shadows, better borders
-- **Larger CTA buttons**: Increased padding and rounded corners
+**SLA Messaging Corrections:**
+- Changed "4-hour response guarantee" to "Same-day dispatch"
+- Emphasize "Help MSPs meet their client SLAs" not "We have 4-hour SLA"
+- Travel time is 2-4 hours depending on location, confirm ETA within 30 minutes
+- Be transparent: same-day dispatch WHERE POSSIBLE, not guaranteed
 
-#### Files Modified
-- `/Users/abuuuthman/projects/ctc_project/web/src/app/blog/page.tsx`
-  - Re-added featured images with `unoptimized={true}` for localhost compatibility
-  - Fixed 400 errors on image loading from WordPress backend
-  - Enhanced card hover states with image zoom effect
-  - Improved metadata presentation
-  - Added 208px height (h-52) image containers
+**Updated Pages:**
+- **Homepage** ([page.tsx](/Users/abuuuthman/projects/ctc_project/web/src/app/page.tsx)):
+  - Hero: "Help your clients meet their SLAs with same-day regional dispatch"
+  - Stats banner: "Same-Day Regional Dispatch - Help you close SLAs"
+  - Coverage: 4 hubs (Bendigo, Ballarat, Shepparton, Echuca)
+  - FAQ with 7 MSP-focused questions
 
-- `/Users/abuuuthman/projects/ctc_project/web/src/app/blog/[slug]/page.tsx`
-  - Changed `max-w-6xl` to `max-w-[1600px]` (1200px → 1600px)
-  - Added `unoptimized={true}` to hero featured image
-  - Increased body text to 17px with `prose-p:text-[17px]`
-  - Added H2 bottom borders with `prose-h2:border-b`
-  - Enhanced spacing throughout all content sections
-  - Improved card styling with rounded corners and shadows
+- **Rates Page** ([page.tsx](/Users/abuuuthman/projects/ctc_project/web/src/app/rates/page.tsx)):
+  - Clear $110/hr + $1/km pricing
+  - Job cost calculator table (Bendigo 2hr = $520, Shepparton 2hr = $580, etc.)
+  - Example invoice breakdown with GST
 
-### Design Philosophy
-- **No gradients**: Solid colors only per design system
-- **WCAG AA compliant**: Maintained 4.5:1 contrast ratios
-- **Professional appearance**: Matches enterprise MSP blog standards
-- **Optimized readability**: Follows 2025 web typography best practices
+- **Booking Form** ([booking-form.tsx](/Users/abuuuthman/projects/ctc_project/web/src/components/forms/booking-form.tsx)):
+  - "Request Contractor Information" heading
+  - "30 minutes response during business hours" promise
+  - Location dropdown: Bendigo, Ballarat, Shepparton, Echuca, Other Regional VIC
+  - Success message: "We'll contact you within 30 minutes..."
+
+- **Header Navigation** ([header.tsx](/Users/abuuuthman/projects/ctc_project/web/src/components/layout/header.tsx)):
+  - Removed deleted pages (For MSPs, Coverage)
+  - Clean navigation: Home, Rates, Blog, Phone, Request Info
+
+### Email Notifications (Resend API)
+
+**Two emails sent on form submission:**
+
+1. **Contractor Notification** (to contractor inbox):
+   - Subject: "New MSP Inquiry: {company}"
+   - Contains: Company info, contact details, service type, location, description
+   - Action required prompt with contact details
+
+2. **Client Confirmation** (to inquirer):
+   - Subject: "CTC Smart-Hands - Request Received"
+   - Contains: Confirmation of receipt, pricing info ($110/hr + $1/km), urgent callout number
+   - Sets expectation: will contact shortly to discuss
 
 ---
 
-## Homepage UX/UI Improvements (October 2025)
-
-### Professional Business Positioning
-
-The homepage has been refined to present CTC as a professional contractor service (vendor) rather than an individual, with focus on B2B messaging for MSPs and IT service providers.
-
-#### Key Changes
-
-**Hero Section** (`/Users/abuuuthman/projects/ctc_project/web/src/app/page.tsx`):
-- **Badge**: Changed from "Smart-Hands Contractor | Regional Victoria" to "Professional On-Site Contractor | Regional Victoria"
-- **Headline**: Changed from "Your Trusted Regional IT Contractor" to "On-Site Support Where Your Team Can't Reach"
-- **Description**: Removed first-person language, emphasized professional contractor services and 4-hour response guarantee
-- **Result**: Clear value proposition for MSPs who need regional coverage
-
-**How It Works Section** (NEW):
-- Added 3-step process visualization:
-  1. **Submit Request** - Phone, email, or booking form submission
-  2. **On-Site Dispatch** - Technician follows client procedures
-  3. **Complete & Report** - Photo documentation and professional reporting
-- **Key Benefits Grid**:
-  - White-Label Service
-  - Flexible Engagement Models
-  - Fully Insured & Certified
-  - Transparent Pricing
-- **Design**: Numbered circular badges, center card highlighted with primary border
-- **Purpose**: Clarifies the collaboration workflow for potential MSP clients
-
-**Service Capabilities Section**:
-- **Renamed** from "What I Can Help With" to "Service Capabilities"
-- Removed all first-person language ("I can handle it" → "Professional contractor services")
-- Maintained existing MSP and Retail Vendor service cards
-
-**Header Navigation** (`/Users/abuuuthman/projects/ctc_project/web/src/components/layout/header.tsx`):
-- **Added phone number**: 0432 405 388 with phone icon (hidden on mobile/tablet, visible on large screens)
-- **Positioning**: Placed between "Blog" and "Request Info" button
-- **Styling**: Uses primary color with hover state to secondary
-- **Purpose**: Immediate contact option for urgent inquiries
-
-#### Files Modified
-
-1. `/Users/abuuuthman/projects/ctc_project/web/src/app/page.tsx`
-   - Hero section messaging (lines 18-26)
-   - Added "How It Works" section (lines 65-155)
-   - Renamed "Service Capabilities" section (lines 161-166)
-   - Added Accordion component import for future FAQ
-
-2. `/Users/abuuuthman/projects/ctc_project/web/src/components/layout/header.tsx`
-   - Added phone number link in desktop navigation (lines 73-81)
-   - Includes phone icon SVG and tel: link
-
-3. `/Users/abuuuthman/projects/ctc_project/web/src/components/ui/accordion.tsx`
-   - Added shadcn/ui Accordion component (installed via CLI)
-
-### Design Principles Applied
-
-- **Professional Voice**: Eliminated first-person language, uses business-to-business tone
-- **Clear Value Proposition**: Focuses on being a contractor service for MSPs/IT providers
-- **White-Label Positioning**: Emphasizes that CTC represents client brands
-- **Workflow Integration**: "How It Works" explains seamless process integration
-- **Accessibility**: Phone number in header provides immediate contact option
-- **No Gradients**: Maintained solid color design system
-- **WCAG AA Compliance**: All new sections maintain 4.5:1 contrast ratios
-
-### User Experience Goals
-
-1. **MSP Decision-Makers**: Understand instantly that CTC is a professional contractor vendor
-2. **Clear Process**: 3-step workflow shows how collaboration works
-3. **Trust Signals**: Insurance, certifications, and transparent pricing prominently displayed
-4. **Easy Contact**: Phone number in header for immediate inquiries
-5. **Scalability**: Flexible engagement models (one-off, retainer, project-based)
+**Status:**
+- ✅ Phase 1-8 Complete: Minimal MVP ready for deployment
+- ⏭️ Next: Deploy to Vercel with Resend API key
+- 🎯 Goal: Launch this week to start getting MSP clients
 
 ---
 
-**Last Updated:** October 28, 2025
-**Blog Status:** Professional formatting complete with SEO optimization - 5 posts published with Core Webhub branding and internal linking
-**Homepage Status:** Professional B2B positioning with "How It Works" section and phone contact in header
+## November 8, 2025 - Branding & Regional Coverage Updates
 
+### Session Summary
+
+**Completed Work:**
+1. ✅ Fixed critical email template bug (undefined values)
+2. ✅ Updated all branding from "CTC Smart-Hands" to "Complete Tech Care (CTC)"
+3. ✅ Expanded regional coverage from 5 cities to statewide Victoria
+4. ✅ Created PROGRESS.md file for tracking development
+
+### Branding Updates
+
+**Problem:** Email templates showed "undefined" for contact info because API route used camelCase variables but Zod schema expected snake_case.
+
+**Fix Applied:**
+- Updated API route destructuring in [route.ts:26-36](/Users/abuuuthman/projects/ctc_project/web/src/app/api/book/route.ts#L26-L36)
+- Changed `contactName` → `contact_name`, `contactEmail` → `contact_email`, etc.
+- Both contractor and client emails now display all contact information correctly
+
+**Branding Standardization:**
+- Company name: **Complete Tech Care (CTC)**
+- Updated in:
+  - Email templates (contractor + client notifications)
+  - Header component: "Complete Tech Care"
+  - Footer component: "Complete Tech Care" + "Same-day dispatch guarantee"
+  - Layout metadata: Title, description, keywords
+  - Schema.org data: All URLs, names, contact info
+  - Pricing schema: $110/hr (correct rate)
+
+**Contact Information:**
+- Email: completetechcare@gmail.com
+- Phone: +61432405388 (0432 405 388)
+- Email sender: `Complete Tech Care <onboarding@resend.dev>`
+
+### Regional Coverage Expansion
+
+**Problem:** Only listed 5 cities (Bendigo, Ballarat, Shepparton, Wodonga, Latrobe) - misleading for statewide service.
+
+**Solution:** Expanded to show comprehensive regional Victoria coverage.
+
+**Location Schema Updated** ([schemas.ts](/Users/abuuuthman/projects/ctc_project/web/src/lib/validations/schemas.ts)):
+```typescript
+export const locationSchema = z.enum([
+  'bendigo', 'ballarat', 'shepparton', 'echuca', 'wodonga',
+  'wangaratta', 'latrobe', 'geelong', 'warrnambool', 'mildura',
+  'horsham', 'sale', 'bairnsdale', 'swan_hill', 'other_regional',
+]);
+```
+
+**Booking Form Dropdown** ([booking-form.tsx](/Users/abuuuthman/projects/ctc_project/web/src/components/forms/booking-form.tsx)):
+- 14 major regional cities listed
+- Plus "Other Regional VIC" catch-all option
+- Latrobe Valley properly labeled as "Latrobe Valley (Morwell/Traralgon)"
+
+**Homepage Regional Section** ([page.tsx](/Users/abuuuthman/projects/ctc_project/web/src/app/page.tsx)):
+- Heading: "Statewide Regional Victoria Coverage"
+- Shows 8 major hubs in grid layout
+- Footer text: "Plus: Mildura, Horsham, Sale, Bairnsdale, Swan Hill, Latrobe Valley, and all other regional Victorian locations"
+
+**Footer Coverage Area** ([footer.tsx](/Users/abuuuthman/projects/ctc_project/web/src/components/layout/footer.tsx)):
+- Lists 6 major cities (Bendigo, Ballarat, Shepparton, Geelong, Warrnambool, Mildura)
+- Footer note: "+ All Regional VIC"
+
+**Schema.org SEO Data** ([schema.ts](/Users/abuuuthman/projects/ctc_project/web/src/lib/schema.ts)):
+- Added 9 cities with Wikidata IDs for structured data
+- Added Victoria state entity for broader geographic coverage
+- Helps Google/AI understand full service area
+
+### Files Modified This Session
+
+1. `/web/src/app/api/book/route.ts` - Fixed variable names, updated branding in both emails
+2. `/web/src/lib/validations/schemas.ts` - Expanded location enum to 15 options
+3. `/web/src/components/forms/booking-form.tsx` - Updated dropdown with all locations
+4. `/web/src/app/page.tsx` - Expanded regional coverage section
+5. `/web/src/components/layout/header.tsx` - Updated branding
+6. `/web/src/components/layout/footer.tsx` - Updated branding + expanded coverage list
+7. `/web/src/app/layout.tsx` - Updated metadata (title, description, keywords)
+8. `/web/src/lib/schema.ts` - Updated all Schema.org data with correct branding, pricing, locations
+9. `/PROGRESS.md` - Created tracking file (NEW)
+10. `/CLAUDE.md` - This documentation (UPDATED)
+
+### Testing Performed
+
+- ✅ Verified branding displays correctly on homepage via Chrome MCP snapshot
+- ✅ Verified booking form shows expanded location dropdown
+- ✅ Confirmed email templates have correct variable mapping
+- ⏳ Need to test actual email delivery with expanded location options
+
+### Remaining Work (Per Approved Plan)
+
+**Phase 2: Enhanced Booking Form**
+- Add urgency level dropdown (ASAP / Same-day / Scheduled)
+- Add PO Number field (optional)
+- Add Ticket Reference field (optional)
+- Add Equipment details (make/model)
+- Add Site access information (contact, codes, parking)
+- Add Preferred contact method (phone/email)
+- Update Zod schema and email templates
+
+**Phase 3: Realistic Service Pages** (6 pages)
+- `/services/pos-retail` - POS & Retail Equipment Support
+- `/services/equipment-swap` - Hardware Replacement
+- `/services/onsite-support` - L1-L2 Break/Fix
+- `/services/infrastructure` - Cabling & Rack Work
+- `/services/site-audits` - Site Surveys & Documentation
+- `/services/logistics` - Parts Delivery & Transport
+
+**Phase 4: Legal Pages**
+- Privacy Policy
+- Terms of Service
+- Compliance documentation page
+
+**Phase 5: Final Polish**
+- Custom 404 page
+- Replace favicon
+- Final Chrome MCP testing
+- Vercel deployment
+
+---
+
+**Next Steps:** Continue with Phase 2 (Enhanced Booking Form) to add professional MSP workflow fields.

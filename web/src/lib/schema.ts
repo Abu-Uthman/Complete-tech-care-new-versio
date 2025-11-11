@@ -1,24 +1,24 @@
 /**
  * Schema.org Structured Data Utilities
- * CTC Smart-Hands Project
+ * Complete Tech Care (CTC) Project
  *
  * Generates JSON-LD schema markup for SEO optimization
  */
 
 /**
- * Base organization schema for CTC Smart-Hands
+ * Base organization schema for Complete Tech Care
  */
 export function getOrganizationSchema() {
   return {
     '@type': 'Organization',
-    '@id': 'https://ctc-smarthands.com.au/#organization',
-    name: 'Complete Tech Care (CTC Smart-Hands)',
-    alternateName: 'CTC Smart-Hands',
-    url: 'https://ctc-smarthands.com.au',
-    logo: 'https://ctc-smarthands.com.au/logo.png',
-    description: 'Professional smart-hands IT support services across regional Victoria and Melbourne. 4-hour response guarantee for MSPs, retail vendors, and local businesses.',
-    email: 'support@ctc-smarthands.com.au',
-    telephone: '+61400000000',
+    '@id': 'https://completetechcare.com.au/#organization',
+    name: 'Complete Tech Care (CTC)',
+    alternateName: 'CTC',
+    url: 'https://completetechcare.com.au',
+    logo: 'https://completetechcare.com.au/logo.png',
+    description: 'Professional on-site IT contractor services across regional Victoria and Melbourne. Same-day dispatch guarantee for MSPs, retail vendors, and local businesses.',
+    email: 'completetechcare@gmail.com',
+    telephone: '+61432405388',
     address: {
       '@type': 'PostalAddress',
       addressLocality: 'Melbourne',
@@ -43,8 +43,33 @@ export function getOrganizationSchema() {
       },
       {
         '@type': 'City',
+        name: 'Echuca',
+        '@id': 'https://www.wikidata.org/wiki/Q2047993',
+      },
+      {
+        '@type': 'City',
         name: 'Wodonga',
         '@id': 'https://www.wikidata.org/wiki/Q2001766',
+      },
+      {
+        '@type': 'City',
+        name: 'Wangaratta',
+        '@id': 'https://www.wikidata.org/wiki/Q985006',
+      },
+      {
+        '@type': 'City',
+        name: 'Geelong',
+        '@id': 'https://www.wikidata.org/wiki/Q199253',
+      },
+      {
+        '@type': 'City',
+        name: 'Warrnambool',
+        '@id': 'https://www.wikidata.org/wiki/Q573346',
+      },
+      {
+        '@type': 'City',
+        name: 'Mildura',
+        '@id': 'https://www.wikidata.org/wiki/Q1010902',
       },
       {
         '@type': 'AdministrativeArea',
@@ -54,6 +79,11 @@ export function getOrganizationSchema() {
         '@type': 'City',
         name: 'Melbourne',
         '@id': 'https://www.wikidata.org/wiki/Q3141',
+      },
+      {
+        '@type': 'State',
+        name: 'Victoria',
+        '@id': 'https://www.wikidata.org/wiki/Q36687',
       },
     ],
     sameAs: [
@@ -69,12 +99,12 @@ export function getOrganizationSchema() {
 export function getLocalBusinessSchema() {
   return {
     '@type': 'LocalBusiness',
-    '@id': 'https://ctc-smarthands.com.au/#localbusiness',
-    name: 'Complete Tech Care - Smart-Hands Services',
-    image: 'https://ctc-smarthands.com.au/logo.png',
-    url: 'https://ctc-smarthands.com.au',
-    telephone: '+61400000000',
-    email: 'support@ctc-smarthands.com.au',
+    '@id': 'https://completetechcare.com.au/#localbusiness',
+    name: 'Complete Tech Care - On-Site IT Contractor',
+    image: 'https://completetechcare.com.au/logo.png',
+    url: 'https://completetechcare.com.au',
+    telephone: '+61432405388',
+    email: 'completetechcare@gmail.com',
     priceRange: '$$',
     address: {
       '@type': 'PostalAddress',
@@ -106,18 +136,18 @@ export function getLocalBusinessSchema() {
 }
 
 /**
- * Service schema for smart-hands IT support
+ * Service schema for on-site IT contractor services
  */
 export function getServiceSchema() {
   return {
     '@type': 'Service',
-    '@id': 'https://ctc-smarthands.com.au/#service',
-    name: 'Smart-Hands IT Support Services',
-    description: 'Professional on-site IT support including break/fix, equipment rollouts, POS support, network installations, and technical assistance for MSPs and retail vendors across regional Victoria.',
+    '@id': 'https://completetechcare.com.au/#service',
+    name: 'On-Site IT Contractor Services',
+    description: 'Professional on-site IT contractor services including break/fix, equipment rollouts, POS support, network installations, and technical assistance for MSPs and retail vendors across regional Victoria.',
     provider: {
       '@type': 'Organization',
       name: 'Complete Tech Care',
-      url: 'https://ctc-smarthands.com.au',
+      url: 'https://completetechcare.com.au',
     },
     areaServed: [
       { '@type': 'City', name: 'Bendigo, VIC' },
@@ -136,7 +166,7 @@ export function getServiceSchema() {
     ],
     hasOfferCatalog: {
       '@type': 'OfferCatalog',
-      name: 'Smart-Hands Services',
+      name: 'On-Site Contractor Services',
       itemListElement: [
         {
           '@type': 'Offer',
@@ -188,12 +218,12 @@ export function getLocationSchema(location: {
 }) {
   return {
     '@type': 'LocalBusiness',
-    '@id': `https://ctc-smarthands.com.au/locations/${location.name.toLowerCase()}#localbusiness`,
-    name: `CTC Smart-Hands - ${location.name}`,
+    '@id': `https://completetechcare.com.au/locations/${location.name.toLowerCase()}#localbusiness`,
+    name: `Complete Tech Care - ${location.name}`,
     description: location.description,
-    url: `https://ctc-smarthands.com.au/locations/${location.name.toLowerCase()}`,
-    telephone: '+61400000000',
-    email: 'support@ctc-smarthands.com.au',
+    url: `https://completetechcare.com.au/locations/${location.name.toLowerCase()}`,
+    telephone: '+61432405388',
+    email: 'completetechcare@gmail.com',
     priceRange: '$$',
     address: {
       '@type': 'PostalAddress',
@@ -228,15 +258,15 @@ export function getLocationSchema(location: {
 export function getPricingSchema() {
   return {
     '@type': 'Offer',
-    '@id': 'https://ctc-smarthands.com.au/rates#offer',
-    name: 'Smart-Hands IT Support Services',
-    description: 'Professional on-site IT support with transparent pricing',
-    url: 'https://ctc-smarthands.com.au/rates',
+    '@id': 'https://completetechcare.com.au/rates#offer',
+    name: 'On-Site IT Contractor Services',
+    description: 'Professional on-site IT contractor services with transparent pricing',
+    url: 'https://completetechcare.com.au/rates',
     priceCurrency: 'AUD',
-    price: '150.00',
+    price: '110.00',
     priceSpecification: {
       '@type': 'UnitPriceSpecification',
-      price: '150.00',
+      price: '110.00',
       priceCurrency: 'AUD',
       unitText: 'per hour',
     },
@@ -245,7 +275,7 @@ export function getPricingSchema() {
     seller: {
       '@type': 'Organization',
       name: 'Complete Tech Care',
-      url: 'https://ctc-smarthands.com.au',
+      url: 'https://completetechcare.com.au',
     },
   };
 }
@@ -257,24 +287,24 @@ export function getServiceAreaSchema() {
   return {
     '@context': 'https://schema.org',
     '@type': 'Service',
-    '@id': 'https://ctc-smarthands.com.au/coverage#service',
-    name: 'Regional Victoria IT Support Coverage',
-    description: '4-hour response guarantee to major regional Victorian hubs including Bendigo, Ballarat, Shepparton, Wodonga, and Latrobe Valley, plus same-day Melbourne metro support.',
+    '@id': 'https://completetechcare.com.au/coverage#service',
+    name: 'Regional Victoria IT Contractor Coverage',
+    description: 'Same-day dispatch guarantee to major regional Victorian hubs including Bendigo, Ballarat, Shepparton, Wodonga, and Latrobe Valley, plus same-day Melbourne metro support.',
     provider: {
       '@type': 'Organization',
       name: 'Complete Tech Care',
-      url: 'https://ctc-smarthands.com.au',
+      url: 'https://completetechcare.com.au',
     },
     areaServed: [
       {
         '@type': 'GeoShape',
         name: 'Regional Victoria Service Area',
-        description: '4-hour response zone',
+        description: 'Same-day dispatch zone',
       },
     ],
     serviceOutput: {
       '@type': 'ServiceChannel',
-      name: '4-Hour Response SLA',
+      name: 'Same-Day Dispatch SLA',
       availableLanguage: 'en-AU',
     },
   };

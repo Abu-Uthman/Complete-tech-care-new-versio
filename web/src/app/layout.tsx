@@ -12,9 +12,9 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "CTC Smart-Hands | Regional VIC On-Site IT Support",
-  description: "Complete Tech Care provides rapid 4-hour response smart-hands services across regional Victoria for MSPs, vendors, and local businesses. Bendigo, Ballarat, Shepparton, Wodonga, Latrobe.",
-  keywords: ["smart hands", "regional victoria", "IT support", "MSP", "on-site support", "bendigo", "ballarat", "shepparton"],
+  title: "Complete Tech Care | Regional VIC On-Site IT Support",
+  description: "Complete Tech Care provides same-day dispatch on-site contractor services across regional Victoria for MSPs, vendors, and local businesses. Bendigo, Ballarat, Shepparton, Wodonga, Latrobe.",
+  keywords: ["IT contractor", "regional victoria", "IT support", "MSP", "on-site support", "bendigo", "ballarat", "shepparton", "same-day dispatch"],
   authors: [{ name: "Complete Tech Care" }],
 };
 

@@ -22,40 +22,59 @@ export default function Home() {
               On-Site Support Where Your Team Can't Reach
             </h1>
             <p className="text-xl md:text-2xl text-text-secondary mb-10 max-w-3xl mx-auto leading-relaxed">
-              Professional on-site contractor services for MSPs and IT providers across regional Victoria. When client sites in Bendigo, Ballarat, Shepparton, Wodonga, or Latrobe Valley need immediate attention, CTC delivers with a 4-hour response guarantee.
+              Professional on-site contractor services for MSPs and IT providers across regional Victoria. Help your clients meet their SLAs with same-day regional dispatch to Bendigo, Ballarat, Shepparton, Echuca, and surrounding areas.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/for-msps">
+              <Link href="/book">
                 <Button size="lg" className="h-12 px-8 text-base font-semibold">
-                  For MSPs & IT Companies
+                  Request Contractor Info
                 </Button>
               </Link>
-              <Link href="/coverage">
+              <Link href="/rates">
                 <Button size="lg" variant="outline" className="h-12 px-8 text-base font-semibold border-primary text-primary hover:bg-primary hover:text-white">
-                  View Service Areas
+                  View Pricing & Rates
                 </Button>
               </Link>
             </div>
 
+            {/* Stats Banner */}
+            <div className="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-3xl mx-auto">
+              <div className="text-center p-4 bg-background rounded-lg border border-border">
+                <div className="text-3xl font-bold text-primary mb-1">100%</div>
+                <div className="text-sm text-text-secondary">Insurance Compliant</div>
+                <div className="text-xs text-text-tertiary mt-1">$20M Liability + PI</div>
+              </div>
+              <div className="text-center p-4 bg-background rounded-lg border border-border">
+                <div className="text-3xl font-bold text-primary mb-1">Same-Day</div>
+                <div className="text-sm text-text-secondary">Regional Dispatch</div>
+                <div className="text-xs text-text-tertiary mt-1">Help you close SLAs</div>
+              </div>
+              <div className="text-center p-4 bg-background rounded-lg border border-border">
+                <div className="text-3xl font-bold text-primary mb-1">MEL</div>
+                <div className="text-sm text-text-secondary">Melbourne Based</div>
+                <div className="text-xs text-text-tertiary mt-1">Serving VIC statewide</div>
+              </div>
+            </div>
+
             {/* Trust Badges */}
-            <div className="mt-12 flex flex-wrap items-center justify-center gap-6 text-sm text-text-tertiary">
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-6 text-sm text-text-tertiary">
               <div className="flex items-center gap-2">
                 <svg className="w-5 h-5 text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                <span>$20M Public Liability</span>
+                <span>Police Checked & Verified</span>
               </div>
               <div className="flex items-center gap-2">
                 <svg className="w-5 h-5 text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                <span>Police Checked</span>
+                <span>Coles & Woolworths Inducted</span>
               </div>
               <div className="flex items-center gap-2">
                 <svg className="w-5 h-5 text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                <span>Vendor Certified</span>
+                <span>PO/SOW/SLA Fluent</span>
               </div>
             </div>
           </div>
@@ -82,7 +101,7 @@ export default function Home() {
               </div>
               <h3 className="text-xl font-bold text-primary mb-3">Submit Request</h3>
               <p className="text-sm text-text-secondary">
-                Send job details via phone, email, or booking form. Receive availability confirmation and ETA within 30 minutes.
+                Send job details via phone (0432 405 388), email, or booking form. Same-day dispatch available for urgent SLA-critical client issues.
               </p>
             </Card>
 
@@ -93,7 +112,7 @@ export default function Home() {
               </div>
               <h3 className="text-xl font-bold text-primary mb-3">On-Site Dispatch</h3>
               <p className="text-sm text-text-secondary">
-                Technician arrives at client site, follows your procedures, and completes work under your guidance and direction.
+                Technician arrives at client site, follows your procedures, contacts your L2 support as needed, and represents your brand professionally.
               </p>
             </Card>
 
@@ -180,7 +199,7 @@ export default function Home() {
                   <svg className="w-5 h-5 text-secondary mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                   </svg>
-                  <span>4-hour response to regional sites</span>
+                  <span>Same-day dispatch for SLA-critical issues</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <svg className="w-5 h-5 text-secondary mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
@@ -248,26 +267,114 @@ export default function Home() {
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-bold text-primary mb-4">
-                Regional Coverage You Can Count On
+                Statewide Regional Victoria Coverage
               </h2>
-              <p className="text-lg text-text-secondary">
-                4-hour response guarantee to five major regional Victorian hubs
+              <p className="text-lg text-text-secondary mb-2">
+                Same-day dispatch available across all major regional Victorian hubs
+              </p>
+              <p className="text-base text-text-tertiary">
+                Serving Bendigo, Ballarat, Shepparton, Echuca, Wodonga, Wangaratta, Geelong, Warrnambool, Mildura, Latrobe Valley, and all surrounding regional areas
               </p>
             </div>
 
-            <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
-              {['Bendigo', 'Ballarat', 'Shepparton', 'Wodonga', 'Latrobe Valley'].map((location) => (
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+              {['Bendigo', 'Ballarat', 'Shepparton', 'Echuca', 'Wodonga', 'Wangaratta', 'Geelong', 'Warrnambool'].map((location) => (
                 <div key={location} className="bg-background border-2 border-border rounded-lg p-6 text-center hover:border-secondary transition-colors">
                   <svg className="w-8 h-8 text-secondary mx-auto mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                   </svg>
                   <h3 className="font-semibold text-primary">{location}</h3>
-                  <p className="text-sm text-text-tertiary mt-1">4-hour response</p>
+                  <p className="text-sm text-text-tertiary mt-1">Same-day available</p>
                 </div>
               ))}
             </div>
+
+            <div className="text-center">
+              <p className="text-sm text-text-secondary">
+                <strong>Plus:</strong> Mildura, Horsham, Sale, Bairnsdale, Swan Hill, Latrobe Valley, and all other regional Victorian locations
+              </p>
+            </div>
           </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="container mx-auto px-4 py-20">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-primary mb-4">
+              Frequently Asked Questions
+            </h2>
+            <p className="text-lg text-text-secondary">
+              Common questions about working with CTC Smart-Hands contractor services
+            </p>
+          </div>
+
+          <Accordion type="single" collapsible className="w-full">
+            <AccordionItem value="item-1">
+              <AccordionTrigger className="text-left">
+                Do you provide after-hours or emergency support?
+              </AccordionTrigger>
+              <AccordionContent className="text-text-secondary">
+                Yes, after-hours and weekend callouts are available with advance notice. Same-day emergency dispatch can be arranged for urgent SLA-critical client issues. Standard after-hours rates ($140/hr) apply. Contact 0432 405 388 immediately for urgent callouts.
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem value="item-2">
+              <AccordionTrigger className="text-left">
+                Can we use our own company branding when you visit client sites?
+              </AccordionTrigger>
+              <AccordionContent className="text-text-secondary">
+                Absolutely. This is a white-label service - technicians represent your company brand. We can wear your branded apparel, use your documentation templates, and follow your client communication protocols. Your clients work with your team; contractor services remain transparent to them.
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem value="item-3">
+              <AccordionTrigger className="text-left">
+                What happens if you can't resolve the issue on-site?
+              </AccordionTrigger>
+              <AccordionContent className="text-text-secondary">
+                If an issue requires escalation, we contact you immediately with detailed diagnostics and recommendations. You decide next steps - whether to continue troubleshooting remotely, order parts, or schedule a return visit. You're only billed for time spent on-site and any approved additional work.
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem value="item-4">
+              <AccordionTrigger className="text-left">
+                How do you handle parts procurement and logistics?
+              </AccordionTrigger>
+              <AccordionContent className="text-text-secondary">
+                We can work with your existing parts suppliers and procurement processes. Typically, you ship parts to the site or arrange pickup, and we handle the installation/swap-out. For urgent needs, we can source parts locally with your approval and provide receipts for reimbursement or markup as per your standard process.
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem value="item-5">
+              <AccordionTrigger className="text-left">
+                Do you integrate with PSA tools like ConnectWise or Autotask?
+              </AccordionTrigger>
+              <AccordionContent className="text-text-secondary">
+                Service reporting is provided via email in formats compatible with most PSA systems. We can adapt our documentation to match your ticketing workflows. For retainer clients with high volumes, custom integration options can be discussed to streamline your processes.
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem value="item-6">
+              <AccordionTrigger className="text-left">
+                How quickly can you get to regional sites?
+              </AccordionTrigger>
+              <AccordionContent className="text-text-secondary">
+                Same-day dispatch is available for urgent SLA-critical issues across Bendigo, Ballarat, Shepparton, Echuca, and surrounding areas during business hours (Mon-Fri, 8am-6pm AEST). Travel time varies by location (2-4 hours from Melbourne). We confirm availability and ETA within 30 minutes of your request to help you meet your client SLAs.
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem value="item-7">
+              <AccordionTrigger className="text-left">
+                How do invoicing and payment terms work?
+              </AccordionTrigger>
+              <AccordionContent className="text-text-secondary">
+                We work with your standard payment terms and processes. For per-incident work, invoices are submitted after job completion with detailed time logs and photographic documentation. Retainer clients receive monthly invoices with included hours tracking and any overflow billing. PO/SOW arrangements are standard practice.
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
         </div>
       </section>
 
@@ -282,7 +389,7 @@ export default function Home() {
               Get our contractor information pack including capabilities overview, insurance certificates, and flexible rate sheet options.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/for-msps">
+              <Link href="/book">
                 <Button size="lg" variant="secondary" className="h-12 px-8 text-base font-semibold">
                   Request Contractor Info
                 </Button>

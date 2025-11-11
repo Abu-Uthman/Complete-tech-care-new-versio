@@ -1,24 +1,26 @@
 # CTC Smart-Hands
 
-> Rapid-response regional VIC smart-hands services for MSPs & retail vendors
+> Professional on-site contractor services for MSPs & IT vendors across regional Victoria
 
-**Complete Tech Care (CTC)** provides 4-hour on-site response to Bendigo, Ballarat, Shepparton, Wodonga, and Latrobe, plus friendly IT support for Melbourne homes & small businesses.
+**Complete Tech Care (CTC)** provides same-day dispatch smart-hands services to Bendigo, Ballarat, Shepparton, Echuca, and surrounding areas. White-label contractor support helping MSPs meet their client SLAs.
 
 ---
 
 ## Project Architecture
 
-**Headless CMS Approach:**
+**Minimal Email-Only Backend:**
 
 ```
-┌────────────────────┐         REST API (HMAC)          ┌──────────────────────┐
-│  Next.js Frontend  │  ───────────────────────────────►  │  WordPress Backend   │
-│  localhost:3000    │                                   │  ctcbackend.local    │
-│  - Public pages    │  ◄───────────────────────────────  │  - Custom plugin     │
-│  - Booking form    │         JSON Response             │  - Bookings DB       │
-│  - Admin dashboard │                                   │  - Notifications     │
-└────────────────────┘                                   └──────────────────────┘
+┌────────────────────────┐         HTTPS POST          ┌──────────────────┐
+│   Next.js Frontend     │  ───────────────────────────►  │  Resend API      │
+│   Vercel Deployment    │                               │  Email Service   │
+│   - Public pages       │  ◄───────────────────────────  │  Transactional   │
+│   - Booking form       │         Email Sent            │  HTML Emails     │
+│   - Blog               │                               └──────────────────┘
+└────────────────────────┘
 ```
+
+**Simple flow:** User submits booking form → Next.js API route → Resend sends email → Contractor receives notification
 
 ---
 
@@ -27,24 +29,19 @@
 ### Frontend
 - **Framework:** Next.js 15 (App Router)
 - **Language:** TypeScript (strict mode)
-- **Styling:** Tailwind CSS + shadcn/ui
+- **Styling:** Tailwind CSS v4 + shadcn/ui
 - **Package Manager:** pnpm
 - **Deployment:** Vercel
 
-### Backend
-- **CMS:** WordPress 6.6+
-- **PHP:** 8.2+
-- **Plugin:** Custom `ctc-smart-hands`
-- **Database:** MySQL 8.0
-- **Environment:** Local by Flywheel (dev)
+### Email Notifications
+- **Service:** Resend (https://resend.com)
+- **Templates:** @react-email/components (React-based HTML emails)
+- **Validation:** Zod schemas for form data
 
-### Authentication
-- **Method:** HMAC SHA-256 (server-to-server)
-- **Headers:** X-CTC-Key, X-CTC-Timestamp, X-CTC-Signature
-
-### Notifications
-- **Email:** WordPress wp_mail (SMTP)
-- **SMS:** Twilio API
+### Content
+- **Blog:** Standalone Next.js pages (5 MSP-focused posts)
+- **Rates:** Static content in Next.js pages
+- **Downloads:** Static PDF files in `/public/downloads/`
 
 ---
 
@@ -52,51 +49,50 @@
 
 ### Prerequisites
 
-- **WordPress:** Local by Flywheel with PHP 8.2+
 - **Node.js:** v20+ (for Next.js 15)
 - **pnpm:** Latest version
+- **Resend Account:** Free tier available at https://resend.com
 
 ```bash
 # Install pnpm if not already installed
 npm install -g pnpm
 ```
 
-### 1. WordPress Setup
-
-1. Ensure Local by Flywheel site is running at `ctcbackend.local`
-2. Activate the `ctc-smart-hands` plugin:
-   - Navigate to WordPress admin → Plugins
-   - Activate "CTC Smart-Hands"
-3. Configure plugin settings:
-   - Settings → CTC Rates (set hourly rates, travel model)
-   - Settings → CTC Notifications (SMTP, Twilio credentials)
-   - Settings → CTC API (generate API key and secret)
-
-### 2. Next.js Setup
+### 1. Clone and Install
 
 ```bash
-cd frontend
+cd ctc_project/web
 
 # Install dependencies with pnpm
 pnpm install
+```
 
-# Create .env.local file
-cp .env.example .env.local
+### 2. Environment Setup
 
-# Edit .env.local with your credentials
-# CTC_WP_API_BASE=http://ctcbackend.local/wp-json/ctc/v1
-# CTC_API_KEY=your-key-from-wp-admin
-# CTC_API_SECRET=your-secret-from-wp-admin
+Create `.env.local` in the `/web` directory:
 
-# Start development server
+```bash
+# Copy example file
+cp .env.local.example .env.local
+
+# Edit .env.local with your credentials:
+# RESEND_API_KEY=re_your_api_key_here
+# CONTRACTOR_EMAIL=your-email@example.com
+```
+
+**Get your Resend API key:**
+1. Sign up at https://resend.com
+2. Navigate to API Keys
+3. Create a new API key
+4. Copy to `.env.local`
+
+### 3. Start Development Server
+
+```bash
 pnpm dev
 ```
 
-### 3. Access the Application
-
-- **Frontend:** http://localhost:3000
-- **WordPress Admin:** http://ctcbackend.local/wp-admin
-- **API Endpoint:** http://ctcbackend.local/wp-json/ctc/v1
+Open http://localhost:3000 to see the site.
 
 ---
 
@@ -104,40 +100,34 @@ pnpm dev
 
 ```
 ctc_project/
-├── app/public/                    # WordPress installation
-│   └── wp-content/
-│       └── plugins/
-│           └── ctc-smart-hands/   # Custom plugin
-│               ├── ctc-smart-hands.php
-│               ├── includes/
-│               │   ├── class-database.php
-│               │   ├── class-rest-api.php
-│               │   ├── class-auth.php
-│               │   └── class-notify.php
-│               └── admin/
-├── frontend/                      # Next.js application
-│   ├── app/
-│   │   ├── (public)/              # Public pages
-│   │   ├── admin/                 # Protected admin
-│   │   └── api/                   # API routes
-│   ├── components/
-│   │   ├── forms/
-│   │   │   └── booking-form.tsx   # Main booking form
-│   │   ├── display/
-│   │   └── ui/                    # shadcn components
-│   ├── lib/
-│   │   ├── wordpress/
-│   │   │   ├── client.ts          # API client
-│   │   │   ├── types.ts           # TypeScript types
-│   │   │   └── hmac.ts            # HMAC signing
-│   │   └── validations/
-│   │       └── booking-schema.ts  # Zod schemas
-│   ├── .env.local                 # Environment vars
-│   └── package.json
-├── docs/                          # Documentation
-│   ├── PRD.md                     # Product requirements
-│   ├── API.md                     # API documentation
-│   └── WORKFLOW.md                # Developer guide
+├── web/                           # Next.js application
+│   ├── src/
+│   │   ├── app/
+│   │   │   ├── page.tsx           # Homepage
+│   │   │   ├── rates/             # Rates page
+│   │   │   ├── blog/              # Blog (5 posts)
+│   │   │   ├── book/              # Booking form
+│   │   │   └── api/
+│   │   │       └── book/
+│   │   │           └── route.ts   # Form submission → Resend
+│   │   ├── components/
+│   │   │   ├── forms/
+│   │   │   │   └── booking-form.tsx
+│   │   │   ├── layout/
+│   │   │   │   ├── header.tsx
+│   │   │   │   └── footer.tsx
+│   │   │   └── ui/                # shadcn components
+│   │   ├── lib/
+│   │   │   └── validations/
+│   │   │       └── schemas.ts     # Zod validation
+│   │   └── emails/
+│   │       └── booking-notification.tsx
+│   ├── public/
+│   │   └── downloads/             # Compliance PDFs
+│   ├── .env.local.example
+│   ├── package.json
+│   └── tailwind.config.ts
+├── blog-posts/                    # Blog content backups
 ├── .gitignore
 ├── CLAUDE.md                      # AI assistant guidance
 └── README.md
@@ -149,18 +139,17 @@ ctc_project/
 
 ### Daily Development
 
-1. **Start WordPress:** Open Local by Flywheel, start `ctcbackend` site
-2. **Start Next.js:** `cd frontend && pnpm dev`
-3. **Code → Test → Commit:**
+1. **Start Next.js:** `cd web && pnpm dev`
+2. **Code → Test → Commit:**
    - Write feature/component
-   - Test with Chrome DevTools
-   - Run tests: `pnpm test`
+   - Test form submission (emails sent to contractor)
+   - Run type check: `pnpm type-check`
    - Commit with descriptive message
 
 ### Before Each Commit
 
 ```bash
-cd frontend
+cd web
 
 # Type check
 pnpm type-check
@@ -168,52 +157,26 @@ pnpm type-check
 # Lint
 pnpm lint
 
-# Test
-pnpm test
-
 # Build (catches production errors)
 pnpm build
 ```
 
-### Testing WordPress API
+### Testing Email Notifications
 
-Use Postman or curl to test REST endpoints:
-
-```bash
-# Test public endpoint (no auth)
-curl http://ctcbackend.local/wp-json/ctc/v1/rates
-
-# Test authenticated endpoint (requires HMAC headers)
-# See docs/API.md for HMAC signing examples
-```
+1. Fill out booking form at http://localhost:3000/book
+2. Submit form
+3. Check configured `CONTRACTOR_EMAIL` inbox
+4. Verify email contains all booking details
 
 ---
 
-## WordPress REST API
+## Key Routes
 
-**Base URL:** `http://ctcbackend.local/wp-json/ctc/v1`
-
-### Public Endpoints
-
-- `GET /rates` - Get current rates
-- `GET /downloads` - Get compliance document URLs
-
-### Authenticated Endpoints (HMAC Required)
-
-- `POST /bookings` - Create booking (triggers notifications)
-- `GET /bookings` - List bookings (paginated, filterable)
-- `GET /bookings/{id}` - Get booking detail
-- `PATCH /bookings/{id}` - Update booking
-- `POST /bookings/{id}/notify` - Send notification
-
-**Authentication Headers:**
-```
-X-CTC-Key: your-api-key
-X-CTC-Timestamp: 1729526400
-X-CTC-Signature: hmac-sha256-signature
-```
-
-See `docs/API.md` for detailed documentation.
+- **`/`** - Homepage (hero, services, FAQ)
+- **`/rates`** - Pricing table ($110/hr + $1.00/km travel)
+- **`/blog`** - 5 MSP-focused blog posts
+- **`/book`** - Booking form (sends email via Resend)
+- **`/api/book`** - Form submission endpoint
 
 ---
 
@@ -230,7 +193,7 @@ See `docs/API.md` for detailed documentation.
 --warning: #F59E0B;      /* amber-500 */
 ```
 
-**Rules:**
+**Design Rules:**
 - ❌ NO gradients (solid colors only)
 - ✅ Minimum 4.5:1 contrast ratio for text
 - ✅ Visible focus indicators
@@ -245,80 +208,161 @@ See `docs/API.md` for detailed documentation.
 
 ---
 
-## Testing
+## Deployment to Vercel
 
-### Unit Tests
+### Prerequisites
 
-```bash
-cd frontend
-pnpm test
-```
+1. **GitHub Repository:** Push code to GitHub
+2. **Vercel Account:** Sign up at https://vercel.com
+3. **Resend Account:** Get production API key
 
-### E2E Tests (Playwright)
+### Deployment Steps
 
-```bash
-cd frontend
-pnpm dlx playwright test
-```
+1. **Connect to Vercel:**
+   - Go to https://vercel.com/new
+   - Import your GitHub repository
+   - Select `ctc_project/web` as the root directory
 
-### Accessibility Testing
+2. **Configure Environment Variables:**
+   - In Vercel dashboard → Settings → Environment Variables
+   - Add:
+     - `RESEND_API_KEY` = `re_your_production_key`
+     - `CONTRACTOR_EMAIL` = `your-email@example.com`
 
-```bash
-# Run Lighthouse audit
-pnpm dlx lighthouse http://localhost:3000 --view
+3. **Deploy:**
+   - Click "Deploy"
+   - Vercel automatically detects Next.js and builds
 
-# Target scores:
-# Performance: ≥90
-# Accessibility: 100
-# SEO: ≥95
-```
+4. **Configure Custom Domain (Optional):**
+   - Settings → Domains
+   - Add your custom domain
+   - Update DNS records as instructed
+
+5. **Test Production:**
+   - Visit deployed URL
+   - Submit test booking
+   - Verify email received
 
 ---
 
-## Deployment
+## Email Configuration (Resend)
 
-### WordPress (Production)
+### Production Setup
 
-1. Upload plugin to production WordPress
-2. Activate plugin
-3. Configure settings (rates, SMTP, Twilio, API keys)
-4. Upload compliance PDFs to Media Library
-5. Test REST API endpoints
+1. **Verify Domain (Recommended):**
+   - Go to Resend → Domains
+   - Add your domain (e.g., `ctc.example.com`)
+   - Add DNS records (SPF, DKIM, DMARC)
+   - Emails will come from `noreply@ctc.example.com`
 
-### Next.js (Vercel)
+2. **Without Domain Verification:**
+   - Emails come from `onboarding@resend.dev`
+   - Limited to 100 emails/day on free tier
+   - Good for testing, upgrade for production
 
-1. Push code to GitHub
-2. Connect repository to Vercel
-3. Set environment variables in Vercel dashboard:
-   - `CTC_WP_API_BASE` (production WordPress URL)
-   - `CTC_API_KEY`
-   - `CTC_API_SECRET`
-   - `ADMIN_PASS_HASH`
-4. Deploy
-5. Configure custom domain
-6. Test production booking flow
+### Email Template
+
+Located at `/web/src/emails/booking-notification.tsx`
+
+Built with @react-email/components for professional HTML emails.
+
+---
+
+## Pricing Model
+
+**Standard Rates:**
+- Business hours (Mon-Fri 8AM-5PM): $110/hr (1.5hr minimum)
+- After-hours (nights/weekends): $140/hr (2hr minimum)
+- Travel: $1.00/km round trip (first 50km one-way free)
+
+**Example Calculation:**
+- Bendigo job (150km one-way, 2 hours on-site)
+- Travel: (150km - 50km free) × 2 (round trip) = 200km × $1.00 = $200
+- Labor: 2hr × $110/hr = $220
+- **Total: $420**
+
+---
+
+## Coverage Areas
+
+**Primary Hubs (Same-Day Dispatch):**
+- Bendigo (150km from Melbourne)
+- Ballarat (115km from Melbourne)
+- Shepparton (180km from Melbourne)
+- Echuca (210km from Melbourne)
+
+**Extended Coverage:**
+- Wodonga, Wangaratta, Seymour, Goulburn Valley
+
+**SLA:** Same-day dispatch, confirm availability within 30 minutes
 
 ---
 
 ## Key Features
 
-✅ **Booking System:** Vendor booking form with validation
-✅ **HMAC Authentication:** Secure server-to-server communication
-✅ **Notifications:** Email + SMS alerts for new bookings
-✅ **Admin Dashboard:** View and manage bookings
-✅ **Rate Display:** Dynamic rates from WordPress
-✅ **Compliance:** Download capability statement, insurance, SWMS
+✅ **Professional Booking Form:** Vendor intake with company/PO fields
+✅ **Email Notifications:** Instant contractor alerts via Resend
+✅ **Transparent Pricing:** Clear $110/hr + $1.00/km rate table
+✅ **MSP-Focused Content:** White-label positioning, SLA support
+✅ **Blog:** 5 MSP-focused posts (regional coverage, vendor selection, smart-hands value)
+✅ **Compliance Downloads:** Capability statement, insurance certificates
 ✅ **Accessibility:** WCAG AA compliant
 ✅ **SEO Optimized:** Structured data, proper metadata
+✅ **Mobile Responsive:** Works on all screen sizes
+
+---
+
+## Technology Choices
+
+### Why Resend?
+
+- **Simple:** No database, no backend server needed
+- **Reliable:** 99.9% uptime SLA
+- **Developer-Friendly:** React email templates, TypeScript SDK
+- **Cost-Effective:** Free tier: 3,000 emails/month (sufficient for contractor leads)
+- **Professional:** Domain verification, DKIM signing
+
+### Why No Database?
+
+This is a **lead generation website**, not a CRM:
+- Bookings don't need to be stored long-term
+- Contractor manages leads in their own system (email inbox)
+- Simpler = fewer points of failure
+- No database hosting costs
+
+### Future Scaling
+
+If lead volume grows significantly:
+- Upgrade Resend plan (unlimited emails from $20/month)
+- Add database for analytics (optional)
+- Integrate with PSA tools (ConnectWise, Autotask) via webhooks
+
+---
+
+## Maintenance
+
+### Regular Tasks
+
+- **Update blog:** Add new MSP-focused posts in `/web/src/app/blog/`
+- **Update rates:** Edit `/web/src/app/rates/page.tsx`
+- **Update PDFs:** Replace files in `/web/public/downloads/`
+- **Monitor emails:** Check Resend dashboard for delivery stats
+
+### Security
+
+- **Never commit `.env.local`** (already in `.gitignore`)
+- **Rotate API keys** if exposed
+- **Keep dependencies updated:** `pnpm update`
+- **Monitor Vercel logs** for errors
 
 ---
 
 ## Support
 
-- **Documentation:** See `docs/` directory
-- **Issues:** Contact project owner
-- **WordPress Admin:** http://ctcbackend.local/wp-admin
-- **API Docs:** See `docs/API.md`
+- **Next.js Docs:** https://nextjs.org/docs
+- **Resend Docs:** https://resend.com/docs
+- **shadcn/ui:** https://ui.shadcn.com
+- **Tailwind CSS:** https://tailwindcss.com/docs
 
 ---
 
@@ -330,11 +374,11 @@ Proprietary - Complete Tech Care (CTC)
 
 **Built with:**
 - Next.js 15
-- WordPress 6.6+
+- Resend API
 - TypeScript
-- Tailwind CSS
+- Tailwind CSS v4
 - pnpm
 
 **Owner:** Abdisalam Awale (Complete Tech Care)
 **Version:** v1.0 (MVP)
-**Last Updated:** October 21, 2025
+**Last Updated:** November 2025

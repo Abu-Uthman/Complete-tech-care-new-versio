@@ -1,45 +1,5 @@
 # CTC Smart-Hands Project - Git Ignore
-# Created: October 21, 2025
-
-# ============================================
-# WordPress Core Files (DO NOT COMMIT)
-# ============================================
-app/public/wp-admin/
-app/public/wp-includes/
-app/public/*.php
-app/public/.htaccess
-app/public/license.txt
-app/public/readme.html
-app/public/xmlrpc.php
-
-# WordPress Config
-app/public/wp-config.php
-
-# Default WordPress Themes
-app/public/wp-content/themes/twenty*/
-
-# Default WordPress Plugins
-app/public/wp-content/plugins/akismet/
-app/public/wp-content/plugins/hello.php
-
-# WordPress Uploads (consider committing or using cloud storage)
-app/public/wp-content/uploads/
-
-# WordPress Cache
-app/public/wp-content/cache/
-app/public/wp-content/advanced-cache.php
-
-# ============================================
-# BUT KEEP OUR CUSTOM PLUGIN
-# ============================================
-!app/public/wp-content/plugins/ctc-smart-hands/
-
-# ============================================
-# Local by Flywheel Files
-# ============================================
-conf/
-logs/
-app/sql/
+# Last Updated: November 2025
 
 # ============================================
 # Next.js Frontend (web/)
