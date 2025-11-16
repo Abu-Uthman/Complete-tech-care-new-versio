@@ -1,6 +1,6 @@
 /**
  * Booking API Route - Email Notifications via Resend
- * CTC Smart-Hands Project
+ * Complete Tech Care Project
  *
  * Sends email notifications for new contractor service requests
  */
@@ -130,7 +130,7 @@ export async function POST(request: NextRequest) {
               <ul style="line-height: 1.6; margin: 10px 0; padding-left: 20px;">
                 <li>Service capabilities and coverage areas (15 regional VIC hubs)</li>
                 <li>Insurance certificates ($20M Public Liability + Professional Indemnity)</li>
-                <li>Compliance documents (Police Check, Coles/Woolworths inductions)</li>
+                <li>Compliance documents (Police Check, working-with-children clearance, site safety confirmations)</li>
                 <li>Rate sheet and engagement models (hourly, retainer, project-based)</li>
               </ul>
             </div>

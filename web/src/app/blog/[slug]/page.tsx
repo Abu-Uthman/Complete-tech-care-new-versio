@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const author = post._embedded?.author?.[0]?.name || 'CTC Team';
 
   return {
-    title: `${cleanTitle} | CTC Smart-Hands Blog`,
+    title: `${cleanTitle} | Complete Tech Care Blog`,
     description: cleanExcerpt,
     authors: [{ name: author }],
     keywords: post.tags || [],

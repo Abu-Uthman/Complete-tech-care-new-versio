@@ -2,7 +2,7 @@
 
 /**
  * Booking Form Component
- * CTC Smart-Hands Project
+ * Complete Tech Care Project
  */
 
 import { useState } from 'react';

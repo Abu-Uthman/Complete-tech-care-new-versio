@@ -1,6 +1,7 @@
 @import "tailwindcss";
+@import "./animations.css";
 
-/* CTC Smart-Hands Custom Theme */
+/* Complete Tech Care Custom Theme */
 /* IMPORTANT: NO GRADIENTS - Solid colors only per design system */
 
 :root {

@@ -6,12 +6,110 @@
  */
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { FocusEvent, useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
+
+const serviceCollections = [
+  {
+    title: 'Field Engineering',
+    description: 'Rapid dispatch crews for smart-hands, swap outs, and discovery work across VIC.',
+    links: [
+      {
+        title: 'On-Site Break/Fix Support',
+        href: '/services/onsite-support',
+        description: 'L1-L2 smart-hands coverage with live updates',
+      },
+      {
+        title: 'Equipment Swap & Installation',
+        href: '/services/equipment-swap',
+        description: 'Nationwide hardware deployments and refreshes',
+      },
+      {
+        title: 'Site Audits & Documentation',
+        href: '/services/site-audits',
+        description: 'Network surveys, rack labelling, and asset registers',
+      },
+    ],
+  },
+  {
+    title: 'Retail & Infrastructure',
+    description: 'Compliant, insured contractors for national retailers, cabling, and logistics programs.',
+    links: [
+      {
+        title: 'POS & Retail Equipment',
+        href: '/services/pos-retail',
+        description: 'Retail-ready workflows for national chains',
+      },
+      {
+        title: 'Network Infrastructure & Cabling',
+        href: '/services/infrastructure',
+        description: 'Structured cabling, MDF/IDF builds, and rack tidy-ups',
+      },
+      {
+        title: 'IT Parts Logistics & Transport',
+        href: '/services/logistics',
+        description: 'Secure same-day delivery and inventory control',
+      },
+    ],
+  },
+];
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [servicesMenuOpen, setServicesMenuOpen] = useState(false);
+  const servicesMenuCloseTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const megaMenuId = 'services-mega-menu';
+
+  const clearServicesMenuTimer = () => {
+    if (servicesMenuCloseTimer.current) {
+      clearTimeout(servicesMenuCloseTimer.current);
+      servicesMenuCloseTimer.current = null;
+    }
+  };
+
+  const openServicesMenu = () => {
+    clearServicesMenuTimer();
+    setServicesMenuOpen(true);
+  };
+
+  const delayCloseServicesMenu = () => {
+    clearServicesMenuTimer();
+    servicesMenuCloseTimer.current = setTimeout(() => {
+      setServicesMenuOpen(false);
+      servicesMenuCloseTimer.current = null;
+    }, 150);
+  };
+
+  const immediateCloseServicesMenu = () => {
+    clearServicesMenuTimer();
+    setServicesMenuOpen(false);
+  };
+
+  const handleServicesToggle = () => {
+    if (servicesMenuOpen) {
+      immediateCloseServicesMenu();
+    } else {
+      openServicesMenu();
+    }
+  };
+
+  const handleServicesBlur = (event: FocusEvent<HTMLDivElement>) => {
+    const relatedTarget = event.relatedTarget as Node | null;
+    if (relatedTarget && event.currentTarget.contains(relatedTarget)) {
+      return;
+    }
+    delayCloseServicesMenu();
+  };
+
+  const handleServiceLinkClick = () => {
+    immediateCloseServicesMenu();
+  };
+
+  useEffect(() => {
+    return () => {
+      clearServicesMenuTimer();
+    };
+  }, []);
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -51,72 +149,141 @@ export function Header() {
             {/* Services Mega Menu */}
             <div
               className="relative"
-              onMouseEnter={() => setServicesMenuOpen(true)}
-              onMouseLeave={() => setServicesMenuOpen(false)}
+              onMouseEnter={openServicesMenu}
+              onMouseLeave={delayCloseServicesMenu}
+              onFocusCapture={openServicesMenu}
+              onBlurCapture={handleServicesBlur}
             >
-              <Link
-                href="/services"
-                className="text-sm font-medium text-text-primary hover:text-secondary transition-colors flex items-center gap-1"
+              <button
+                type="button"
+                className="text-sm font-medium text-text-primary hover:text-secondary transition-colors flex items-center gap-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                aria-expanded={servicesMenuOpen}
+                aria-controls={megaMenuId}
+                onClick={handleServicesToggle}
               >
-                Services
-                <svg className={`w-4 h-4 transition-transform ${servicesMenuOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <span>Services</span>
+                <svg
+                  className={`w-4 h-4 transition-transform ${servicesMenuOpen ? 'rotate-180 text-secondary' : ''}`}
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                 </svg>
-              </Link>
+              </button>
 
               {/* Dropdown Menu */}
               {servicesMenuOpen && (
-                <div className="absolute top-full left-0 mt-2 w-80 bg-background border border-border rounded-lg shadow-lg z-50">
-                  <div className="p-4">
-                    <div className="space-y-2">
-                      <Link
-                        href="/services/site-audits"
-                        className="block px-4 py-3 rounded-md hover:bg-primary/5 transition-colors group"
-                      >
-                        <div className="font-medium text-text-primary group-hover:text-primary">Site Audits & Documentation</div>
-                        <div className="text-xs text-text-secondary mt-1">Site surveys, asset audits, network assessments</div>
-                      </Link>
-                      <Link
-                        href="/services/pos-retail"
-                        className="block px-4 py-3 rounded-md hover:bg-primary/5 transition-colors group"
-                      >
-                        <div className="font-medium text-text-primary group-hover:text-primary">POS & Retail Equipment</div>
-                        <div className="text-xs text-text-secondary mt-1">Coles/Woolworths inducted, NCR certified</div>
-                      </Link>
-                      <Link
-                        href="/services/equipment-swap"
-                        className="block px-4 py-3 rounded-md hover:bg-primary/5 transition-colors group"
-                      >
-                        <div className="font-medium text-text-primary group-hover:text-primary">Equipment Swap & Installation</div>
-                        <div className="text-xs text-text-secondary mt-1">Hardware replacement and deployments</div>
-                      </Link>
-                      <Link
-                        href="/services/onsite-support"
-                        className="block px-4 py-3 rounded-md hover:bg-primary/5 transition-colors group"
-                      >
-                        <div className="font-medium text-text-primary group-hover:text-primary">On-Site Break/Fix Support</div>
-                        <div className="text-xs text-text-secondary mt-1">L1-L2 smart-hands services</div>
-                      </Link>
-                      <Link
-                        href="/services/infrastructure"
-                        className="block px-4 py-3 rounded-md hover:bg-primary/5 transition-colors group"
-                      >
-                        <div className="font-medium text-text-primary group-hover:text-primary">Network Infrastructure & Cabling</div>
-                        <div className="text-xs text-text-secondary mt-1">Structured cabling, racks, MDF/IDF setup</div>
-                      </Link>
-                      <Link
-                        href="/services/logistics"
-                        className="block px-4 py-3 rounded-md hover:bg-primary/5 transition-colors group"
-                      >
-                        <div className="font-medium text-text-primary group-hover:text-primary">IT Parts Logistics & Transport</div>
-                        <div className="text-xs text-text-secondary mt-1">Same-day delivery and equipment transport</div>
-                      </Link>
+                <div
+                  id={megaMenuId}
+                  className="absolute left-1/2 top-full z-50 mt-4 w-[720px] -translate-x-1/2"
+                  onMouseEnter={openServicesMenu}
+                  onMouseLeave={delayCloseServicesMenu}
+                >
+                  <div className="overflow-hidden rounded-2xl border border-border/70 bg-background shadow-2xl shadow-primary/10">
+                    <div className="grid gap-6 p-6 md:grid-cols-[2fr,1fr]">
+                      <div className="space-y-5">
+                        {serviceCollections.map((collection) => (
+                          <div
+                            key={collection.title}
+                            className="rounded-2xl border border-border/60 bg-background/80 p-5 shadow-sm shadow-primary/5"
+                          >
+                            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-primary">
+                              {collection.title}
+                            </p>
+                            <p className="mt-2 text-sm text-text-secondary">{collection.description}</p>
+                            <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                              {collection.links.map((link) => (
+                                <Link
+                                  key={link.title}
+                                  href={link.href}
+                                  className="group rounded-xl border border-transparent bg-primary/0 px-4 py-3 transition-all duration-150 hover:border-primary/40 hover:bg-primary/5"
+                                  onClick={handleServiceLinkClick}
+                                >
+                                  <div className="flex items-start gap-3">
+                                    <div className="flex-1">
+                                      <div className="font-medium text-text-primary group-hover:text-primary">
+                                        {link.title}
+                                      </div>
+                                      <p className="text-xs text-text-secondary mt-1">{link.description}</p>
+                                    </div>
+                                    <svg
+                                      className="w-4 h-4 text-text-secondary transition-all group-hover:translate-x-0.5 group-hover:text-primary"
+                                      fill="none"
+                                      viewBox="0 0 24 24"
+                                      stroke="currentColor"
+                                    >
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M5 12h14m-6-6l6 6-6 6"
+                                      />
+                                    </svg>
+                                  </div>
+                                </Link>
+                              ))}
+                            </div>
+                          </div>
+                        ))}
+
+                        <Link
+                          href="/services"
+                          className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:text-secondary"
+                          onClick={handleServiceLinkClick}
+                        >
+                          View detailed capabilities
+                          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h14m-6-6l6 6-6 6" />
+                          </svg>
+                        </Link>
+                      </div>
+
+                      <div className="flex h-full flex-col justify-between rounded-2xl bg-gradient-to-b from-primary to-primary/80 p-6 text-white">
+                        <div>
+                          <p className="text-xs uppercase tracking-[0.3em] text-white/70">Rapid Dispatch Desk</p>
+                          <p className="mt-3 text-xl font-semibold leading-snug">Need engineers on-site within 4 hours?</p>
+                          <p className="mt-2 text-sm text-white/80">
+                            Share your rollout schedule or SOW and our coordinators confirm crews in under 30 minutes.
+                          </p>
+                        </div>
+                        <div className="mt-6 space-y-3">
+                          <Link
+                            href="/book"
+                            className="flex items-center justify-center rounded-xl bg-white/15 px-4 py-3 text-sm font-semibold text-white transition hover:bg-white/25"
+                            onClick={handleServiceLinkClick}
+                          >
+                            Book a discovery call
+                          </Link>
+                          <a
+                            href="tel:+61432405388"
+                            className="flex items-center gap-2 text-sm font-semibold text-white/90 hover:text-white"
+                            onClick={immediateCloseServicesMenu}
+                          >
+                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                              />
+                            </svg>
+                            0432 405 388
+                          </a>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
               )}
             </div>
 
+            <Link
+              href="/partners"
+              className="text-sm font-medium text-text-primary hover:text-secondary transition-colors"
+            >
+              For MSPs
+            </Link>
             <Link
               href="/rates"
               className="text-sm font-medium text-text-primary hover:text-secondary transition-colors"
@@ -251,6 +418,13 @@ export function Header() {
                 </div>
               </div>
 
+              <Link
+                href="/partners"
+                className="text-sm font-medium text-text-primary hover:text-secondary transition-colors px-2 py-2"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                For MSPs
+              </Link>
               <Link
                 href="/rates"
                 className="text-sm font-medium text-text-primary hover:text-secondary transition-colors px-2 py-2"

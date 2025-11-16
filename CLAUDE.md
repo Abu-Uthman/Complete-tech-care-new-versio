@@ -6,7 +6,7 @@ This file provides guidance to Claude Code when working with the CTC Smart-Hands
 
 ## Project Overview: CTC Smart-Hands
 
-**Complete Tech Care (CTC)** provides rapid-response regional VIC smart-hands services for MSPs & retail vendors.
+**Complete Tech Care (CTC)** provides on-site IT contractor services across **Melbourne Metro, CBD, and Regional Victoria** for MSPs, IT providers, and retail vendors.
 
 **Owner:** Abdisalam Awale (Complete Tech Care)
 **Version:** v1.0 (MVP)
@@ -14,15 +14,18 @@ This file provides guidance to Claude Code when working with the CTC Smart-Hands
 
 ### Core Services
 
-1. **For MSPs & IT Providers:** Same-day dispatch to Bendigo, Ballarat, Shepparton, Echuca. L1-L2 break/fix, rollouts, POS/SCO peripherals, parts logistics, site audits.
-2. **Service Model:** B2B contractor services, white-label operations, PO/SOW/SLA fluent.
+1. **Melbourne Metro & CBD:** Zero travel costs, 2-4 hour arrival - perfect for MSPs with metro clients (save $200-400 per callout vs regional contractors)
+2. **Regional Victoria:** Same-day dispatch to Bendigo, Ballarat, Shepparton, Echuca, and statewide coverage
+3. **Service Types:** L1-L2 break/fix, equipment swaps, rollouts, POS/SCO support, site audits, infrastructure, parts logistics
+4. **Service Model:** B2B contractor services, white-label operations, PO/SOW/SLA fluent
 
 ### Key Differentiators
 
-- Same-day regional dispatch (help MSPs meet their client SLAs)
-- Vendor-friendly operations (PO/SOW/SLA fluent)
-- Compliance-ready (PL $20M, PI, Police Check, Coles & Woolworths inductions)
-- Transparent pricing: $110/hr + $1.00/km travel (published rates)
+- **Melbourne-based advantage:** No travel costs for metro/CBD jobs (save MSPs significant money on metro callouts)
+- **B2B-focused pricing:** Starting from $140/hr with flexible engagement models for MSP partnerships and volume clients
+- **Statewide coverage:** Melbourne metro + CBD + regional Victoria (not just regional)
+- **Compliance-ready:** $20M liability insurance, PI coverage, police checks, Coles & Woolworths inducted
+- **Vendor-friendly:** PO/SOW/SLA fluent operations, white-label service available
 
 ---
 
@@ -77,7 +80,7 @@ This file provides guidance to Claude Code when working with the CTC Smart-Hands
 - **Templates:** @react-email/components for HTML emails
 - **Emails Sent:**
   1. Contractor notification (to `CONTRACTOR_EMAIL`) with full inquiry details
-  2. Client confirmation with rate info ($110/hr + $1/km), phone number (0432 405 388)
+  2. Client confirmation with contact details (phone: 0432 405 388) and link to rates page
 - **No Database:** Inquiries stored in contractor email inbox
 
 ### Design System
@@ -343,6 +346,178 @@ refactor: extract email templates into separate files
 
 ---
 
+## Multi-Agent Development System
+
+**Implemented:** November 2025
+**Purpose:** Specialized AI agents for different aspects of CTC project development
+
+### Overview
+
+The CTC project uses a multi-agent system with specialized agents for different development tasks. Instead of a single Claude Code agent handling all work, tasks are routed to specialized agents with deep expertise in specific domains.
+
+### Available Agents
+
+**Location:** `.claude/agents/` directory
+
+1. **ctc-orchestrator.md** - Master Coordinator
+   - Routes tasks to appropriate specialized agents
+   - Manages multi-agent workflows (sequential & parallel)
+   - Tracks project phase and recommends next tasks
+   - Commands: `*status`, `*next-task`, `*deploy-plan`, `*agent [name]`
+
+2. **ctc-frontend-dev.md** - Next.js Frontend Specialist
+   - Creates pages and components (Next.js 15, TypeScript strict)
+   - Implements shadcn/ui components with accessibility
+   - Optimizes performance (Lighthouse, Core Web Vitals)
+   - Commands: `*create-page`, `*create-component`, `*add-section`, `*fix-accessibility`, `*optimize-performance`
+
+3. **ctc-seo-expert.md** - SEO Optimization Specialist
+   - Technical SEO (meta tags, schema.org, sitemaps)
+   - Local SEO (Google My Business, 15+ regional Victoria locations)
+   - Keyword optimization ("IT contractor regional Victoria")
+   - Commands: `*seo-audit`, `*optimize-meta`, `*create-sitemap`, `*add-schema`, `*local-seo-setup`
+
+4. **ctc-ai-optimizer.md** - AI Search Optimization
+   - Optimizes for ChatGPT, Perplexity, Claude search
+   - Creates FAQ schema for AI parsing
+   - Entity definitions for AI understanding
+   - Commands: `*ai-audit`, `*optimize-for-ai`, `*create-faq`, `*add-ai-schema`, `*compare-content`
+
+5. **ctc-a11y-auditor.md** - Accessibility Compliance
+   - WCAG 2.1 AA compliance auditing (100/100 score non-negotiable)
+   - Contrast analysis (4.5:1 minimum)
+   - Screen reader testing (NVDA, JAWS, VoiceOver)
+   - Commands: `*audit-page`, `*check-contrast`, `*test-keyboard-nav`, `*test-screen-reader`, `*fix-accessibility`
+
+6. **ctc-content-writer.md** - Professional B2B Content Creator
+   - B2B copywriting for MSP/IT provider audience
+   - Service pages, blog posts, marketing copy
+   - Australian English standards
+   - Commands: `*write-service-page`, `*write-blog-post`, `*write-cta`, `*optimize-readability`, `*write-faq`
+
+7. **ctc-devops.md** - Deployment & Operations
+   - Vercel production deployment
+   - Performance auditing (Core Web Vitals)
+   - Security auditing (HTTPS, headers, API security)
+   - Commands: `*deploy-production`, `*setup-environment`, `*create-staging`, `*performance-audit`, `*security-audit`
+
+### How to Use Agents
+
+**Method 1: Explicit Agent Invocation**
+```
+Use the Task tool to invoke specific agent:
+
+Task({
+  subagent_type: "general-purpose",
+  prompt: "You are now the ctc-seo-expert agent from .claude/agents/ctc-seo-expert.md. Run an SEO audit on /services/site-audits page."
+})
+```
+
+**Method 2: Natural Language (Orchestrator Routes)**
+```
+User: "Audit the homepage for SEO issues"
+→ Orchestrator recognizes SEO keyword
+→ Routes to ctc-seo-expert agent
+→ Agent performs audit and reports back
+```
+
+**Method 3: Direct Command Syntax**
+```
+User: "*seo-audit /services/pos-retail"
+→ Executes command defined in ctc-seo-expert agent
+→ Returns structured SEO audit report
+```
+
+### Agent Coordination Patterns
+
+**Sequential Workflow (Tasks Depend on Each Other):**
+```
+1. Frontend dev creates service page
+2. SEO expert adds meta tags and schema
+3. AI optimizer creates FAQ section
+4. Accessibility auditor verifies WCAG compliance
+5. DevOps deploys to production
+```
+
+**Parallel Workflow (Independent Tasks):**
+```
+Simultaneously:
+- Frontend dev creates 3 service pages
+- Content writer drafts blog posts
+- SEO expert audits existing pages
+- Accessibility auditor tests navigation
+```
+
+**Hybrid Workflow (Mix of Sequential & Parallel):**
+```
+Phase 1 (Parallel):
+- Frontend dev creates page structure
+- Content writer drafts copy
+
+Phase 2 (Sequential):
+- Frontend dev implements content
+- SEO expert adds schema markup
+- Accessibility auditor verifies compliance
+```
+
+### Integration with PROGRESS.md
+
+Agents use `/PROGRESS.md` as shared state file:
+- Current project phase
+- Completed tasks
+- Pending work
+- Known issues
+
+Agents read PROGRESS.md to understand context and update it after completing work.
+
+### Agent Best Practices
+
+1. **Trust Agent Expertise** - Agents are specialists, defer to their recommendations
+2. **Use Appropriate Agent** - Route tasks to agent with relevant expertise
+3. **Coordinate Changes** - Frontend + SEO + A11y + Content should work together
+4. **Verify Outputs** - Always test agent work with Chrome MCP before committing
+5. **Update PROGRESS.md** - Agents document completed work for future reference
+
+### Common Agent Combinations
+
+**New Service Page:**
+```
+1. Content Writer: Draft service page copy
+2. Frontend Dev: Implement page with content
+3. SEO Expert: Add meta tags, schema.org markup
+4. AI Optimizer: Create FAQ section for AI search
+5. Accessibility Auditor: Verify WCAG compliance
+6. DevOps: Deploy to production
+```
+
+**Blog Post Creation:**
+```
+1. Content Writer: Draft blog post (800-1200 words)
+2. SEO Expert: Optimize for target keywords
+3. AI Optimizer: Add FAQ schema for AI parsing
+4. Frontend Dev: Implement on /blog/[slug] page
+5. Accessibility Auditor: Verify readability at 200% zoom
+```
+
+**Production Deployment:**
+```
+1. DevOps: Run pre-deployment checks
+2. Frontend Dev: Verify build successful
+3. SEO Expert: Confirm sitemap generated
+4. Accessibility Auditor: Final Lighthouse audit
+5. DevOps: Deploy to Vercel production
+6. DevOps: Post-deployment verification
+```
+
+### Agent Command Reference
+
+See individual agent files in `.claude/agents/` for full command documentation:
+- Each agent defines custom commands (e.g., `*seo-audit`, `*create-page`)
+- Commands provide structured output and actionable recommendations
+- Commands can be chained in workflows
+
+---
+
 ## Support & Resources
 
 - **Next.js Docs:** https://nextjs.org/docs
@@ -356,47 +531,78 @@ refactor: extract email templates into separate files
 
 ## Pricing & Service Model
 
-### Contractor Rates (November 2025)
+### B2B Pricing Strategy (November 2025 Update)
 
-**Hourly Rates:**
-- Business hours (Mon-Fri 8am-6pm): $110/hr (1.5hr minimum)
-- After-hours (Mon-Fri 6pm-11pm): $140/hr (2hr minimum)
-- Weekends (Sat-Sun): $130/hr (2hr minimum)
-- Public holidays: $165/hr (2hr minimum)
+**Public Pricing Positioning:**
+- **Business hours:** From $140/hr (starting rate for business hours callouts)
+- **After-hours & weekends:** Premium rates apply
+- **Public holidays:** Premium rates apply
+- **Minimum charge:** 1.5 hours
+- **Travel:** Melbourne metro/CBD = $0 travel costs; Regional Victoria = travel fees apply based on location
 
-**Travel Charges:**
-- $1.00 per kilometre (round trip from Melbourne)
-- First 50km one-way deducted (free Melbourne metro zone)
-- Examples:
-  - Bendigo: 300km RT = $300 travel
-  - Shepparton: 360km RT = $360 travel
-  - Echuca: 400km RT = $400 travel
-  - Ballarat: 240km RT = $240 travel
+**Why "From" Pricing:**
+- Allows negotiation flexibility for MSP partnerships and volume clients
+- Prevents end clients from seeing exact contractor margins (MSPs can mark up without transparency issues)
+- Conservative volume discounts: 5% off for 10+ hours/month, 10% off for 20+ hours/month
+- Positions as B2B contractor partner, not retail competitor
 
-**Retainer Options:**
-- From $1,800/month (includes set hours + priority dispatch)
-- Flexible engagement models (one-off, block hours, retainer, project-based)
+**Internal Rate Structure (Not Published):**
+- Business hours base: $140/hr
+- After-hours/weekends: $165-175/hr
+- Public holidays: $200/hr
+- Travel: $1.00/km (round trip from Melbourne, first 50km one-way free for metro)
+- Regional callouts typically $500-800 total depending on location, time, and job complexity
+
+**MSP Partner Engagement Models:**
+- **One-off callouts:** Standard rates, invoiced per job
+- **Block hours:** 10, 20, 50 hour packages with volume discounts
+- **Monthly retainer:** From $1,800/month (includes set hours + priority dispatch)
+- **Project-based:** Fixed quotes for rollouts and multi-site deployments
 
 ### Coverage Areas
 
-**Primary hubs (same-day dispatch available):**
-- Bendigo (150km from Melbourne)
-- Ballarat (120km)
-- Shepparton (180km)
-- Echuca (200km)
+**Melbourne Metro & CBD Advantage:**
+- Zero travel costs for metro/CBD jobs
+- 2-4 hour arrival for most locations
+- Saves MSPs $200-400 per callout vs. regional contractors
 
-**Service philosophy:**
-- Help MSPs meet their client SLAs with same-day regional dispatch
-- No false "4-hour response guarantee" - be honest about travel times (2-4 hours)
-- Confirm availability and ETA within 30 minutes of request
+**Regional Victoria Coverage:**
+- Same-day dispatch to Bendigo, Ballarat, Shepparton, Echuca
+- Statewide coverage including Geelong, Warrnambool, Mildura, Latrobe Valley, and beyond
+- Travel times 2-4 hours depending on location
+
+**Service Philosophy:**
+- Help MSPs meet their client SLAs with responsive dispatch
+- Be honest about travel times (2-4 hours typical), confirm ETA within 30 minutes
 - Professional white-label service representing client brands
+- Conservative promises for solo operator reality (not "same-day to 15+ hubs" - be realistic)
 
 ---
 
 ## Project Status & Recent Changes
 
-**Last Updated:** November 8, 2025
-**Current Phase:** MVP Launch Ready
+**Last Updated:** November 11, 2025
+**Current Phase:** MVP Complete - READY FOR PRODUCTION DEPLOYMENT ✅
+
+### Production Deployment Status
+
+**Build Status:** ✅ PASSED
+- TypeScript compilation: SUCCESSFUL (strict mode, no errors)
+- ESLint checks: PASSED (0 errors, 3 minor warnings)
+- Production build: SUCCESSFUL (17 pages generated)
+- All functionality tested and working
+
+**Environment Variables for Vercel:**
+```bash
+RESEND_API_KEY=re_D84SPuH3_KktgLLD8wCiJ84HhBMc54bE6
+CONTRACTOR_EMAIL=completetechcare@gmail.com
+NEXT_PUBLIC_SITE_URL=https://your-production-domain.vercel.app
+```
+
+**Deployment Instructions:**
+See comprehensive guide: `/Users/abuuuthman/projects/ctc_project/DEPLOYMENT-GUIDE.md`
+
+**Production URL:** TBD (will be updated after first deployment)
 
 ### MVP Architecture (November 2025)
 
@@ -428,9 +634,11 @@ refactor: extract email templates into separate files
   - FAQ with 7 MSP-focused questions
 
 - **Rates Page** ([page.tsx](/Users/abuuuthman/projects/ctc_project/web/src/app/rates/page.tsx)):
-  - Clear $110/hr + $1/km pricing
-  - Job cost calculator table (Bendigo 2hr = $520, Shepparton 2hr = $580, etc.)
-  - Example invoice breakdown with GST
+  - B2B-focused pricing: "From $140/hr" starting rate
+  - Melbourne metro advantage (zero travel costs)
+  - Vague pricing for flexibility: "Premium rates apply", "Travel fees apply based on location"
+  - MSP partner pricing section with engagement models
+  - NO detailed job cost calculator (removed for B2B positioning)
 
 - **Booking Form** ([booking-form.tsx](/Users/abuuuthman/projects/ctc_project/web/src/components/forms/booking-form.tsx)):
   - "Request Contractor Information" heading
@@ -452,8 +660,8 @@ refactor: extract email templates into separate files
    - Action required prompt with contact details
 
 2. **Client Confirmation** (to inquirer):
-   - Subject: "CTC Smart-Hands - Request Received"
-   - Contains: Confirmation of receipt, pricing info ($110/hr + $1/km), urgent callout number
+   - Subject: "Complete Tech Care - Request Received"
+   - Contains: Confirmation of receipt, contact info (0432 405 388), link to rates page for pricing details
    - Sets expectation: will contact shortly to discuss
 
 ---
@@ -492,7 +700,7 @@ refactor: extract email templates into separate files
   - Footer component: "Complete Tech Care" + "Same-day dispatch guarantee"
   - Layout metadata: Title, description, keywords
   - Schema.org data: All URLs, names, contact info
-  - Pricing schema: $110/hr (correct rate)
+  - Pricing schema: $140/hr starting rate (MinimumAdvertisedPrice)
 
 **Contact Information:**
 - Email: completetechcare@gmail.com

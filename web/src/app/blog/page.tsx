@@ -4,12 +4,12 @@ import Image from "next/image";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "IT Support & Smart-Hands Blog | CTC - Regional Victoria",
-  description: "Expert insights on IT contractor services, smart-hands best practices, regional IT support, and technology trends for MSPs and service providers.",
-  keywords: ["IT support blog", "smart hands tips", "MSP resources", "IT contractor insights", "regional IT support"],
+  title: "IT Support & Field Services Blog | Complete Tech Care",
+  description: "Practical insights on on-site IT contractor services, regional support programs, and MSP partnership best practices across Victoria.",
+  keywords: ["IT support blog", "field services", "MSP resources", "IT contractor insights", "regional IT support"],
   openGraph: {
-    title: "IT Support & Smart-Hands Blog | CTC",
-    description: "Expert insights on IT contractor services and smart-hands best practices",
+    title: "IT Support & Field Services Blog | CTC",
+    description: "Practical insights on IT contractor services and field engineering best practices",
     type: "website",
     url: "https://ctc.example.com/blog",
   },
@@ -49,10 +49,10 @@ export default async function BlogPage() {
               <span className="text-sm font-medium text-primary">Blog & Insights</span>
             </div>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-primary mb-6 leading-tight">
-              IT Support & Smart-Hands Insights
+              IT Support & Field Services Insights
             </h1>
             <p className="text-lg md:text-xl text-text-secondary max-w-2xl mx-auto">
-              Expert tips, industry insights, and best practices for MSPs, IT service providers, and technology professionals across regional Victoria.
+              Practical tips, industry insights, and best practices for MSPs, IT service providers, and technology professionals across regional Victoria.
             </p>
           </div>
         </div>
@@ -78,7 +78,7 @@ export default async function BlogPage() {
               </svg>
               <h2 className="text-2xl font-bold text-primary mb-2">No Blog Posts Yet</h2>
               <p className="text-text-secondary">
-                Check back soon for expert insights and industry tips!
+                Check back soon for practical insights and industry tips!
               </p>
             </Card>
           ) : (

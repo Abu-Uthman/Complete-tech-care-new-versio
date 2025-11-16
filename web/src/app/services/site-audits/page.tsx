@@ -330,32 +330,64 @@ export default function SiteAuditsPage() {
             <h2 className="text-2xl font-bold text-primary mb-6 text-center">
               Audit Pricing
             </h2>
-            <div className="grid md:grid-cols-3 gap-6 mb-6">
-              <div className="text-center">
-                <div className="text-4xl font-bold text-primary mb-2">$440</div>
-                <div className="text-sm text-text-secondary mb-1">Small Site</div>
-                <div className="text-xs text-text-tertiary">Up to 20 devices</div>
-                <div className="text-xs text-text-tertiary">4 hours on-site</div>
+            <div className="grid md:grid-cols-2 gap-8 mb-6">
+              <div>
+                <h3 className="text-lg font-semibold text-primary mb-4">Standard Rates</h3>
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center pb-2 border-b border-border">
+                    <span className="text-text-secondary">Business hours (Mon-Fri)</span>
+                    <span className="font-semibold text-lg text-primary">From $140/hr</span>
+                  </div>
+                  <div className="flex justify-between items-center pb-2 border-b border-border">
+                    <span className="text-text-secondary">After-hours & weekends</span>
+                    <span className="font-semibold text-lg">Premium rates</span>
+                  </div>
+                  <div className="flex justify-between items-center pb-2 border-b border-border">
+                    <span className="text-text-secondary">Melbourne metro/CBD</span>
+                    <span className="font-semibold text-lg text-success">$0 travel</span>
+                  </div>
+                  <p className="text-xs text-text-secondary mt-3">
+                    Minimum charge: 1.5 hours. Regional Victoria: Travel fees apply.
+                  </p>
+                </div>
               </div>
-              <div className="text-center border-l border-r border-border">
-                <div className="text-4xl font-bold text-primary mb-2">$880</div>
-                <div className="text-sm text-text-secondary mb-1">Medium Site</div>
-                <div className="text-xs text-text-tertiary">20-50 devices</div>
-                <div className="text-xs text-text-tertiary">8 hours on-site</div>
-              </div>
-              <div className="text-center">
-                <div className="text-4xl font-bold text-primary mb-2">Custom</div>
-                <div className="text-sm text-text-secondary mb-1">Large/Complex</div>
-                <div className="text-xs text-text-tertiary">50+ devices</div>
-                <div className="text-xs text-text-tertiary">Quote on scope</div>
+
+              <div>
+                <h3 className="text-lg font-semibold text-primary mb-4">Typical Audit Scope</h3>
+                <ul className="space-y-2 text-sm text-text-secondary">
+                  <li className="flex items-start gap-2">
+                    <svg className="w-4 h-4 text-success mt-1 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span><strong>Small sites:</strong> Up to 20 devices, typically 3-4 hours</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <svg className="w-4 h-4 text-success mt-1 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span><strong>Medium sites:</strong> 20-50 devices, typically full day</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <svg className="w-4 h-4 text-success mt-1 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span><strong>Large/complex:</strong> 50+ devices, quoted based on scope</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <svg className="w-4 h-4 text-success mt-1 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span><strong>Multi-site projects:</strong> Volume discounts available</span>
+                  </li>
+                </ul>
               </div>
             </div>
             <p className="text-xs text-text-secondary text-center mb-4">
-              All prices exclude GST and travel charges. Travel charged at $1.00/km round-trip from Melbourne CBD.
+              Audits are time-based (hourly rates apply). Melbourne metro audits have zero travel costs. Regional Victoria: travel fees apply based on location.
             </p>
             <div className="bg-primary/5 border border-primary/20 rounded-lg p-4">
               <p className="text-sm text-text-secondary text-center">
-                <strong className="text-primary">Multi-Site Discount:</strong> 15% off for 3+ sites audited in same week (regional cluster pricing available).
+                <strong className="text-primary">Multi-Site Pricing:</strong> Volume discounts available for 3+ sites. Efficient routing for regional clusters minimizes travel costs. Contact for project-based quotes.
               </p>
             </div>
           </Card>

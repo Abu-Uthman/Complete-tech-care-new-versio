@@ -388,44 +388,52 @@ export default function OnsiteSupportPage() {
             </h2>
             <div className="grid md:grid-cols-2 gap-8 mb-6">
               <div>
-                <h3 className="text-lg font-semibold text-primary mb-4">Hourly Rates</h3>
+                <h3 className="text-lg font-semibold text-primary mb-4">Standard Rates</h3>
                 <div className="space-y-3">
                   <div className="flex justify-between items-center pb-2 border-b border-border">
-                    <span className="text-text-secondary">Business hours (8am-6pm)</span>
-                    <span className="font-semibold text-lg">$110/hr</span>
+                    <span className="text-text-secondary">Business hours (Mon-Fri)</span>
+                    <span className="font-semibold text-lg text-primary">From $140/hr</span>
                   </div>
                   <div className="flex justify-between items-center pb-2 border-b border-border">
-                    <span className="text-text-secondary">After-hours (6pm-6am)</span>
-                    <span className="font-semibold text-lg">$140/hr</span>
+                    <span className="text-text-secondary">After-hours & weekends</span>
+                    <span className="font-semibold text-lg">Premium rates</span>
                   </div>
                   <div className="flex justify-between items-center pb-2 border-b border-border">
-                    <span className="text-text-secondary">Weekends</span>
-                    <span className="font-semibold text-lg">$130/hr</span>
+                    <span className="text-text-secondary">Melbourne metro/CBD</span>
+                    <span className="font-semibold text-lg text-success">$0 travel</span>
                   </div>
                   <p className="text-xs text-text-secondary mt-3">
-                    Minimum 1.5 hours business hours, 2 hours after-hours
+                    Minimum charge: 1.5 hours. Regional Victoria: Travel fees apply.
                   </p>
                 </div>
               </div>
 
               <div>
-                <h3 className="text-lg font-semibold text-primary mb-4">Common Job Examples</h3>
-                <ul className="space-y-3 text-sm text-text-secondary">
-                  <li className="flex justify-between items-center pb-2 border-b border-border">
-                    <span>Quick smart-hands (1.5hr)</span>
-                    <span className="font-semibold">$165 + travel</span>
+                <h3 className="text-lg font-semibold text-primary mb-4">Typical Job Scope</h3>
+                <ul className="space-y-2 text-sm text-text-secondary">
+                  <li className="flex items-start gap-2">
+                    <svg className="w-4 h-4 text-success mt-1 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span><strong>Quick smart-hands:</strong> Simple cable swap, equipment reboot</span>
                   </li>
-                  <li className="flex justify-between items-center pb-2 border-b border-border">
-                    <span>Typical break/fix (2-3hr)</span>
-                    <span className="font-semibold">$220-$330 + travel</span>
+                  <li className="flex items-start gap-2">
+                    <svg className="w-4 h-4 text-success mt-1 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span><strong>Typical break/fix:</strong> Troubleshooting network or hardware issues</span>
                   </li>
-                  <li className="flex justify-between items-center pb-2 border-b border-border">
-                    <span>Complex troubleshoot (4hr)</span>
-                    <span className="font-semibold">$440 + travel</span>
+                  <li className="flex items-start gap-2">
+                    <svg className="w-4 h-4 text-success mt-1 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span><strong>Complex troubleshooting:</strong> Multi-system diagnostics and repair</span>
                   </li>
-                  <li className="flex justify-between items-center pb-2 border-b border-border">
-                    <span>After-hours emergency (2hr)</span>
-                    <span className="font-semibold">$280 + travel</span>
+                  <li className="flex items-start gap-2">
+                    <svg className="w-4 h-4 text-success mt-1 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span><strong>Emergency support:</strong> Urgent after-hours callouts with premium rates</span>
                   </li>
                 </ul>
               </div>
@@ -433,7 +441,7 @@ export default function OnsiteSupportPage() {
 
             <div className="bg-background p-4 rounded-lg">
               <p className="text-sm text-text-secondary text-center">
-                <strong className="text-primary">Travel:</strong> $1.00/km from Melbourne CBD. Time-based callouts: we'll provide an upfront estimate based on your description.
+                <strong className="text-primary">Melbourne metro advantage:</strong> Zero travel costs save significant money compared to regional contractors. Regional callouts: travel fees apply based on location. Volume discounts: 5% off for 10+ hours/month, 10% off for 20+ hours/month.
               </p>
             </div>
           </Card>

@@ -4,9 +4,9 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Contractor Rates | CTC Smart-Hands - Transparent MSP Pricing",
-  description: "Clear, professional contractor rates for MSPs. $110/hr + $1/km travel. Same-day dispatch available for regional Victoria. No hidden fees.",
-  keywords: ["IT contractor rates", "MSP contractor pricing", "regional victoria field services", "smart hands rates", "transparent contractor pricing"],
+  title: "IT Field Services - Pricing Overview | CTC Melbourne & Regional Victoria",
+  description: "Professional IT contractor services starting from $140/hr. Volume discounts and flexible engagement models for MSP partners. Metro Melbourne: no travel costs.",
+  keywords: ["IT field services pricing", "MSP contractor rates", "Melbourne IT contractor", "regional victoria IT services", "volume discounts", "B2B IT contractor"],
 };
 
 export default function RatesPage() {
@@ -17,179 +17,179 @@ export default function RatesPage() {
         <div className="container mx-auto px-4 py-16 md:py-20">
           <div className="max-w-4xl mx-auto text-center">
             <div className="inline-block mb-4 px-4 py-2 bg-primary/10 rounded-full">
-              <span className="text-sm font-medium text-primary">Transparent Pricing</span>
+              <span className="text-sm font-medium text-primary">Flexible B2B Pricing</span>
             </div>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-primary mb-6 leading-tight">
-              Professional Contractor Rates
+              IT Field Services – Pricing Overview
             </h1>
             <p className="text-lg md:text-xl text-text-secondary mb-8 max-w-2xl mx-auto">
-              Clear, competitive pricing for MSPs and IT service providers. No hidden fees, no surprises.
+              Professional IT contractor rates starting from <strong className="text-primary">$140/hr</strong>. Volume discounts and flexible engagement models available for MSPs and ongoing partnerships.
             </p>
           </div>
         </div>
       </section>
 
-      {/* Clear Rate Card */}
+      {/* Melbourne Metro Advantage */}
       <section className="container mx-auto px-4 py-12">
         <div className="max-w-5xl mx-auto">
+          <Card className="p-8 border-2 border-primary bg-primary/5 mb-8">
+            <div className="text-center mb-6">
+              <div className="w-16 h-16 bg-primary rounded-lg flex items-center justify-center mx-auto mb-4">
+                <svg className="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                </svg>
+              </div>
+              <h2 className="text-3xl font-bold text-primary mb-4">
+                Melbourne Metro & CBD: Save on Travel Costs
+              </h2>
+              <p className="text-lg text-text-secondary mb-6 max-w-3xl mx-auto">
+                Melbourne-based contractor = <strong className="text-primary">$0 travel costs</strong> for metro and CBD jobs. Save $200-400 per callout compared to regional contractors.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="bg-background p-6 rounded-lg">
+                <h3 className="text-xl font-semibold text-primary mb-4 text-center">Melbourne Metro/CBD</h3>
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center pb-2 border-b border-border">
+                    <span className="text-text-secondary">Business Hours Rate</span>
+                    <span className="font-semibold text-lg text-primary">From $140/hr</span>
+                  </div>
+                  <div className="flex justify-between items-center pb-2 border-b border-border">
+                    <span className="text-text-secondary">Travel Cost</span>
+                    <span className="font-semibold text-lg text-success">$0</span>
+                  </div>
+                  <div className="flex justify-between items-center pb-2 border-b border-border">
+                    <span className="text-text-secondary">Typical job cost</span>
+                    <span className="font-semibold text-lg text-primary">Labor only</span>
+                  </div>
+                </div>
+                <div className="mt-4 p-3 bg-success/10 rounded">
+                  <p className="text-sm text-success text-center font-semibold">
+                    ✓ 2-4 hour arrival | No travel charges
+                  </p>
+                </div>
+              </div>
+
+              <div className="bg-background p-6 rounded-lg">
+                <h3 className="text-xl font-semibold text-text-secondary mb-4 text-center">Regional Victoria</h3>
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center pb-2 border-b border-border">
+                    <span className="text-text-secondary">Business Hours Rate</span>
+                    <span className="font-semibold text-lg">From $140/hr</span>
+                  </div>
+                  <div className="flex justify-between items-center pb-2 border-b border-border">
+                    <span className="text-text-secondary">Travel Cost</span>
+                    <span className="font-semibold text-lg text-text-tertiary">Varies</span>
+                  </div>
+                  <div className="flex justify-between items-center pb-2 border-b border-border">
+                    <span className="text-text-secondary">Typical job cost</span>
+                    <span className="font-semibold text-lg">Labor + travel</span>
+                  </div>
+                </div>
+                <div className="mt-4 p-3 bg-text-tertiary/10 rounded">
+                  <p className="text-sm text-text-tertiary text-center">
+                    Same-day where scheduling allows
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-6 text-center">
+              <p className="text-sm text-text-secondary">
+                <strong className="text-primary">Volume Discounts:</strong> 5% off for 10+ hours/month, 10% off for 20+ hours/month. Contact for MSP partner rate cards.
+              </p>
+            </div>
+          </Card>
+
           <Card className="p-8">
             <h2 className="text-3xl font-bold text-primary mb-6 text-center">
-              Contractor Rates
+              Contractor Rates & Engagement Models
             </h2>
 
             <div className="grid md:grid-cols-2 gap-8 mb-8">
               {/* On-Site Labor */}
               <div>
-                <h3 className="text-xl font-semibold text-primary mb-4">On-Site Labor</h3>
+                <h3 className="text-xl font-semibold text-primary mb-4">On-Site Labor Rates</h3>
                 <div className="space-y-3">
                   <div className="flex justify-between items-center pb-2 border-b border-border">
-                    <span className="text-text-secondary">Business hours</span>
-                    <span className="font-semibold text-lg">$110/hr</span>
+                    <span className="text-text-secondary">Business hours (Mon-Fri)</span>
+                    <span className="font-semibold text-lg text-primary">From $140/hr</span>
                   </div>
                   <div className="flex justify-between items-center pb-2 border-b border-border">
-                    <span className="text-text-secondary">After-hours (6pm-6am)</span>
-                    <span className="font-semibold text-lg">$140/hr</span>
-                  </div>
-                  <div className="flex justify-between items-center pb-2 border-b border-border">
-                    <span className="text-text-secondary">Weekends</span>
-                    <span className="font-semibold text-lg">$130/hr</span>
+                    <span className="text-text-secondary">After-hours & weekends</span>
+                    <span className="font-semibold text-lg">Premium rates</span>
                   </div>
                   <div className="flex justify-between items-center pb-2 border-b border-border">
                     <span className="text-text-secondary">Public holidays</span>
-                    <span className="font-semibold text-lg">$165/hr</span>
+                    <span className="font-semibold text-lg">Premium rates</span>
                   </div>
-                  <p className="text-sm text-text-secondary mt-3">
-                    Minimum charge: 1.5 hours (business hours), 2 hours (after-hours)
+                  <p className="text-sm text-text-secondary mt-4">
+                    • Minimum charge: 1.5 hours<br/>
+                    • Volume partnerships: Discounted rates<br/>
+                    • Contact for detailed rate card
                   </p>
                 </div>
               </div>
 
-              {/* Travel Charges */}
+              {/* Travel & Regional */}
               <div>
-                <h3 className="text-xl font-semibold text-primary mb-4">Travel Charges</h3>
+                <h3 className="text-xl font-semibold text-primary mb-4">Travel & Coverage</h3>
                 <div className="bg-bg-secondary p-6 rounded-lg">
-                  <div className="text-center mb-4">
-                    <div className="text-4xl font-bold text-primary">$1.00</div>
-                    <div className="text-text-secondary">per kilometre</div>
-                  </div>
-                  <ul className="space-y-2 text-sm text-text-secondary">
+                  <ul className="space-y-3 text-sm text-text-secondary">
                     <li className="flex items-start gap-2">
-                      <svg className="w-4 h-4 text-secondary mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                      <svg className="w-5 h-5 text-success mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                       </svg>
-                      <span>Round trip from job location to Melbourne CBD</span>
+                      <span><strong>Metro Melbourne & CBD:</strong> No travel charges for standard callouts</span>
                     </li>
                     <li className="flex items-start gap-2">
-                      <svg className="w-4 h-4 text-secondary mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                      <svg className="w-5 h-5 text-secondary mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                       </svg>
-                      <span>No hidden fees or fuel surcharges</span>
+                      <span><strong>Regional Victoria:</strong> Travel fees apply based on location – confirmed in quote</span>
                     </li>
                     <li className="flex items-start gap-2">
-                      <svg className="w-4 h-4 text-secondary mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                      <svg className="w-5 h-5 text-secondary mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                       </svg>
-                      <span>Multiple jobs same day: travel between sites charged</span>
+                      <span>Regional callouts typically <strong>$500-800</strong> depending on location, time, and job complexity</span>
                     </li>
                   </ul>
                 </div>
               </div>
             </div>
 
-            <div className="bg-primary/5 border border-primary/20 rounded-lg p-4">
-              <p className="text-sm text-text-secondary text-center">
-                <strong className="text-primary">Payment Terms:</strong> Net 30 from invoice date, or as per your standard contractor agreement terms. Credit card and bank transfer accepted.
+            <div className="bg-primary/5 border border-primary/20 rounded-lg p-6">
+              <h3 className="text-lg font-semibold text-primary mb-3 text-center">MSP & Partner Pricing</h3>
+              <p className="text-sm text-text-secondary text-center mb-4">
+                Flexible engagement models for ongoing partnerships:
               </p>
-            </div>
-          </Card>
-        </div>
-      </section>
-
-      {/* Quick Job Cost Calculator */}
-      <section className="container mx-auto px-4 py-12">
-        <div className="max-w-5xl mx-auto">
-          <Card className="p-8 bg-primary/5">
-            <h2 className="text-2xl font-bold text-primary mb-6 text-center">
-              Quick Job Cost Examples
-            </h2>
-            <p className="text-center text-text-secondary mb-6">
-              Real-world pricing for typical regional callouts (business hours)
-            </p>
-
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b-2 border-primary/20">
-                    <th className="text-left py-3 px-4">Location</th>
-                    <th className="text-right py-3 px-4">Distance (RT)</th>
-                    <th className="text-right py-3 px-4">Travel Fee</th>
-                    <th className="text-right py-3 px-4">2hr Job</th>
-                    <th className="text-right py-3 px-4">4hr Job</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr className="border-b border-border hover:bg-background/50">
-                    <td className="py-4 px-4 font-medium">Bendigo</td>
-                    <td className="text-right py-4 px-4 text-text-secondary">300km</td>
-                    <td className="text-right py-4 px-4 font-semibold">$300</td>
-                    <td className="text-right py-4 px-4 font-bold text-primary text-lg">$520</td>
-                    <td className="text-right py-4 px-4 font-bold text-lg">$740</td>
-                  </tr>
-                  <tr className="border-b border-border hover:bg-background/50">
-                    <td className="py-4 px-4 font-medium">Shepparton</td>
-                    <td className="text-right py-4 px-4 text-text-secondary">360km</td>
-                    <td className="text-right py-4 px-4 font-semibold">$360</td>
-                    <td className="text-right py-4 px-4 font-bold text-primary text-lg">$580</td>
-                    <td className="text-right py-4 px-4 font-bold text-lg">$800</td>
-                  </tr>
-                  <tr className="border-b border-border hover:bg-background/50">
-                    <td className="py-4 px-4 font-medium">Echuca</td>
-                    <td className="text-right py-4 px-4 text-text-secondary">400km</td>
-                    <td className="text-right py-4 px-4 font-semibold">$400</td>
-                    <td className="text-right py-4 px-4 font-bold text-primary text-lg">$620</td>
-                    <td className="text-right py-4 px-4 font-bold text-lg">$840</td>
-                  </tr>
-                  <tr className="hover:bg-background/50">
-                    <td className="py-4 px-4 font-medium">Ballarat</td>
-                    <td className="text-right py-4 px-4 text-text-secondary">240km</td>
-                    <td className="text-right py-4 px-4 font-semibold">$240</td>
-                    <td className="text-right py-4 px-4 font-bold text-primary text-lg">$460</td>
-                    <td className="text-right py-4 px-4 font-bold text-lg">$680</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-            <div className="mt-6 space-y-3">
-              <div className="bg-background p-4 rounded-lg">
-                <p className="font-semibold text-primary mb-2">Example Calculation (Bendigo, 2-hour job):</p>
-                <div className="text-sm text-text-secondary space-y-1">
-                  <div className="flex justify-between">
-                    <span>Travel: 300km × $1.00/km</span>
-                    <span className="font-medium">$300</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>On-site labor: 2 hours × $110/hr</span>
-                    <span className="font-medium">$220</span>
-                  </div>
-                  <div className="flex justify-between pt-2 border-t border-border font-bold">
-                    <span>Subtotal</span>
-                    <span>$520</span>
-                  </div>
-                  <div className="flex justify-between text-xs">
-                    <span>GST (10%)</span>
-                    <span>$52</span>
-                  </div>
-                  <div className="flex justify-between pt-1 border-t border-border font-bold text-primary">
-                    <span>Total Invoice</span>
-                    <span className="text-lg">$572</span>
-                  </div>
+              <div className="grid sm:grid-cols-4 gap-4 text-center text-sm">
+                <div>
+                  <strong className="text-primary block mb-1">One-off Callouts</strong>
+                  <span className="text-text-secondary">Standard rates</span>
+                </div>
+                <div>
+                  <strong className="text-primary block mb-1">Block Hours</strong>
+                  <span className="text-text-secondary">10, 20, 50 hour packages</span>
+                </div>
+                <div>
+                  <strong className="text-primary block mb-1">Monthly Retainer</strong>
+                  <span className="text-text-secondary">Priority dispatch + discounts</span>
+                </div>
+                <div>
+                  <strong className="text-primary block mb-1">Project-Based</strong>
+                  <span className="text-text-secondary">Fixed quote for rollouts</span>
                 </div>
               </div>
-
-              <p className="text-xs text-text-secondary text-center">
-                All prices exclude GST. Multiple jobs same day: Travel charged between sites + return to Melbourne at end of day.
-              </p>
+              <div className="mt-4 text-center">
+                <Link href="/book">
+                  <Button size="lg" className="font-semibold">
+                    Request MSP Partner Rate Card
+                  </Button>
+                </Link>
+              </div>
             </div>
           </Card>
         </div>
@@ -223,7 +223,7 @@ export default function RatesPage() {
                     <svg className="w-5 h-5 text-secondary mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                     </svg>
-                    <span>POS/SCO peripheral support (NCR certified)</span>
+                    <span>POS/SCO peripheral support (NCR platform experience)</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <svg className="w-5 h-5 text-secondary mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">

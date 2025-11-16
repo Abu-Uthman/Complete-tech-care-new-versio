@@ -7,31 +7,40 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { getFAQSchema, generateSchemaScript } from "@/lib/schema";
 
 export default function Home() {
+  const faqSchema = getFAQSchema();
+
   return (
-    <main className="min-h-screen bg-background">
+    <>
+      {/* FAQ Schema.org JSON-LD markup */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: generateSchemaScript(faqSchema) }}
+      />
+      <main className="min-h-screen bg-background">
       {/* Hero Section */}
       <section className="bg-bg-secondary border-b border-border">
         <div className="container mx-auto px-4 py-20 md:py-32">
           <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-block mb-4 px-4 py-2 bg-bg-tertiary rounded-full">
-              <span className="text-sm font-medium text-secondary">Professional On-Site Contractor | Regional Victoria</span>
+            <div className="inline-block mb-4 px-4 py-2 bg-bg-tertiary rounded-full animate-fade-in-down">
+              <span className="text-sm font-medium text-secondary">Melbourne Metro + CBD + Regional Victoria</span>
             </div>
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-primary mb-6 leading-tight">
-              On-Site Support Where Your Team Can't Reach
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-primary mb-6 leading-tight animate-fade-in-up stagger-1">
+              On-Site Support Across Melbourne & Regional VIC
             </h1>
-            <p className="text-xl md:text-2xl text-text-secondary mb-10 max-w-3xl mx-auto leading-relaxed">
-              Professional on-site contractor services for MSPs and IT providers across regional Victoria. Help your clients meet their SLAs with same-day regional dispatch to Bendigo, Ballarat, Shepparton, Echuca, and surrounding areas.
+            <p className="text-xl md:text-2xl text-text-secondary mb-10 max-w-3xl mx-auto leading-relaxed animate-fade-in-up stagger-2">
+              Melbourne-based contractor serving MSPs and IT providers statewide. Save time and money on metro jobs (no travel costs), plus same-day regional dispatch to Bendigo, Ballarat, Shepparton, and beyond. Flexible, negotiable pricing for volume clients.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up stagger-3">
               <Link href="/book">
-                <Button size="lg" className="h-12 px-8 text-base font-semibold">
+                <Button size="lg" className="h-12 px-8 text-base font-semibold button-press hover-scale">
                   Request Contractor Info
                 </Button>
               </Link>
               <Link href="/rates">
-                <Button size="lg" variant="outline" className="h-12 px-8 text-base font-semibold border-primary text-primary hover:bg-primary hover:text-white">
+                <Button size="lg" variant="outline" className="h-12 px-8 text-base font-semibold border-primary text-primary hover:bg-primary hover:text-white transition-colors button-press">
                   View Pricing & Rates
                 </Button>
               </Link>
@@ -39,25 +48,25 @@ export default function Home() {
 
             {/* Stats Banner */}
             <div className="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-3xl mx-auto">
-              <div className="text-center p-4 bg-background rounded-lg border border-border">
+              <div className="text-center p-4 bg-background rounded-lg border border-border hover-lift transition-default animate-scale-in stagger-4">
+                <div className="text-3xl font-bold text-primary mb-1">MEL</div>
+                <div className="text-sm text-text-secondary">Melbourne Based</div>
+                <div className="text-xs text-text-tertiary mt-1">No travel costs for metro</div>
+              </div>
+              <div className="text-center p-4 bg-background rounded-lg border border-border hover-lift transition-default animate-scale-in stagger-5">
+                <div className="text-3xl font-bold text-primary mb-1">Flexible</div>
+                <div className="text-sm text-text-secondary">Negotiable Pricing</div>
+                <div className="text-xs text-text-tertiary mt-1">Volume discounts available</div>
+              </div>
+              <div className="text-center p-4 bg-background rounded-lg border border-border hover-lift transition-default animate-scale-in stagger-6">
                 <div className="text-3xl font-bold text-primary mb-1">100%</div>
                 <div className="text-sm text-text-secondary">Insurance Compliant</div>
                 <div className="text-xs text-text-tertiary mt-1">$20M Liability + PI</div>
               </div>
-              <div className="text-center p-4 bg-background rounded-lg border border-border">
-                <div className="text-3xl font-bold text-primary mb-1">Same-Day</div>
-                <div className="text-sm text-text-secondary">Regional Dispatch</div>
-                <div className="text-xs text-text-tertiary mt-1">Help you close SLAs</div>
-              </div>
-              <div className="text-center p-4 bg-background rounded-lg border border-border">
-                <div className="text-3xl font-bold text-primary mb-1">MEL</div>
-                <div className="text-sm text-text-secondary">Melbourne Based</div>
-                <div className="text-xs text-text-tertiary mt-1">Serving VIC statewide</div>
-              </div>
             </div>
 
             {/* Trust Badges */}
-            <div className="mt-8 flex flex-wrap items-center justify-center gap-6 text-sm text-text-tertiary">
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-6 text-sm text-text-tertiary animate-fade-in stagger-6">
               <div className="flex items-center gap-2">
                 <svg className="w-5 h-5 text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -68,7 +77,7 @@ export default function Home() {
                 <svg className="w-5 h-5 text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                <span>Coles & Woolworths Inducted</span>
+                <span>Retail & Grocery Experienced</span>
               </div>
               <div className="flex items-center gap-2">
                 <svg className="w-5 h-5 text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -95,7 +104,7 @@ export default function Home() {
 
           <div className="grid md:grid-cols-3 gap-6">
             {/* Step 1 */}
-            <Card className="p-6 text-center">
+            <Card className="p-6 text-center hover-lift transition-default animate-fade-in-up stagger-1">
               <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
                 <span className="text-2xl font-bold text-primary">1</span>
               </div>
@@ -106,7 +115,7 @@ export default function Home() {
             </Card>
 
             {/* Step 2 */}
-            <Card className="p-6 text-center border-2 border-primary">
+            <Card className="p-6 text-center border-2 border-primary hover-lift transition-default animate-fade-in-up stagger-2">
               <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-4">
                 <span className="text-2xl font-bold text-white">2</span>
               </div>
@@ -117,7 +126,7 @@ export default function Home() {
             </Card>
 
             {/* Step 3 */}
-            <Card className="p-6 text-center">
+            <Card className="p-6 text-center hover-lift transition-default animate-fade-in-up stagger-3">
               <div className="w-16 h-16 bg-success/10 rounded-full flex items-center justify-center mx-auto mb-4">
                 <span className="text-2xl font-bold text-success">3</span>
               </div>
@@ -130,7 +139,7 @@ export default function Home() {
 
           {/* Key Benefits */}
           <div className="mt-12 grid md:grid-cols-2 gap-4">
-            <div className="flex items-start gap-3 p-4 bg-bg-secondary rounded-lg">
+            <div className="flex items-start gap-3 p-4 bg-bg-secondary rounded-lg hover-lift transition-default">
               <svg className="w-6 h-6 text-success flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
@@ -140,7 +149,7 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="flex items-start gap-3 p-4 bg-bg-secondary rounded-lg">
+            <div className="flex items-start gap-3 p-4 bg-bg-secondary rounded-lg hover-lift transition-default">
               <svg className="w-6 h-6 text-success flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
@@ -150,17 +159,17 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="flex items-start gap-3 p-4 bg-bg-secondary rounded-lg">
+            <div className="flex items-start gap-3 p-4 bg-bg-secondary rounded-lg hover-lift transition-default">
               <svg className="w-6 h-6 text-success flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               <div>
-                <h4 className="font-semibold text-primary mb-1">Fully Insured & Certified</h4>
+                <h4 className="font-semibold text-primary mb-1">Fully Insured & Compliant</h4>
                 <p className="text-sm text-text-secondary">$20M public liability, professional indemnity, police verified. All compliance documentation available.</p>
               </div>
             </div>
 
-            <div className="flex items-start gap-3 p-4 bg-bg-secondary rounded-lg">
+            <div className="flex items-start gap-3 p-4 bg-bg-secondary rounded-lg hover-lift transition-default">
               <svg className="w-6 h-6 text-success flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
@@ -241,7 +250,7 @@ export default function Home() {
                   <svg className="w-5 h-5 text-secondary mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                   </svg>
-                  <span>Coles & Woolworths inducted</span>
+                  <span>Retail & grocery rollout experience</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <svg className="w-5 h-5 text-secondary mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
@@ -267,32 +276,75 @@ export default function Home() {
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-bold text-primary mb-4">
-                Statewide Regional Victoria Coverage
+                Melbourne Metro + Statewide Regional Coverage
               </h2>
               <p className="text-lg text-text-secondary mb-2">
-                Same-day dispatch available across all major regional Victorian hubs
+                Based in Melbourne - serve metro/CBD with no travel costs, plus same-day regional dispatch statewide
               </p>
               <p className="text-base text-text-tertiary">
-                Serving Bendigo, Ballarat, Shepparton, Echuca, Wodonga, Wangaratta, Geelong, Warrnambool, Mildura, Latrobe Valley, and all surrounding regional areas
+                Melbourne Metro, CBD, Bendigo, Ballarat, Shepparton, Echuca, Wodonga, Wangaratta, Geelong, Warrnambool, Mildura, Latrobe Valley, and all surrounding areas
               </p>
             </div>
 
+            {/* Featured: Melbourne Metro */}
+            <div className="mb-8">
+              <Card className="p-8 border-2 border-primary bg-primary/5 hover-lift transition-default">
+                <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
+                  <div className="w-16 h-16 bg-primary rounded-lg flex items-center justify-center flex-shrink-0">
+                    <svg className="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                    </svg>
+                  </div>
+                  <div className="flex-1 text-center md:text-left">
+                    <h3 className="text-2xl font-bold text-primary mb-3">Melbourne Metro & CBD (Priority Service)</h3>
+                    <p className="text-lg text-text-secondary mb-4">
+                      <strong className="text-primary">Save time and money</strong> - Melbourne-based contractor arrives within 2-4 hours with <strong className="text-primary">zero travel costs</strong>. Perfect for MSPs serving metro clients.
+                    </p>
+                    <div className="flex flex-wrap gap-4 text-sm text-text-tertiary justify-center md:justify-start">
+                      <div className="flex items-center gap-2">
+                        <svg className="w-5 h-5 text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span>No travel charges</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <svg className="w-5 h-5 text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span>2-4 hour arrival</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <svg className="w-5 h-5 text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span>Flexible pricing</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </Card>
+            </div>
+
+            {/* Regional Hubs */}
+            <div className="mb-6">
+              <h3 className="text-xl font-semibold text-primary mb-4 text-center">Regional Victoria Hubs</h3>
+            </div>
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-              {['Bendigo', 'Ballarat', 'Shepparton', 'Echuca', 'Wodonga', 'Wangaratta', 'Geelong', 'Warrnambool'].map((location) => (
-                <div key={location} className="bg-background border-2 border-border rounded-lg p-6 text-center hover:border-secondary transition-colors">
+              {['Bendigo', 'Ballarat', 'Shepparton', 'Echuca', 'Wodonga', 'Wangaratta', 'Geelong', 'Warrnambool'].map((location, index) => (
+                <div key={location} className={`bg-background border-2 border-border rounded-lg p-6 text-center hover-border-glow transition-default animate-scale-in stagger-${index + 1}`}>
                   <svg className="w-8 h-8 text-secondary mx-auto mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                   </svg>
                   <h3 className="font-semibold text-primary">{location}</h3>
-                  <p className="text-sm text-text-tertiary mt-1">Same-day available</p>
+                  <p className="text-sm text-text-tertiary mt-1">Same-day dispatch</p>
                 </div>
               ))}
             </div>
 
             <div className="text-center">
               <p className="text-sm text-text-secondary">
-                <strong>Plus:</strong> Mildura, Horsham, Sale, Bairnsdale, Swan Hill, Latrobe Valley, and all other regional Victorian locations
+                <strong>Plus:</strong> Mildura, Horsham, Sale, Bairnsdale, Swan Hill, Latrobe Valley, Melbourne Metro & CBD, and all other Victorian locations
               </p>
             </div>
           </div>
@@ -307,7 +359,7 @@ export default function Home() {
               Frequently Asked Questions
             </h2>
             <p className="text-lg text-text-secondary">
-              Common questions about working with CTC Smart-Hands contractor services
+              Common questions about working with Complete Tech Care contractor services
             </p>
           </div>
 
@@ -317,7 +369,7 @@ export default function Home() {
                 Do you provide after-hours or emergency support?
               </AccordionTrigger>
               <AccordionContent className="text-text-secondary">
-                Yes, after-hours and weekend callouts are available with advance notice. Same-day emergency dispatch can be arranged for urgent SLA-critical client issues. Standard after-hours rates ($140/hr) apply. Contact 0432 405 388 immediately for urgent callouts.
+                Yes, after-hours and weekend callouts are available with advance notice. Same-day emergency dispatch can be arranged for urgent SLA-critical client issues. Premium rates apply for after-hours and weekend callouts. Contact 0432 405 388 immediately for urgent callouts or visit our rates page for pricing details.
               </AccordionContent>
             </AccordionItem>
 
@@ -381,7 +433,7 @@ export default function Home() {
       {/* CTA Section */}
       <section className="container mx-auto px-4 py-20">
         <div className="max-w-4xl mx-auto">
-          <Card className="p-10 md:p-12 bg-primary text-white text-center border-0">
+          <Card className="p-10 md:p-12 bg-primary text-white text-center border-0 animate-scale-in">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
               Need Regional Coverage?
             </h2>
@@ -390,12 +442,12 @@ export default function Home() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/book">
-                <Button size="lg" variant="secondary" className="h-12 px-8 text-base font-semibold">
+                <Button size="lg" variant="secondary" className="h-12 px-8 text-base font-semibold button-press hover-scale">
                   Request Contractor Info
                 </Button>
               </Link>
               <Link href="/rates">
-                <Button size="lg" variant="outline" className="h-12 px-8 text-base font-semibold bg-white text-primary hover:bg-white/90 border-0">
+                <Button size="lg" variant="outline" className="h-12 px-8 text-base font-semibold bg-white text-primary hover:bg-white/90 border-0 button-press transition-colors">
                   View Rate Models
                 </Button>
               </Link>
@@ -404,5 +456,6 @@ export default function Home() {
         </div>
       </section>
     </main>
+    </>
   );
 }

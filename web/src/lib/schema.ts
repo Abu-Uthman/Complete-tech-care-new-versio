@@ -5,6 +5,36 @@
  * Generates JSON-LD schema markup for SEO optimization
  */
 
+type ServiceArea = {
+  type: 'City' | 'AdministrativeArea';
+  name: string;
+  id?: string;
+};
+
+const REGIONAL_SERVICE_AREAS: ServiceArea[] = [
+  { type: 'City', name: 'Melbourne', id: 'https://www.wikidata.org/wiki/Q3141' },
+  { type: 'City', name: 'Bendigo', id: 'https://www.wikidata.org/wiki/Q127992' },
+  { type: 'City', name: 'Ballarat', id: 'https://www.wikidata.org/wiki/Q49258' },
+  { type: 'City', name: 'Shepparton', id: 'https://www.wikidata.org/wiki/Q2047862' },
+  { type: 'City', name: 'Echuca', id: 'https://www.wikidata.org/wiki/Q2047993' },
+  { type: 'City', name: 'Wodonga', id: 'https://www.wikidata.org/wiki/Q2001766' },
+  { type: 'City', name: 'Wangaratta', id: 'https://www.wikidata.org/wiki/Q985006' },
+  { type: 'AdministrativeArea', name: 'Latrobe Valley' },
+  { type: 'City', name: 'Geelong', id: 'https://www.wikidata.org/wiki/Q199253' },
+  { type: 'City', name: 'Warrnambool', id: 'https://www.wikidata.org/wiki/Q573346' },
+  { type: 'City', name: 'Mildura', id: 'https://www.wikidata.org/wiki/Q1010902' },
+  { type: 'City', name: 'Horsham' },
+  { type: 'City', name: 'Sale' },
+  { type: 'City', name: 'Bairnsdale' },
+  { type: 'City', name: 'Swan Hill' },
+];
+
+const mapToSchemaArea = (area: ServiceArea) => ({
+  '@type': area.type,
+  name: area.name,
+  ...(area.id ? { '@id': area.id } : {}),
+});
+
 /**
  * Base organization schema for Complete Tech Care
  */
@@ -26,60 +56,7 @@ export function getOrganizationSchema() {
       addressCountry: 'AU',
     },
     areaServed: [
-      {
-        '@type': 'City',
-        name: 'Bendigo',
-        '@id': 'https://www.wikidata.org/wiki/Q127992',
-      },
-      {
-        '@type': 'City',
-        name: 'Ballarat',
-        '@id': 'https://www.wikidata.org/wiki/Q49258',
-      },
-      {
-        '@type': 'City',
-        name: 'Shepparton',
-        '@id': 'https://www.wikidata.org/wiki/Q2047862',
-      },
-      {
-        '@type': 'City',
-        name: 'Echuca',
-        '@id': 'https://www.wikidata.org/wiki/Q2047993',
-      },
-      {
-        '@type': 'City',
-        name: 'Wodonga',
-        '@id': 'https://www.wikidata.org/wiki/Q2001766',
-      },
-      {
-        '@type': 'City',
-        name: 'Wangaratta',
-        '@id': 'https://www.wikidata.org/wiki/Q985006',
-      },
-      {
-        '@type': 'City',
-        name: 'Geelong',
-        '@id': 'https://www.wikidata.org/wiki/Q199253',
-      },
-      {
-        '@type': 'City',
-        name: 'Warrnambool',
-        '@id': 'https://www.wikidata.org/wiki/Q573346',
-      },
-      {
-        '@type': 'City',
-        name: 'Mildura',
-        '@id': 'https://www.wikidata.org/wiki/Q1010902',
-      },
-      {
-        '@type': 'AdministrativeArea',
-        name: 'Latrobe Valley',
-      },
-      {
-        '@type': 'City',
-        name: 'Melbourne',
-        '@id': 'https://www.wikidata.org/wiki/Q3141',
-      },
+      ...REGIONAL_SERVICE_AREAS.map(mapToSchemaArea),
       {
         '@type': 'State',
         name: 'Victoria',
@@ -117,13 +94,10 @@ export function getLocalBusinessSchema() {
       latitude: -37.8136,
       longitude: 144.9631,
     },
-    areaServed: [
-      { '@type': 'City', name: 'Bendigo, VIC' },
-      { '@type': 'City', name: 'Ballarat, VIC' },
-      { '@type': 'City', name: 'Shepparton, VIC' },
-      { '@type': 'City', name: 'Wodonga, VIC' },
-      { '@type': 'City', name: 'Melbourne, VIC' },
-    ],
+    areaServed: REGIONAL_SERVICE_AREAS.map((area) => ({
+      '@type': area.type,
+      name: `${area.name}, VIC`,
+    })),
     openingHoursSpecification: [
       {
         '@type': 'OpeningHoursSpecification',
@@ -149,15 +123,11 @@ export function getServiceSchema() {
       name: 'Complete Tech Care',
       url: 'https://completetechcare.com.au',
     },
-    areaServed: [
-      { '@type': 'City', name: 'Bendigo, VIC' },
-      { '@type': 'City', name: 'Ballarat, VIC' },
-      { '@type': 'City', name: 'Shepparton, VIC' },
-      { '@type': 'City', name: 'Wodonga, VIC' },
-      { '@type': 'AdministrativeArea', name: 'Latrobe Valley, VIC' },
-      { '@type': 'City', name: 'Melbourne, VIC' },
-    ],
-    serviceType: 'IT Support and Smart-Hands Services',
+    areaServed: REGIONAL_SERVICE_AREAS.map((area) => ({
+      '@type': area.type,
+      name: area.type === 'AdministrativeArea' ? `${area.name}, VIC` : `${area.name}, VIC`,
+    })),
+    serviceType: 'IT Support and Field Services',
     category: [
       'IT Support',
       'Technical Support',
@@ -253,25 +223,31 @@ export function getLocationSchema(location: {
 }
 
 /**
- * Pricing/Offer schema for transparency
+ * Pricing/Offer schema for B2B contractor services
  */
 export function getPricingSchema() {
   return {
     '@type': 'Offer',
     '@id': 'https://completetechcare.com.au/rates#offer',
     name: 'On-Site IT Contractor Services',
-    description: 'Professional on-site IT contractor services with transparent pricing',
+    description: 'Professional B2B IT contractor services starting from $140/hr. Volume discounts and flexible engagement models available for MSP partnerships.',
     url: 'https://completetechcare.com.au/rates',
     priceCurrency: 'AUD',
-    price: '110.00',
+    price: '140.00',
     priceSpecification: {
       '@type': 'UnitPriceSpecification',
-      price: '110.00',
+      price: '140.00',
       priceCurrency: 'AUD',
       unitText: 'per hour',
+      referenceQuantity: {
+        '@type': 'QuantitativeValue',
+        value: '1',
+        unitText: 'hour',
+      },
+      priceType: 'https://schema.org/MinimumAdvertisedPrice',
     },
     availability: 'https://schema.org/InStock',
-    validFrom: '2025-01-01',
+    validFrom: '2025-11-01',
     seller: {
       '@type': 'Organization',
       name: 'Complete Tech Care',
@@ -319,6 +295,74 @@ export function generateSchemaScript(schema: any): string {
     '@context': 'https://schema.org',
     ...schema,
   });
+}
+
+/**
+ * FAQ schema for homepage
+ */
+export function getFAQSchema() {
+  return {
+    '@type': 'FAQPage',
+    '@id': 'https://completetechcare.com.au/#faq',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: 'Do you provide after-hours or emergency support?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Yes, after-hours and weekend callouts are available with advance notice. Same-day emergency dispatch can be arranged for urgent SLA-critical client issues. Premium rates apply for after-hours and weekend callouts. Contact 0432 405 388 immediately for urgent callouts or visit our rates page for pricing details.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'Can we use our own company branding when you visit client sites?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Absolutely. This is a white-label service - technicians represent your company brand. We can wear your branded apparel, use your documentation templates, and follow your client communication protocols. Your clients work with your team; contractor services remain transparent to them.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'What happens if you can\'t resolve the issue on-site?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'If an issue requires escalation, we contact you immediately with detailed diagnostics and recommendations. You decide next steps - whether to continue troubleshooting remotely, order parts, or schedule a return visit. You\'re only billed for time spent on-site and any approved additional work.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'How do you handle parts procurement and logistics?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'We can work with your existing parts suppliers and procurement processes. Typically, you ship parts to the site or arrange pickup, and we handle the installation/swap-out. For urgent needs, we can source parts locally with your approval and provide receipts for reimbursement or markup as per your standard process.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'Do you integrate with PSA tools like ConnectWise or Autotask?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Service reporting is provided via email in formats compatible with most PSA systems. We can adapt our documentation to match your ticketing workflows. For retainer clients with high volumes, custom integration options can be discussed to streamline your processes.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'How quickly can you get to regional sites?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Same-day dispatch is available for urgent SLA-critical issues across Bendigo, Ballarat, Shepparton, Echuca, and surrounding areas during business hours (Mon-Fri, 8am-6pm AEST). Travel time varies by location (2-4 hours from Melbourne). We confirm availability and ETA within 30 minutes of your request to help you meet your client SLAs.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'How do invoicing and payment terms work?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'We work with your standard payment terms and processes. For per-incident work, invoices are submitted after job completion with detailed time logs and photographic documentation. Retainer clients receive monthly invoices with included hours tracking and any overflow billing. PO/SOW arrangements are standard practice.',
+        },
+      },
+    ],
+  };
 }
 
 /**

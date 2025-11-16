@@ -238,7 +238,7 @@ export default function LogisticsPage() {
                     <svg className="w-4 h-4 text-secondary mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                     </svg>
-                    <span><strong>POS printer down:</strong> Deliver replacement receipt printer to Coles store, swap out failed unit</span>
+                    <span><strong>POS printer down:</strong> Deliver replacement receipt printer to a regional supermarket, swap out failed unit</span>
                   </li>
                 </ul>
               </div>
@@ -250,7 +250,7 @@ export default function LogisticsPage() {
                     <svg className="w-4 h-4 text-secondary mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                     </svg>
-                    <span><strong>10-store POS rollout:</strong> Coordinate delivery of terminals to Woolworths stores across regional VIC</span>
+                    <span><strong>10-store POS rollout:</strong> Coordinate delivery of terminals to national supermarket locations across regional VIC</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <svg className="w-4 h-4 text-secondary mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
@@ -380,42 +380,66 @@ export default function LogisticsPage() {
             <h2 className="text-2xl font-bold text-primary mb-6 text-center">
               Logistics Pricing
             </h2>
-            <div className="space-y-4 mb-6">
-              <div className="flex justify-between items-center pb-3 border-b border-border">
-                <span className="text-text-secondary">Simple delivery/pickup (Melbourne → Regional)</span>
-                <span className="font-semibold text-lg">From $110</span>
+            <div className="grid md:grid-cols-2 gap-6 mb-6">
+              <div>
+                <h3 className="text-lg font-semibold text-primary mb-4">Standard Rates</h3>
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center pb-2 border-b border-border">
+                    <span className="text-text-secondary">Business hours (Mon-Fri)</span>
+                    <span className="font-semibold text-lg text-primary">From $140/hr</span>
+                  </div>
+                  <div className="flex justify-between items-center pb-2 border-b border-border">
+                    <span className="text-text-secondary">After-hours & weekends</span>
+                    <span className="font-semibold text-lg">Premium rates</span>
+                  </div>
+                  <div className="flex justify-between items-center pb-2 border-b border-border">
+                    <span className="text-text-secondary">Melbourne metro/CBD</span>
+                    <span className="font-semibold text-lg text-success">$0 travel</span>
+                  </div>
+                  <p className="text-xs text-text-secondary mt-3">
+                    Minimum charge: 1.5 hours. Regional Victoria: Travel fees apply.
+                  </p>
+                </div>
               </div>
-              <div className="flex justify-between items-center pb-3 border-b border-border">
-                <span className="text-text-secondary">Same-day emergency delivery</span>
-                <span className="font-semibold text-lg">$165 + $1/km</span>
-              </div>
-              <div className="flex justify-between items-center pb-3 border-b border-border">
-                <span className="text-text-secondary">Delivery + installation</span>
-                <span className="font-semibold text-lg">$165 + hourly rate</span>
-              </div>
-              <div className="flex justify-between items-center pb-3 border-b border-border">
-                <span className="text-text-secondary">Multi-stop delivery (per stop)</span>
-                <span className="font-semibold text-lg">$55/additional stop</span>
+
+              <div>
+                <h3 className="text-lg font-semibold text-primary mb-4">Logistics Services</h3>
+                <ul className="space-y-2 text-sm text-text-secondary">
+                  <li className="flex items-start gap-2">
+                    <svg className="w-4 h-4 text-success mt-1 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span><strong>Simple delivery:</strong> Parts pickup and delivery within Melbourne or to regional sites</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <svg className="w-4 h-4 text-success mt-1 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span><strong>Emergency delivery:</strong> Same-day urgent parts delivery</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <svg className="w-4 h-4 text-success mt-1 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span><strong>Delivery + install:</strong> Parts delivery with on-site installation</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <svg className="w-4 h-4 text-success mt-1 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span><strong>Multi-stop runs:</strong> Efficient routing for multiple site visits</span>
+                  </li>
+                </ul>
               </div>
             </div>
 
             <div className="bg-background p-4 rounded-lg mb-4">
               <p className="text-sm text-text-secondary mb-2">
-                <strong className="text-primary">Example: Bendigo Delivery</strong>
+                <strong className="text-primary">Regional Delivery Example:</strong>
               </p>
-              <div className="text-xs text-text-secondary space-y-1">
-                <div className="flex justify-between">
-                  <span>Base delivery fee</span>
-                  <span className="font-medium">$110</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Travel: 300km × $1.00/km</span>
-                  <span className="font-medium">$300</span>
-                </div>
-                <div className="flex justify-between pt-1 border-t border-border font-bold">
-                  <span>Total</span>
-                  <span>$410 + GST</span>
-                </div>
+              <div className="text-xs text-text-secondary">
+                <p>Regional deliveries typically cost $400-600 depending on location (Bendigo, Ballarat, Shepparton, etc.) for simple parts delivery. Melbourne metro deliveries have zero travel costs.</p>
+                <p className="mt-2">Delivery + installation: Hourly labor rates apply after delivery. Contact for specific quote based on your requirements.</p>
               </div>
             </div>
 

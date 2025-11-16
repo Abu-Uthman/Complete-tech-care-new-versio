@@ -2,8 +2,8 @@ import { Card } from "@/components/ui/card";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy | CTC Smart-Hands",
-  description: "Privacy Policy for Complete Tech Care Smart-Hands services. How we collect, use, and protect your information.",
+  title: "Privacy Policy | Complete Tech Care",
+  description: "Privacy Policy for Complete Tech Care on-site contractor services. How we collect, use, and protect your information.",
 };
 
 export default function PrivacyPage() {
@@ -33,7 +33,7 @@ export default function PrivacyPage() {
               <h2 className="text-2xl font-bold text-primary mb-3">2. How We Use Your Information</h2>
               <p className="text-text-secondary mb-3">We use the information we collect to:</p>
               <ul className="list-disc list-inside text-text-secondary space-y-2">
-                <li>Provide and deliver our smart-hands contractor services</li>
+                <li>Provide and deliver our on-site contractor services</li>
                 <li>Process service requests and communicate about bookings</li>
                 <li>Send service confirmations, status updates, and invoices</li>
                 <li>Improve our services and customer experience</li>

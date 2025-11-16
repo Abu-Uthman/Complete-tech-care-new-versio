@@ -49,7 +49,7 @@ export default function InfrastructurePage() {
                     <li>• Cat5e/Cat6/Cat6a runs</li>
                     <li>• Patch panel terminations</li>
                     <li>• Data point installations</li>
-                    <li>• Cable testing & certification</li>
+                    <li>• Cable testing & verification</li>
                   </ul>
                 </div>
               </div>
@@ -374,26 +374,56 @@ export default function InfrastructurePage() {
             <h2 className="text-2xl font-bold text-primary mb-6 text-center">
               Infrastructure Pricing
             </h2>
-            <div className="space-y-4 mb-6">
-              <div className="flex justify-between items-center pb-3 border-b border-border">
-                <span className="text-text-secondary">Hourly labor rate (business hours)</span>
-                <span className="font-semibold text-lg">$110/hr</span>
+            <div className="grid md:grid-cols-2 gap-6 mb-6">
+              <div>
+                <h3 className="text-lg font-semibold text-primary mb-4">Standard Rates</h3>
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center pb-2 border-b border-border">
+                    <span className="text-text-secondary">Business hours (Mon-Fri)</span>
+                    <span className="font-semibold text-lg text-primary">From $140/hr</span>
+                  </div>
+                  <div className="flex justify-between items-center pb-2 border-b border-border">
+                    <span className="text-text-secondary">After-hours & weekends</span>
+                    <span className="font-semibold text-lg">Premium rates</span>
+                  </div>
+                  <div className="flex justify-between items-center pb-2 border-b border-border">
+                    <span className="text-text-secondary">Melbourne metro/CBD</span>
+                    <span className="font-semibold text-lg text-success">$0 travel</span>
+                  </div>
+                  <p className="text-xs text-text-secondary mt-3">
+                    Minimum charge: 1.5 hours. Regional Victoria: Travel fees apply.
+                  </p>
+                </div>
               </div>
-              <div className="flex justify-between items-center pb-3 border-b border-border">
-                <span className="text-text-secondary">Cat6 cable run + termination (per drop)</span>
-                <span className="font-semibold text-lg">$165 - $220</span>
-              </div>
-              <div className="flex justify-between items-center pb-3 border-b border-border">
-                <span className="text-text-secondary">Patch panel termination (24-port)</span>
-                <span className="font-semibold text-lg">$330 - $440</span>
-              </div>
-              <div className="flex justify-between items-center pb-3 border-b border-border">
-                <span className="text-text-secondary">Server rack assembly & cable mgmt</span>
-                <span className="font-semibold text-lg">$440 - $660</span>
-              </div>
-              <div className="flex justify-between items-center pb-3 border-b border-border">
-                <span className="text-text-secondary">Access point mounting + cable run</span>
-                <span className="font-semibold text-lg">$220 - $330/AP</span>
+
+              <div>
+                <h3 className="text-lg font-semibold text-primary mb-4">Typical Projects</h3>
+                <ul className="space-y-2 text-sm text-text-secondary">
+                  <li className="flex items-start gap-2">
+                    <svg className="w-4 h-4 text-success mt-1 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span><strong>Cable runs:</strong> Cat6 drops with termination and testing</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <svg className="w-4 h-4 text-success mt-1 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span><strong>Patch panels:</strong> Termination and labeling</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <svg className="w-4 h-4 text-success mt-1 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span><strong>Rack work:</strong> Server rack assembly and cable management</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <svg className="w-4 h-4 text-success mt-1 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span><strong>WiFi installs:</strong> Access point mounting and cable runs</span>
+                  </li>
+                </ul>
               </div>
             </div>
 
@@ -402,10 +432,10 @@ export default function InfrastructurePage() {
                 <strong className="text-primary">Project-Based Pricing:</strong>
               </p>
               <ul className="text-xs text-text-secondary space-y-1">
-                <li>• Multi-drop cabling projects quoted per site (volume discounts available)</li>
-                <li>• Materials can be client-supplied or quoted/invoiced through us</li>
-                <li>• After-hours installations available (charged at $140/hr)</li>
-                <li>• Travel: $1.00/km from Melbourne CBD</li>
+                <li>• Multi-site cabling projects: Fixed quotes available with volume discounts</li>
+                <li>• Materials: Client-supplied or quoted/invoiced by us</li>
+                <li>• After-hours installations: Premium rates apply for maintenance window work</li>
+                <li>• Location: Melbourne metro = zero travel costs, regional = travel fees apply</li>
               </ul>
             </div>
           </Card>

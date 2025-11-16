@@ -2,8 +2,8 @@ import { Card } from "@/components/ui/card";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Terms of Service | CTC Smart-Hands",
-  description: "Terms of Service for Complete Tech Care Smart-Hands contractor services.",
+  title: "Terms of Service | Complete Tech Care",
+  description: "Terms of Service for Complete Tech Care on-site contractor services.",
 };
 
 export default function TermsPage() {
@@ -18,14 +18,14 @@ export default function TermsPage() {
             <section>
               <h2 className="text-2xl font-bold text-primary mb-3">1. Agreement to Terms</h2>
               <p className="text-text-secondary">
-                By engaging Complete Tech Care (CTC) for smart-hands contractor services, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our services.
+                By engaging Complete Tech Care (CTC) for on-site contractor services, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our services.
               </p>
             </section>
 
             <section>
               <h2 className="text-2xl font-bold text-primary mb-3">2. Services Provided</h2>
               <p className="text-text-secondary mb-3">
-                CTC provides professional smart-hands contractor services including but not limited to:
+                CTC provides professional on-site contractor services including but not limited to:
               </p>
               <ul className="list-disc list-inside text-text-secondary space-y-2">
                 <li>On-site IT support and troubleshooting (L1-L2)</li>

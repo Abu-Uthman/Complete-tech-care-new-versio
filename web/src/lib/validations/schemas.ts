@@ -1,6 +1,6 @@
 /**
  * Zod Validation Schemas
- * CTC Smart-Hands Project
+ * Complete Tech Care Project
  */
 
 import { z } from 'zod';

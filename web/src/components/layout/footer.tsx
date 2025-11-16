@@ -5,6 +5,24 @@
 
 import Link from 'next/link';
 
+const coverageAreas = [
+  'Melbourne Metro & CBD',
+  'Bendigo',
+  'Ballarat',
+  'Shepparton',
+  'Echuca',
+  'Wodonga',
+  'Wangaratta',
+  'Latrobe Valley',
+  'Geelong',
+  'Warrnambool',
+  'Mildura',
+  'Horsham',
+  'Sale',
+  'Bairnsdale',
+  'Swan Hill',
+];
+
 export function Footer() {
   const currentYear = new Date().getFullYear();
 
@@ -80,74 +98,58 @@ export function Footer() {
             </ul>
           </div>
 
+          {/* Quick Links */}
+          <div>
+            <h3 className="font-semibold text-lg mb-4">Quick Links</h3>
+            <ul className="space-y-2 text-sm text-white/80">
+              <li>
+                <Link href="/partners" className="hover:text-secondary transition-colors">
+                  MSP Partnerships
+                </Link>
+              </li>
+              <li>
+                <Link href="/rates" className="hover:text-secondary transition-colors">
+                  Pricing & Rates
+                </Link>
+              </li>
+              <li>
+                <Link href="/blog" className="hover:text-secondary transition-colors">
+                  Blog & Resources
+                </Link>
+              </li>
+              <li>
+                <Link href="/book" className="hover:text-secondary transition-colors">
+                  Request Information
+                </Link>
+              </li>
+            </ul>
+          </div>
+
           {/* Coverage */}
           <div>
             <h3 className="font-semibold text-lg mb-4">Coverage Area</h3>
-            <ul className="space-y-2 text-sm text-white/80">
-              <li className="flex items-center gap-2">
-                <svg className="w-4 h-4 text-secondary" fill="currentColor" viewBox="0 0 20 20">
-                  <path
-                    fillRule="evenodd"
-                    d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                Bendigo
-              </li>
-              <li className="flex items-center gap-2">
-                <svg className="w-4 h-4 text-secondary" fill="currentColor" viewBox="0 0 20 20">
-                  <path
-                    fillRule="evenodd"
-                    d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                Ballarat
-              </li>
-              <li className="flex items-center gap-2">
-                <svg className="w-4 h-4 text-secondary" fill="currentColor" viewBox="0 0 20 20">
-                  <path
-                    fillRule="evenodd"
-                    d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                Shepparton
-              </li>
-              <li className="flex items-center gap-2">
-                <svg className="w-4 h-4 text-secondary" fill="currentColor" viewBox="0 0 20 20">
-                  <path
-                    fillRule="evenodd"
-                    d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                Geelong
-              </li>
-              <li className="flex items-center gap-2">
-                <svg className="w-4 h-4 text-secondary" fill="currentColor" viewBox="0 0 20 20">
-                  <path
-                    fillRule="evenodd"
-                    d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                Warrnambool
-              </li>
-              <li className="flex items-center gap-2">
-                <svg className="w-4 h-4 text-secondary" fill="currentColor" viewBox="0 0 20 20">
-                  <path
-                    fillRule="evenodd"
-                    d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                Mildura
-              </li>
-              <li className="text-xs text-white/60 mt-2">
-                + All Regional VIC
-              </li>
+            <ul className="grid grid-cols-2 md:grid-cols-3 gap-3 text-sm text-white/80">
+              {coverageAreas.map((area) => (
+                <li key={area} className="flex items-center gap-2">
+                  <svg
+                    className="w-4 h-4 text-secondary"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                    aria-hidden="true"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  {area}
+                </li>
+              ))}
             </ul>
+            <p className="text-xs text-white/60 mt-4">
+              Same-day dispatch across Melbourne metro and 14 regional VIC hubs listed above.
+            </p>
           </div>
 
           {/* Contact */}

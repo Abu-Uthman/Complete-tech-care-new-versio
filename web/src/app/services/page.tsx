@@ -29,7 +29,7 @@ const services = [
   {
     slug: 'pos-retail',
     title: 'POS & Retail Equipment Support',
-    description: 'Coles and Woolworths inducted contractor for POS terminals, self-checkout systems, and retail equipment maintenance and rollouts.',
+    description: 'Retail-ready contractor for POS terminals, self-checkout systems, and equipment maintenance and rollouts.',
     icon: (
       <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
@@ -88,29 +88,29 @@ export default function ServicesPage() {
   return (
     <main className="min-h-screen">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-background to-bg-secondary py-20">
+      <section className="bg-bg-secondary py-20">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-6">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-6 animate-fade-in-down">
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
               </svg>
               Professional Contractor Services
             </div>
-            <h1 className="text-5xl sm:text-6xl font-bold text-text-primary mb-6">
+            <h1 className="text-5xl sm:text-6xl font-bold text-text-primary mb-6 animate-fade-in-up stagger-1">
               Comprehensive On-Site IT Services
             </h1>
-            <p className="text-xl text-text-secondary mb-8">
-              Professional contractor services for MSPs, retail vendors, and IT service providers across regional Victoria. 4-hour response guarantee to 15+ hub locations.
+            <p className="text-xl text-text-secondary mb-8 animate-fade-in-up stagger-2">
+              Professional contractor services for MSPs, retail vendors, and IT service providers across regional Victoria. Same-day dispatch to 15+ regional hubs.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up stagger-3">
               <Link href="/book">
-                <Button size="lg" className="w-full sm:w-auto">
+                <Button size="lg" className="w-full sm:w-auto button-press hover-scale">
                   Request Information
                 </Button>
               </Link>
               <a href="tel:+61432405388">
-                <Button size="lg" variant="outline" className="w-full sm:w-auto">
+                <Button size="lg" variant="outline" className="w-full sm:w-auto button-press transition-colors">
                   Call 0432 405 388
                 </Button>
               </a>

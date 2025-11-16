@@ -1,6 +1,8 @@
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
+const nextConfig = {
+  // Explicitly set the workspace root so Turbopack ignores lockfiles outside this project
+  turbopack: {
+    rootDirectory: __dirname,
+  },
   images: {
     remotePatterns: [
       {
@@ -17,6 +19,10 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+} satisfies import("next").NextConfig & {
+  turbopack?: {
+    rootDirectory?: string;
+  };
 };
 
 export default nextConfig;

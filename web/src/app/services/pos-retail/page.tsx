@@ -5,8 +5,8 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "POS & Retail Equipment Support | Complete Tech Care",
-  description: "Specialized POS/SCO support for retail vendors across regional Victoria. Coles & Woolworths inducted. NCR, Wincor Nixdorf, Toshiba, and IBM certified.",
-  keywords: ["POS support", "retail equipment", "self checkout", "NCR POS", "Coles Woolworths", "regional victoria", "retail vendor support"],
+  description: "Specialized POS/SCO support for retail vendors across regional Victoria. Experienced with national supermarket protocols and major POS platforms including NCR, Wincor Nixdorf, Toshiba, and IBM.",
+  keywords: ["POS support", "retail equipment", "self checkout", "NCR POS", "regional victoria", "retail vendor support", "grocery contractor"],
 };
 
 export default function POSRetailPage() {
@@ -17,23 +17,23 @@ export default function POSRetailPage() {
         <div className="container mx-auto px-4 py-16 md:py-20">
           <div className="max-w-4xl mx-auto text-center">
             <div className="inline-block mb-4 px-4 py-2 bg-primary/10 rounded-full">
-              <span className="text-sm font-medium text-primary">Retail Specialist Services</span>
+              <span className="text-sm font-medium text-primary">Retail Equipment Services</span>
             </div>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-primary mb-6 leading-tight">
               POS & Retail Equipment Support
             </h1>
             <p className="text-lg md:text-xl text-text-secondary mb-8 max-w-2xl mx-auto">
-              Specialized support for point-of-sale systems, self-checkout terminals, and retail peripherals. Coles & Woolworths inducted with NCR POS experience across regional Victoria.
+              Specialized support for point-of-sale systems, self-checkout terminals, and retail peripherals. Experienced with national supermarket safety protocols and NCR-class POS environments across regional Victoria.
             </p>
             <div className="flex flex-wrap gap-3 justify-center">
               <div className="bg-primary/10 px-4 py-2 rounded-full">
-                <span className="text-sm font-medium text-primary">Coles Inducted</span>
+                <span className="text-sm font-medium text-primary">Retail safety ready</span>
               </div>
               <div className="bg-primary/10 px-4 py-2 rounded-full">
-                <span className="text-sm font-medium text-primary">Woolworths Inducted</span>
+                <span className="text-sm font-medium text-primary">Multi-site rollout support</span>
               </div>
               <div className="bg-primary/10 px-4 py-2 rounded-full">
-                <span className="text-sm font-medium text-primary">NCR Certified</span>
+                <span className="text-sm font-medium text-primary">NCR platform experience</span>
               </div>
             </div>
           </div>
@@ -178,9 +178,9 @@ export default function POSRetailPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                   </svg>
                 </div>
-                <h3 className="text-lg font-semibold text-primary mb-2">Supermarket Inducted</h3>
+                <h3 className="text-lg font-semibold text-primary mb-2">Retail Safety Experience</h3>
                 <p className="text-sm text-text-secondary">
-                  Fully inducted for Coles and Woolworths stores. Familiar with in-store protocols and security requirements.
+                  Experience with national supermarket safety protocols, onboarding processes, and in-store compliance requirements.
                 </p>
               </div>
             </Card>
@@ -324,49 +324,49 @@ export default function POSRetailPage() {
                 <h3 className="text-lg font-semibold text-primary mb-4">Standard Rates</h3>
                 <div className="space-y-3">
                   <div className="flex justify-between items-center pb-2 border-b border-border">
-                    <span className="text-text-secondary">Business hours (8am-6pm)</span>
-                    <span className="font-semibold text-lg">$110/hr</span>
+                    <span className="text-text-secondary">Business hours (Mon-Fri)</span>
+                    <span className="font-semibold text-lg text-primary">From $140/hr</span>
                   </div>
                   <div className="flex justify-between items-center pb-2 border-b border-border">
-                    <span className="text-text-secondary">After-hours (6pm-6am)</span>
-                    <span className="font-semibold text-lg">$140/hr</span>
+                    <span className="text-text-secondary">After-hours & weekends</span>
+                    <span className="font-semibold text-lg">Premium rates</span>
                   </div>
                   <div className="flex justify-between items-center pb-2 border-b border-border">
-                    <span className="text-text-secondary">Weekends</span>
-                    <span className="font-semibold text-lg">$130/hr</span>
+                    <span className="text-text-secondary">Melbourne metro/CBD</span>
+                    <span className="font-semibold text-lg text-success">$0 travel</span>
                   </div>
                   <p className="text-xs text-text-secondary mt-3">
-                    Minimum 2 hours for after-hours callouts
+                    Minimum charge: 1.5 hours. Regional Victoria: Travel fees apply.
                   </p>
                 </div>
               </div>
 
               <div>
-                <h3 className="text-lg font-semibold text-primary mb-4">Multi-Store Discounts</h3>
+                <h3 className="text-lg font-semibold text-primary mb-4">Volume & Partnership Benefits</h3>
                 <ul className="space-y-3 text-sm text-text-secondary">
                   <li className="flex items-start gap-2">
                     <svg className="w-4 h-4 text-success mt-1 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
-                    <span><strong>5+ stores same week:</strong> 10% discount on labor</span>
+                    <span><strong>Volume discounts:</strong> 5% off for 10+ hours/month</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <svg className="w-4 h-4 text-success mt-1 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
-                    <span><strong>10+ stores same week:</strong> 15% discount on labor</span>
+                    <span><strong>High-volume clients:</strong> 10% off for 20+ hours/month</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <svg className="w-4 h-4 text-success mt-1 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
-                    <span><strong>Regional cluster pricing:</strong> Optimized routing to minimize travel costs</span>
+                    <span><strong>Multi-site coordination:</strong> Optimized routing for regional clusters</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <svg className="w-4 h-4 text-success mt-1 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
-                    <span><strong>Monthly retainer:</strong> Predictable costs for ongoing support contracts</span>
+                    <span><strong>Retainer agreements:</strong> Priority dispatch and predictable monthly costs</span>
                   </li>
                 </ul>
               </div>
@@ -390,7 +390,7 @@ export default function POSRetailPage() {
                 Need POS Support in Regional VIC?
               </h2>
               <p className="text-lg text-text-secondary mb-8">
-                Coles & Woolworths inducted with NCR experience. Same-day dispatch available for urgent retail support.
+                Retail safety compliant with NCR platform experience. Same-day dispatch available for urgent retail support.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                 <Link href="/book">
