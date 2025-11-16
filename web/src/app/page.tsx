@@ -183,89 +183,103 @@ export default function Home() {
       </section>
 
       {/* Services Overview */}
+      {/* What We Do Section - Service Types */}
       <section className="bg-bg-secondary border-y border-border py-20">
         <div className="max-w-6xl mx-auto container px-4">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-primary mb-4">
-              Service Capabilities
+            <h2 className="text-3xl md:text-4xl font-bold text-primary mb-4 animate-fade-in-up">
+              What We Do
             </h2>
-            <p className="text-lg text-text-secondary max-w-2xl mx-auto">
-              Comprehensive on-site support across break/fix, equipment rollouts, installations, site audits, and more. Professional contractor services for any hands-on requirement.
+            <p className="text-lg text-text-secondary max-w-2xl mx-auto animate-fade-in-up stagger-1">
+              Smart-hands contractor services across Melbourne Metro, CBD, and Regional Victoria. From break/fix to equipment rollouts, we handle the hands-on work.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6">
-            {/* For MSPs */}
-            <Card className="p-8 border-2 border-border hover:border-secondary transition-colors">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {/* Break/Fix Support */}
+            <Card className="p-6 border border-border hover-lift transition-default animate-scale-in stagger-1">
               <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center mb-4">
                 <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
                 </svg>
               </div>
-              <h3 className="text-2xl font-bold text-primary mb-3">For MSPs & IT Partners</h3>
-              <ul className="space-y-3 text-text-secondary">
-                <li className="flex items-start gap-2">
-                  <svg className="w-5 h-5 text-secondary mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                  </svg>
-                  <span>Same-day dispatch for SLA-critical issues</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <svg className="w-5 h-5 text-secondary mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                  </svg>
-                  <span>L1-L2 break/fix and rollouts</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <svg className="w-5 h-5 text-secondary mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                  </svg>
-                  <span>Parts logistics and site audits</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <svg className="w-5 h-5 text-secondary mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                  </svg>
-                  <span>PO/SOW/SLA fluent operations</span>
-                </li>
-              </ul>
+              <h3 className="text-xl font-bold text-primary mb-2">Break/Fix Support</h3>
+              <p className="text-sm text-text-secondary">
+                L1-L2 troubleshooting and repairs. Desktop, printer, network issues resolved on-site across metro and regional Victoria.
+              </p>
             </Card>
 
-            {/* For Retail Vendors */}
-            <Card className="p-8 border-2 border-border hover:border-secondary transition-colors">
+            {/* Equipment Swaps */}
+            <Card className="p-6 border border-border hover-lift transition-default animate-scale-in stagger-2">
               <div className="w-12 h-12 bg-secondary rounded-lg flex items-center justify-center mb-4">
+                <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-bold text-primary mb-2">Equipment Swaps</h3>
+              <p className="text-sm text-text-secondary">
+                Hardware replacement and rollouts. PC swaps, printer installations, peripheral replacements - we handle the physical work.
+              </p>
+            </Card>
+
+            {/* POS & Retail Support */}
+            <Card className="p-6 border border-border hover-lift transition-default animate-scale-in stagger-3">
+              <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center mb-4">
                 <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
                 </svg>
               </div>
-              <h3 className="text-2xl font-bold text-primary mb-3">For Retail Vendors</h3>
-              <ul className="space-y-3 text-text-secondary">
-                <li className="flex items-start gap-2">
-                  <svg className="w-5 h-5 text-secondary mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                  </svg>
-                  <span>POS and SCO peripheral support</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <svg className="w-5 h-5 text-secondary mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                  </svg>
-                  <span>Retail & grocery rollout experience</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <svg className="w-5 h-5 text-secondary mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                  </svg>
-                  <span>Equipment installation and swap-outs</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <svg className="w-5 h-5 text-secondary mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                  </svg>
-                  <span>Predictable travel pricing with caps</span>
-                </li>
-              </ul>
+              <h3 className="text-xl font-bold text-primary mb-2">POS & Retail Support</h3>
+              <p className="text-sm text-text-secondary">
+                POS terminal swaps, SCO peripheral support, retail equipment installations. Coles & Woolworths inducted.
+              </p>
             </Card>
+
+            {/* Site Audits */}
+            <Card className="p-6 border border-border hover-lift transition-default animate-scale-in stagger-4">
+              <div className="w-12 h-12 bg-secondary rounded-lg flex items-center justify-center mb-4">
+                <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-bold text-primary mb-2">Site Audits</h3>
+              <p className="text-sm text-text-secondary">
+                Equipment inventory, site surveys, documentation. Photo/video capture, asset tagging, rack documentation.
+              </p>
+            </Card>
+
+            {/* Infrastructure Work */}
+            <Card className="p-6 border border-border hover-lift transition-default animate-scale-in stagger-5">
+              <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center mb-4">
+                <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-bold text-primary mb-2">Infrastructure Work</h3>
+              <p className="text-sm text-text-secondary">
+                Basic cabling, patch panel work, rack installations. Structured cabling runs, cable management, equipment mounting.
+              </p>
+            </Card>
+
+            {/* Parts Logistics */}
+            <Card className="p-6 border border-border hover-lift transition-default animate-scale-in stagger-6">
+              <div className="w-12 h-12 bg-secondary rounded-lg flex items-center justify-center mb-4">
+                <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-bold text-primary mb-2">Parts Logistics</h3>
+              <p className="text-sm text-text-secondary">
+                Equipment delivery, parts pickup and transport. Coordinate logistics for your regional Victoria clients.
+              </p>
+            </Card>
+          </div>
+
+          {/* Footer Note */}
+          <div className="mt-12 text-center">
+            <p className="text-sm text-text-tertiary animate-fade-in-up stagger-6">
+              Melbourne-based contractor serving MSPs, IT providers, and retail vendors statewide. PO/SOW/SLA fluent operations.
+            </p>
           </div>
         </div>
       </section>

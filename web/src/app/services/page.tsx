@@ -132,8 +132,8 @@ export default function ServicesPage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {services.map((service) => (
-              <Card key={service.slug} className="p-8 hover:shadow-lg transition-all duration-300 border-2 hover:border-primary group">
+            {services.map((service, index) => (
+              <Card key={service.slug} className={`p-8 hover-lift transition-default border-2 hover:border-primary group animate-fade-in-up stagger-${index + 1}`}>
                 <Link href={`/services/${service.slug}`}>
                   <div className="flex flex-col h-full">
                     {/* Icon */}
